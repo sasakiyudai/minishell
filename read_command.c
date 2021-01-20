@@ -5,8 +5,6 @@
 #define FLAG_DOUBLE_QUOTE 2
 #define FLAG_SINGLE_QUOTE 1
 
-//test
-
 typedef	struct	s_split
 {
 	int		cnt_splitnum;

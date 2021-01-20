@@ -1,4 +1,4 @@
-utils
+utils 
 	_bzero(void *s, int n)		sからnバイト0で初期化
 		例） _bzero(test, sizeof(t_test))   ->   t_test型のtestを0で初期化
 
