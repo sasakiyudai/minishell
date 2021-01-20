@@ -1,0 +1,7 @@
+read_command.c
+
+	char	*read_all(int fd)	fdから読みとってmallocしたやつに格納。失敗したらNULLを返す。要free
+
+	char	**split_command(char *s, char c)	文字列sをcでスプリット（クオーテーション対応）。失敗したらNULLを返す。要free
+
+	void	free_split_command_all(char **s)	split_commandでのmallocをすべてfree

@@ -123,12 +123,22 @@ void	set_zero(int *a, int *b, int *c, int *d)
 	*d = 0;
 }
 
-char	**free_split_command(char **ret, int cnt_splitnum)
+char	**split_command_free(char **ret, int cnt_splitnum)
 {
 	while (cnt_splitnum--)
 		free(ret[cnt_splitnum]);
 	free(ret);
 	return (NULL);
+}
+
+void	free_split_command_all(char **s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+		free(s[i++]);
+	free(s);
 }
 
 void	check_quote(char c, char *bitflag_quote)
@@ -169,7 +179,7 @@ void	split_command_last(char *s, t_split *split_arg, char ***ret)
 		split_make_str(&s, split_arg, *ret);
 		if (!(*ret)[split_arg->cnt_splitnum++])
 		{
-			free_split_command(*ret, split_arg->cnt_splitnum - 1);
+			split_command_free(*ret, split_arg->cnt_splitnum - 1);
 			*ret = NULL;
 		}
 		else
@@ -195,7 +205,7 @@ char	**split_command(char *s, char c)
 		{
 			split_make_str(&s, &split_arg, ret);
 			if (!ret[split_arg.cnt_splitnum++])
-				return (free_split_command(ret, split_arg.cnt_splitnum - 1));
+				return (split_command_free(ret, split_arg.cnt_splitnum - 1));
 		}
 	}
 	split_command_last(s, &split_arg, &ret);
@@ -214,4 +224,5 @@ int main()
 		printf("%s\n", *ps);
 		ps++;
 	}
+	free_split_command_all(ps);
 }
