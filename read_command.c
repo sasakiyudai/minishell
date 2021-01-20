@@ -64,16 +64,6 @@ char	*read_all(int fd)
 	return (NULL);
 }
 
-void	_bzero(void	 *s, int n)
-{
-	char *str = (char *)s;
-	size_t i = 0;
-	while (i < n)
-	{
-		str[i] = 0;
-		i++;
-	}
-}
 
 
 char	*ft_strndup(char *src, int n)
@@ -158,16 +148,27 @@ void	split_make_str(char **s, t_split *split_arg, char **ret)
 	split_arg->flag_sequencial = 1;
 }
 
+void	_bzero(void	 *s, int n)
+{
+	char *str = (char *)s;
+	size_t i = 0;
+	while (i < n)
+	{
+		str[i] = 0;
+		i++;
+	}
+}
+
 int		split_command_ini(char *s, char c, t_split *split_arg, char ***ret)
 {
 	split_arg->cnt_splitnum = cnt_splitnum_command(s, c) + 1;
 	*ret = (char **)malloc(sizeof(char *) * split_arg->cnt_splitnum);
 	if (!*ret)
 		return (-1);
-	split_arg->cnt_moji = 0;
-	split_arg->cnt_splitnum = 0;
-	split_arg->bitflag_quote = 0;
+	_bzero(split_arg, sizeof(t_split));
+	printf("12345\n");
 	split_arg->flag_sequencial = 1;
+	printf("abcde\n");
 	return (0);
 }
 
