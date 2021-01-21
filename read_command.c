@@ -147,16 +147,6 @@ void	split_make_str(char **s, t_split *split_arg, char **ret)
 	split_arg->flag_sequencial = 1;
 }
 
-void	_bzero(void	 *s, int n)
-{
-	char *str = (char *)s;
-	size_t i = 0;
-	while (i < n)
-	{
-		str[i] = 0;
-		i++;
-	}
-}
 
 int		split_command_ini(char *s, char c, t_split *split_arg, char ***ret)
 {
