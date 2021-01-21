@@ -1,6 +1,8 @@
 utils 
-	_bzero(void *s, int n)		sからnバイト0で初期化
+	void	_bzero(void *s, int n)		sからnバイト0で初期化
 		例） _bzero(test, sizeof(t_test))   ->   t_test型のtestを0で初期化
+
+	void	_bcopy(void *destvoid     _bcopy(void *dest, void *src, int size)
 
 read_command.c
 
@@ -9,3 +11,27 @@ read_command.c
 	char	**split_command(char *s, char c)	文字列sをcでスプリット（クオーテーション対応）。失敗したらNULLを返す。要free
 
 	void	free_split_command_all(char **s)	split_commandでのmallocをすべてfree
+
+
+argument.c
+
+	#define ARG_TYPE_STR 0
+	#define ARG_TYPE_int 0
+
+	typedef struct s_arg
+	{
+		char *name;
+		int type;
+		void *data;
+	}               t_arg;		//変数そのもの
+
+	typedef struct s_arg_list
+	{
+		t_arg   args[ARG_SIZE];
+		int     arg_num;			//argsの中にある有効な変数のインデックスの最大値
+		s_arg_list  *next;
+	}               t_arg_list;		//変数を線形リストで管理
+
+	int     arg_free(t_arg *arg)	変数のfree 戻り値は0
+	int     arg_add(t_arg *arg, t_arg_list *arg_list)	変数の追加　成功:0　失敗:-1
+	int     arg_delete(t_arg *arg, t_arg_list *arg_list)　変数の消去 成功:0　失敗:-1
