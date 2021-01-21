@@ -12,6 +12,17 @@ read_command.c
 
 	void	free_split_command_all(char **s)	split_commandでのmallocをすべてfree
 
+echo.c
+	echo -> echoコマンド(with -nオプション)　（コマンドライン引数を　echo　の引数と仮定）
+
+cd.c
+	cd -> cdコマンド(相対パスと絶対パス)　（コマンドライン引数を　cd　の引数と仮定）
+
+pwd.c
+	pwd -> pwdコマンド　ただpwdするだけ
+
+export.c (未完)
+	export->　コマンドライン引数を　export　の引数と仮定して書いていて、コードとして書いたのは引数なしの時だけ（表示内容に自信なし）
 
 argument.c
 

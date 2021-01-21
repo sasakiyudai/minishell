@@ -10,19 +10,15 @@
 // come here if ft_strcmp("echo", args[0]) == 0
 
 #include "libft.h"
-#include <unistd.h>
 
-int only_echo(char *args[])
+int ft_len(char *args[])
 {
 	int i;
 
 	i = 0;
 	while (args[i])
 		i++;
-	if (i == 1)
-		return (1);
-	else
-		return (0);
+	return (i);
 }
 
 int echo(char *args[])
@@ -32,7 +28,7 @@ int echo(char *args[])
 
 	i = 1;
 	is_n = 0;
-	if (!only_echo(args)) // only "echo" should return "\n"
+	if (ft_len(args) != 1) // only "echo" should return "\n"
 	{
 		while (args[i] && ft_strncmp("-n", args[i], ft_strlen(args[i])) == 0) // "-n" can exitst more than one.
 		{
