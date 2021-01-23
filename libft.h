@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 15:25:45 by syudai            #+#    #+#             */
-/*   Updated: 2020/11/07 11:51:30 by syudai           ###   ########.fr       */
+/*   Updated: 2021/01/23 18:22:54 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,25 @@
 # define LIBFT_H
 # include <unistd.h>
 # include <stdlib.h>
+# include <string.h>
 # include <limits.h>
+# include <stdio.h>
+# include <dirent.h>
 
 typedef struct	s_list
 {
 	void			*content;
 	struct s_list	*next;
 }				t_list;
+
+
+typedef struct s_arg
+{
+	char *name;
+	int type;
+	void *data;
+	struct s_arg *next;
+}               t_arg;
 
 void			*ft_memset(void *b, int c, size_t len);
 void			ft_bzero(void *s, size_t n);
