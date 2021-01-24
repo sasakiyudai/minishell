@@ -257,7 +257,6 @@ char *arg_list_get_makestr(t_arg *arg)
     char *ret;
     int i;
     int j;
-    char *tmp_str;
 
     if (!(ret = (char *)malloc(arg_charlen(arg) + 1)))
         return (NULL);
@@ -266,10 +265,7 @@ char *arg_list_get_makestr(t_arg *arg)
     if (arg->type == ARG_TYPE_STR)
         i += ft_strcat_int(ret + i, (char *)arg->data);
     else if (arg->type == ARG_TYPE_LLINT)
-    {
         i += ft_itoa(*(long long int *)(arg->data), ret + i);
-        free(tmp_str);
-    }
     return (ret);   
 }
 
