@@ -3,7 +3,9 @@
 #include <stdio.h>
 
 #define ARG_TYPE_STR 0
-#define ARG_TYPE_INT 1
+#define ARG_TYPE_LLINT 1
+#define LLINT_MIN -9223372036854775808
+#define LLINT_MAX 9223372036854775807
 
 typedef struct s_arg
 {
@@ -82,14 +84,14 @@ int ft_strcmp(char *s1, char *s2)
     return (!!s2[i]);
 }
 
-char *ft_itoa(int n)
+char *ft_itoa(long long int n)
 {
     int len;
-    int tmp;
+    long long int tmp;
     char *ret;
 
-    if (n == INT_MIN)
-        return (ft_strdup("-2147483648"));
+    if (n == LLINT_MIN)
+        return (ft_strdup("LLINT_MIN"));
     len = n < 0 ? 3 : 2;
     if (n < 0)
         n *= -1;
@@ -118,7 +120,7 @@ void    arg_free(t_arg *arg)
     free(arg->name);
     if (arg->type == ARG_TYPE_STR)
         free((char *)(arg->data));
-    else if (arg->type == ARG_TYPE_INT)
+    else if (arg->type == ARG_TYPE_LLINT)
         free(arg->data);
     arg->name = NULL;
     arg->data = NULL;
@@ -138,12 +140,12 @@ int    arg_copy(t_arg *dest, t_arg *src)
     }
     else
     {
-        if (!(dest->data = (int *)malloc(sizeof (int))))
+        if (!(dest->data = (long long int *)malloc(sizeof (long long int))))
         {
             free(dest->name);
             return (-1);
         }
-        *(int *)(dest->data) = *(int *)(src->data);
+        *(long long int *)(dest->data) = *(long long int *)(src->data);
     }
     dest->type = src->type;
     return (0);
@@ -207,9 +209,11 @@ int arg_charlen(t_arg *arg)
     len = ft_strlen(arg->name) + 2;
     if (arg->type == ARG_TYPE_STR)
         len += ft_strlen((char *)(arg->data));
-    else if (arg->type == ARG_TYPE_INT)
+    else if (arg->type == ARG_TYPE_LLINT)
     {
-        tmp_data = (long long int)*((int *)(arg->data));
+        tmp_data = (long long int)*((long long int *)(arg->data));
+        if (tmp_data == LLINT_MIN)
+            return (ft_strlen("LLINT_MIN"));
         if (tmp_data < 0)
 		{
             len++;
@@ -248,9 +252,9 @@ char *arg_list_get_makestr(t_arg *arg)
     i += ft_strcpy_int(ret + i, "=");
     if (arg->type == ARG_TYPE_STR)
         i += ft_strcpy_int(ret + i, (char *)arg->data);
-    else if (arg->type == ARG_TYPE_INT)
+    else if (arg->type == ARG_TYPE_LLINT)
     {
-        tmp_str = ft_itoa(*(int *)(arg->data));
+        tmp_str = ft_itoa(*(long long int *)(arg->data));
         i += ft_strcpy_int(ret + i, tmp_str);
         free(tmp_str);
     }
@@ -367,18 +371,18 @@ void    add_out(t_arg_main *arg_main, t_arg arg)
 int main()
 {
     t_arg_main arg_main;
-	int j[] = {12345, 0, -12345, 1, -1, INT_MAX, INT_MIN};
+	int j[] = {12345, 0, -12345, 1, -1, LLINT_MAX, LLINT_MIN};
     t_arg arg[] = {{"?", ARG_TYPE_STR, "abcde"},
                     {"arg1", ARG_TYPE_STR, "123"},
                     {"arg2", ARG_TYPE_STR, "456"},
                     {"arg3", ARG_TYPE_STR, "789"},
-                    {"arg4", ARG_TYPE_INT, &j[0]},
-					{"arg5", ARG_TYPE_INT, &j[1]},
-					{"arg6", ARG_TYPE_INT, &j[2]},
-					{"arg7", ARG_TYPE_INT, &j[3]},
-					{"arg8", ARG_TYPE_INT, &j[4]},
-					{"arg9", ARG_TYPE_INT, &j[5]},
-					{"arg10", ARG_TYPE_INT, &j[6]},
+                    {"arg4", ARG_TYPE_LLINT, &j[0]},
+					{"arg5", ARG_TYPE_LLINT, &j[1]},
+					{"arg6", ARG_TYPE_LLINT, &j[2]},
+					{"arg7", ARG_TYPE_LLINT, &j[3]},
+					{"arg8", ARG_TYPE_LLINT, &j[4]},
+					{"arg9", ARG_TYPE_LLINT, &j[5]},
+					{"arg10", ARG_TYPE_LLINT, &j[6]},
 					};
     int tmp;
     int i;
