@@ -207,7 +207,7 @@ int arg_charlen(t_arg *arg)
     long long int len;
     long long int tmp_data;
 
-    len = ft_strlen(arg->name) + 2;
+    len = ft_strlen(arg->name) + 1;
     if (arg->type == ARG_TYPE_STR)
         len += ft_strlen((char *)(arg->data));
     else if (arg->type == ARG_TYPE_LLINT)
