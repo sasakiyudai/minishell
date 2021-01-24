@@ -214,7 +214,7 @@ int arg_charlen(t_arg *arg)
     {
         tmp_data = (long long int)*((long long int *)(arg->data));
         if (tmp_data == LLONG_MIN)
-            return (ft_strlen(STR_LLONG_MIN));
+            return (len + ft_strlen(STR_LLONG_MIN));
         if (tmp_data < 0)
 		{
             len++;
