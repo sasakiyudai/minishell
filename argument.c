@@ -365,11 +365,12 @@ void    add_out(t_arg_main *arg_main, t_arg arg)
 int main()
 {
     t_arg_main arg_main;
+	int j = 12345;
     t_arg arg[] = {{"?", ARG_TYPE_STR, "abcde"},
                     {"arg1", ARG_TYPE_STR, "123"},
                     {"arg2", ARG_TYPE_STR, "456"},
                     {"arg3", ARG_TYPE_STR, "789"},
-                    {"arg4", ARG_TYPE_INT, 12345}};
+                    {"arg4", ARG_TYPE_INT, &j}};
     int tmp;
     int i;
 
@@ -381,7 +382,7 @@ int main()
         while (ss[++i])
             printf("%s\n", ss[i]);
         split_free_all(ss);
-        printf("==============\n")
+        printf("==============\n");
     }
 
     printf("==============\nadd arg1");{
@@ -396,38 +397,42 @@ int main()
 
     printf("==============\ndelete arg1\n");{
         arg_delete(&arg_main, "arg1");
+		ss = arg_list_get(&arg_main);
         i = -1;
         while (ss[++i])
             printf("%s\n", ss[i]);
         split_free_all(ss);
-        printf("==============\n")
+        printf("==============\n");
     }
 
     printf("==============\ndelete  bad arg name\n");{
         arg_delete(&arg_main, "bad name");
+		ss = arg_list_get(&arg_main);
         i = -1;
         while (ss[++i])
             printf("%s\n", ss[i]);
         split_free_all(ss);
-        printf("==============\n")
+        printf("==============\n");
     }
 
     printf("==============\ndelete arg2\n");{
         arg_delete(&arg_main, "arg2");
+		ss = arg_list_get(&arg_main);
         i = -1;
         while (ss[++i])
             printf("%s\n", ss[i]);
         split_free_all(ss);
-        printf("==============\n")
+        printf("==============\n");
     }
 
     printf("==============\ndelete ?\n");{
-        arg_delete(&arg_main, "?")
+        arg_delete(&arg_main, "?");
+		ss = arg_list_get(&arg_main);
         i = -1;
         while (ss[++i])
             printf("%s\n", ss[i]);
         split_free_all(ss);
-        printf("==============\n")
+        printf("==============\n");
     }
 
     printf("==============\nadd arg4");{
