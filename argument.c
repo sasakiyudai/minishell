@@ -26,7 +26,7 @@ typedef struct s_arg_main
 }               t_arg_main;
 
 
-void    arg_free(t_arg arg);
+void    arg_free(t_arg *arg);
 int    arg_copy(t_arg *dest, t_arg *src);
 int     arg_new(t_arg_main *arg_main, t_arg *src);
 int arg_add(t_arg_main *arg_main, t_arg *arg);
@@ -108,18 +108,20 @@ char *ft_itoa(int n)
         ret[--len] = '0' + tmp % 10;
         tmp /= 10;
     }
+    return (ret);
 }
 
 
 
-void    arg_free(t_arg arg)
+void    arg_free(t_arg *arg)
 {
-    free(arg.name);
-    if (arg.type == ARG_TYPE_STR)
-        free((char *)(arg.data));
-    free(arg.data);
-    arg.name = NULL;
-    arg.data = NULL;
+    free(arg->name);
+    if (arg->type == ARG_TYPE_STR)
+        free((char *)(arg->data));
+    else if (arg->type == ARG_TYPE_INT)
+        free(arg->data);
+    arg->name = NULL;
+    arg->data = NULL;
 }
 
 int    arg_copy(t_arg *dest, t_arg *src)
@@ -177,7 +179,7 @@ int arg_add(t_arg_main *arg_main, t_arg *arg)
 
     if ((tmp_arg_list = arg_isexist(arg_main, arg->name)))
     {
-        arg_free(tmp_arg_list->arg);
+        arg_free(&(tmp_arg_list->arg));
         return (arg_copy(&(tmp_arg_list->arg), arg));
     }
     return (arg_new(arg_main, arg));
@@ -256,7 +258,7 @@ char **arg_list_get(t_arg_main *arg_main)
     int arg_num;
 
     arg_num = arg_main->arg_num;
-    if (!(ret = (char **)malloc(sizeof (char *) * arg_num + 1)))
+    if (!(ret = (char **)malloc(sizeof (char *) * (arg_num + 1))))
         return (NULL);
     current = &(arg_main->head);
     i = -1;
@@ -282,7 +284,7 @@ t_arg_list    *_arg_delete_process(t_arg_list *arg_list, char *name)
     if (!ft_strcmp(arg_list->arg.name, name))
     {
         ret_arg_list = arg_list->next;
-        arg_free(arg_list->arg);
+        arg_free(&(arg_list->arg));
         free(arg_list);
         return (ret_arg_list);
     }
