@@ -453,7 +453,7 @@ int main()
 	k = -1;
 	while (++k < 7)
 	{
-    	printf("==============\nadd arg4\n");{
+    	printf("==============\nadd arg%d\n", k);{
         	add_out(&arg_main, arg[4 + k]);
     	    printf("==============\n");
 	    }
