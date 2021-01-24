@@ -212,7 +212,7 @@ int arg_add(t_arg_main *arg_main, t_arg *arg)
 void    _arg_list_ini_process(t_arg_list *arg_list)
 {
     while (arg_list->next)
-        arg_list_ini(arg_list->next);
+        _arg_list_ini_process(arg_list->next);
     arg_free(arg_list->arg);
     free(arg_list);
 }
@@ -221,7 +221,7 @@ int    arg_list_ini(t_arg_main *arg_main)
 {
     if (arg_main->head.next)
         _arg_list_ini_process(arg_main->head.next);
-    arg_free(arg_main->head);
+    arg_free(&(arg_main->head));
     return (arg_main_ini(arg_main));
 }
 
