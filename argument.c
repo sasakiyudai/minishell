@@ -185,13 +185,19 @@ int arg_add(t_arg_main *arg_main, t_arg *arg)
     return (arg_new(arg_main, arg));
 }
 
-void    arg_main_ini(t_arg_main *arg_main)
+int    arg_main_ini(t_arg_main *arg_main)
 {
     arg_main->arg_num = 1;
-    arg_main->head.arg.name = "?";
+    if (!(arg_main->head.arg.name = ft_strdup("?")))
+        return (-1);
     arg_main->head.arg.type = ARG_TYPE_STR;
-    arg_main->head.arg.data = "0";
+    if (!(arg_main->head.arg.data = ft_strdup("0")))
+    {
+        free(arg_main->head.arg.name);
+        return (-1);
+    }
     arg_main->head.next = NULL;
+    return (0);
 }
 
 int arg_charlen(t_arg *arg)
@@ -353,7 +359,8 @@ int main()
     int tmp;
     int i;
 
-    arg_main_ini(&arg_main);
+    if (arg_main_ini(&arg_main))
+        return (-1);
     char **ss = arg_list_get(&arg_main);
 	printf("\n\n%p\n", ss);
 	printf("-------\n");
