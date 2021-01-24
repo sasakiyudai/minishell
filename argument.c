@@ -35,7 +35,7 @@ int     arg_new(t_arg_main *arg_main, t_arg *src);
 int arg_add(t_arg_main *arg_main, t_arg *arg);
 int    arg_main_ini(t_arg_main *arg_main);
 int arg_charlen(t_arg *arg);
-int ft_strcpy_int(char *dest, char *src);
+int ft_strcat_int(char *dest, char *src);
 char *arg_list_get_makestr(t_arg *arg);
 char **arg_list_get(t_arg_main *arg_main);
 int    _arg_delete_process(t_arg_main *arg_main, t_arg_list *arg_list, char *name, t_arg_list **ret);
@@ -58,6 +58,28 @@ int ft_strlen(char *s)
     return (ret);
 }
 
+char    *ft_strcat(char *dest, char *src)
+{
+    int i;
+
+    i = -1;
+    while (src[++i])
+        dest[i] = src[i];
+    dest[i] = '\0';
+    return (dest);
+}
+
+int ft_strcat_int(char *dest, char *src)
+{
+    int i;
+
+    i = -1;
+    while (src[++i])
+        dest[i] = src[i];
+    dest[i] = '\0';
+    return (i);
+}
+
 char *ft_strdup(char *s)
 {
     char *ret;
@@ -65,11 +87,7 @@ char *ft_strdup(char *s)
 
     if (!(ret = (char *)malloc(ft_strlen(s) + 1)))
         return (NULL);
-    i = -1;
-    while (s[++i])
-        ret[i] = s[i];
-    ret[i] = '\0';
-    return (ret);
+    return (ft_strcat(ret, s));
 }
 
 int ft_strcmp(char *s1, char *s2)
@@ -85,30 +103,34 @@ int ft_strcmp(char *s1, char *s2)
     return (!!s2[i]);
 }
 
-char *ft_itoa(long long int n)
+
+
+int    ft_itoa(long long int n, char *dest)
 {
     int len;
+    int ret;
     long long int tmp;
-    char *ret;
 
     if (n == LLONG_MIN)
-        return (ft_strdup(STR_LLONG_MIN));
+    {
+        ft_strcat(dest, STR_LLONG_MIN);
+        return (ft_strlen(STR_LLONG_MIN));
+    }
     len = n < 0 ? 3 : 2;
     if (n < 0)
         n *= -1;
     tmp = n;
     while ((n /= 10))
         len++;
-    if (!(ret = (char *)malloc(len)))
-        return (NULL);
-    ret[--len] = '\0';
+    dest[--len] = '\0';
+    ret = len;
     if (!tmp)
-        ret[0] = '0';
+        dest[0] = '0';
     if (tmp < 0)
-        ret[0] = '-';
+        dest[0] = '-';
     while (tmp)
     {
-        ret[--len] = '0' + tmp % 10;
+        dest[--len] = '0' + tmp % 10;
         tmp /= 10;
     }
     return (ret);
@@ -229,16 +251,6 @@ int arg_charlen(t_arg *arg)
     return (len);
 }
 
-int ft_strcpy_int(char *dest, char *src)
-{
-    int i;
-
-    i = -1;
-    while (src[++i])
-        dest[i] = src[i];
-    dest[i] = '\0';
-    return (i);
-}
 
 char *arg_list_get_makestr(t_arg *arg)
 {
@@ -249,14 +261,13 @@ char *arg_list_get_makestr(t_arg *arg)
 
     if (!(ret = (char *)malloc(arg_charlen(arg) + 1)))
         return (NULL);
-    i = ft_strcpy_int(ret, arg->name);
-    i += ft_strcpy_int(ret + i, "=");
+    i = ft_strcat_int(ret, arg->name);
+    i += ft_strcat_int(ret + i, "=");
     if (arg->type == ARG_TYPE_STR)
-        i += ft_strcpy_int(ret + i, (char *)arg->data);
+        i += ft_strcat_int(ret + i, (char *)arg->data);
     else if (arg->type == ARG_TYPE_LLINT)
     {
-        tmp_str = ft_itoa(*(long long int *)(arg->data));
-        i += ft_strcpy_int(ret + i, tmp_str);
+        i += ft_itoa(*(long long int *)(arg->data), ret + i);
         free(tmp_str);
     }
     return (ret);   
