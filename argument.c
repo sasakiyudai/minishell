@@ -4,8 +4,10 @@
 
 #define ARG_TYPE_STR 0
 #define ARG_TYPE_LLINT 1
-#define LLINT_MIN -9223372036854775808
-#define LLINT_MAX 9223372036854775807
+#define STR_LLINT_MIN "-9223372036854775808"
+#define STR_LLINT_MAX "9223372036854775807"
+#define LLINT_MIN (long long int)-9223372036854775808
+#define LLINT_MAX (long long int)9223372036854775807
 
 typedef struct s_arg
 {
@@ -91,7 +93,7 @@ char *ft_itoa(long long int n)
     char *ret;
 
     if (n == LLINT_MIN)
-        return (ft_strdup("LLINT_MIN"));
+        return (ft_strdup(STR_LLINT_MIN));
     len = n < 0 ? 3 : 2;
     if (n < 0)
         n *= -1;
@@ -213,7 +215,7 @@ int arg_charlen(t_arg *arg)
     {
         tmp_data = (long long int)*((long long int *)(arg->data));
         if (tmp_data == LLINT_MIN)
-            return (ft_strlen("LLINT_MIN"));
+            return (ft_strlen(STR_LLINT_MIN));
         if (tmp_data < 0)
 		{
             len++;
@@ -371,7 +373,7 @@ void    add_out(t_arg_main *arg_main, t_arg arg)
 int main()
 {
     t_arg_main arg_main;
-	int j[] = {12345, 0, -12345, 1, -1, LLINT_MAX, LLINT_MIN};
+	long long int j[] = {12345, 0, -12345, 1, -1, LLINT_MAX, LLINT_MIN};
     t_arg arg[] = {{"?", ARG_TYPE_STR, "abcde"},
                     {"arg1", ARG_TYPE_STR, "123"},
                     {"arg2", ARG_TYPE_STR, "456"},
