@@ -84,12 +84,13 @@ main(int argc, char *argv[])
 	char *rev[] = {"rev", NULL};
 	char *nl[] = {"nl", NULL};
 	char *cat[] = {"cat", NULL};
-	char *wc[] = {"wc", "-c", NULL};
+
 	char *head[] = {"head", "-c", "1000", NULL};
 	char *time[] = {"time", "-p", "sleep", "3", NULL};
 	char *echo[] = {"echo", "toto", NULL};
+	char *wc[] = {"wc", NULL};
 
-	char **cmd[] = {cat, ls, cat, NULL};
+	char **cmd[] = {wc, ls, NULL};
 
 	pipeline(cmd);
 	return (0);
