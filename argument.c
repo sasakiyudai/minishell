@@ -156,6 +156,7 @@ int     arg_new(t_arg_main *arg_main, t_arg *src)
     if (arg_main->arg_num == INT_MAX)
         return (-10);
     tmp_arg_list = arg_main->head.next;
+    printf("\nbb:%p\n", tmp_arg_list);
     if (!(arg_main->head.next = (t_arg_list *)malloc(sizeof(t_arg_list))))
     {
         arg_main->head.next = tmp_arg_list;
@@ -168,7 +169,7 @@ int     arg_new(t_arg_main *arg_main, t_arg *src)
         return (-1);
     }
     arg_main->arg_num++;
-    printf("\naa:%p\n", tmp_arg_list);
+    printf("aa:%p\n", tmp_arg_list);
     arg_main->head.next->next = tmp_arg_list;
     return (0);
 }
@@ -283,6 +284,16 @@ char **arg_list_get(t_arg_main *arg_main)
     return (ret);
 }
 
+void    split_free_all(char **ss)
+{
+    int i;
+
+    i = -1;
+    while (ss[++i])
+        free(ss[i]);
+    free(ss);
+}
+
 t_arg_list    *_arg_delete_process(t_arg_main *arg_main, t_arg_list *arg_list, char *name)
 {
     t_arg_list *ret_arg_list;
@@ -349,7 +360,7 @@ void    add_out(t_arg_main arg_main, t_arg arg)
     i = -1;
 	while (ss[++i])
 		printf("%s\n", ss[i]);
-    free(ss);
+    split_free_all(ss);
 }
 
 
@@ -368,7 +379,7 @@ int main()
     i = -1;
 	while (ss[++i])
 		printf("%s\n", ss[i]);
-    free(ss);
+    split_free_all(ss);
     arg.name = "?";
     arg.type = ARG_TYPE_STR;
     arg.data = "abcde";
