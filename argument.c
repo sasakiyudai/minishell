@@ -43,7 +43,7 @@ void    arg_delete(t_arg_main *arg_main, char *name);
 t_arg_list   *_arg_isexist_process(t_arg_list *arg_list, char *name);
 t_arg_list   *arg_isexist(t_arg_main *arg_main, char *name);
 int     arg_get(t_arg_main *arg_main, t_arg *arg, char *name);
-void    arg_list_ini(t_arg_main *arg_main);
+int    arg_list_ini(t_arg_main *arg_main);
 void    _arg_list_ini_process(t_arg_list *arg_list);
 
 
@@ -213,7 +213,7 @@ void    _arg_list_ini_process(t_arg_list *arg_list)
 {
     while (arg_list->next)
         _arg_list_ini_process(arg_list->next);
-    arg_free(arg_list->arg);
+    arg_free(&(arg_list->arg));
     free(arg_list);
 }
 
@@ -221,7 +221,7 @@ int    arg_list_ini(t_arg_main *arg_main)
 {
     if (arg_main->head.next)
         _arg_list_ini_process(arg_main->head.next);
-    arg_free(&(arg_main->head));
+    arg_free(&(arg_main->head.arg));
     return (arg_main_ini(arg_main));
 }
 
