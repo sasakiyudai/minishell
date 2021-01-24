@@ -245,7 +245,7 @@ int arg_charlen(t_arg *arg)
     long long int len;
     long long int tmp_data;
 
-    len = ft_strlen(arg->name) + 1;
+    len = ft_strlen(arg->name) + 3;
     if (arg->type == ARG_TYPE_STR)
         len += ft_strlen((char *)(arg->data));
     else if (arg->type == ARG_TYPE_LLINT)
@@ -279,11 +279,12 @@ char *arg_to_str(t_arg *arg)
     if (!(ret = (char *)malloc(arg_charlen(arg) + 1)))
         return (NULL);
     i = ft_strcat_int(ret, arg->name);
-    i += ft_strcat_int(ret + i, "=");
+    i += ft_strcat_int(ret + i, "=\"");
     if (arg->type == ARG_TYPE_STR)
         i += ft_strcat_int(ret + i, (char *)arg->data);
     else if (arg->type == ARG_TYPE_LLINT)
         i += ft_itoa(*(long long int *)(arg->data), ret + i);
+    i += ft_strcat_int(ret + i, "\"");
     return (ret);   
 }
 
