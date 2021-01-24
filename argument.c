@@ -43,6 +43,8 @@ void    arg_delete(t_arg_main *arg_main, char *name);
 t_arg_list   *_arg_isexist_process(t_arg_list *arg_list, char *name);
 t_arg_list   *arg_isexist(t_arg_main *arg_main, char *name);
 int     arg_get(t_arg_main *arg_main, t_arg *arg, char *name);
+void    arg_list_ini(t_arg_main *arg_main);
+void    _arg_list_ini_process(t_arg_list *arg_list);
 
 
 int ft_strlen(char *s)
@@ -207,6 +209,22 @@ int arg_add(t_arg_main *arg_main, t_arg *arg)
         return (arg_copy(&(tmp_arg_list->arg), arg));
     }
     return (arg_new(arg_main, arg));
+}
+
+void    _arg_list_ini_process(t_arg_list *arg_list)
+{
+    while (arg_list->next)
+        arg_list_ini(arg_list->next);
+    arg_free(arg_list->arg);
+    free(arg_list);
+}
+
+int    arg_list_ini(t_arg_main *arg_main)
+{
+    if (arg_main->head.next)
+        _arg_list_ini_process(arg_main->head.next);
+    arg_free(arg_main->head);
+    return (arg_main_ini(arg_main));
 }
 
 int    arg_main_ini(t_arg_main *arg_main)

@@ -4,6 +4,8 @@ utils
 
 	void	_bcopy(void *destvoid     _bcopy(void *dest, void *src, int size)
 
+	void    split_free_all(char **ss)	文字列配列のfree
+
 read_command.c
 
 	char	*read_all(int fd)	fdから読みとってmallocしたやつに格納。失敗したらNULLを返す。要free
@@ -34,15 +36,25 @@ argument.c
 		char *name;
 		int type;
 		void *data;
-	}               t_arg;		//変数そのもの
+	}               t_arg;		変数そのもの
 
 	typedef struct s_arg_list
 	{
-		t_arg   args[ARG_SIZE];
-		int     arg_num;			//argsの中にある有効な変数のインデックスの最大値
-		s_arg_list  *next;
-	}               t_arg_list;		//変数を線形リストで管理
+		t_arg   arg;
+		struct s_arg_list  *next;
+	}               t_arg_list;		線形リストで管理
 
-	int     arg_free(t_arg *arg)	変数のfree 戻り値は0
-	int     arg_add(t_arg *arg, t_arg_list *arg_list)	変数の追加　成功:0　失敗:-1
-	int     arg_delete(t_arg *arg, t_arg_list *arg_list)　変数の消去 成功:0　失敗:-1
+
+	typedef struct s_arg_main
+	{
+		t_arg_list  head;
+		int arg_num;
+	}               t_arg_main;		基本これだけ保持しとけばOK
+
+	
+	int		arg_main_ini(t_arg_main *arg_main)	プログラムの初めに一度だけ呼ぶ
+	int		arg_add(t_arg_main *arg_main, t_arg *arg)リストへの変数の追加　成功:0　失敗:-1
+	void	arg_delete(t_arg *arg, t_arg_list *arg_list)　リストから変数の消去　&  変数のfree 存在しない場合は何もしない
+	void	arg_list_ini(t_arg_main *arg_main)	リストをリセット（$?もリセット）
+	int     arg_get(t_arg_main *arg_main, t_arg *arg, char *name)	nameという名前の変数が存在する場合*argに格納	戻り値　格納:0  存在しない:1　失敗:-1
+	
