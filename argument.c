@@ -283,7 +283,7 @@ char **arg_list_get(t_arg_main *arg_main)
     return (ret);
 }
 
-t_arg_list    *_arg_delete_process(t_arg_list *arg_list, char *name)
+t_arg_list    *_arg_delete_process(t_arg_main *arg_main, t_arg_list *arg_list, char *name)
 {
     t_arg_list *ret_arg_list;
 
@@ -292,6 +292,7 @@ t_arg_list    *_arg_delete_process(t_arg_list *arg_list, char *name)
         ret_arg_list = arg_list->next;
         arg_free(&(arg_list->arg));
         free(arg_list);
+        arg_main->arg_num--;
         return (ret_arg_list);
     }
     else if (arg_list->next)
@@ -304,7 +305,7 @@ void    arg_delete(t_arg_main *arg_main, char *name)
 {
     t_arg_list  *tmp;
 
-    if (!(tmp = _arg_delete_process(&(arg_main->head), name)))
+    if (!(tmp = _arg_delete_process(arg_main, &(arg_main->head), name)))
         arg_main->head.next = tmp;
 }
 
