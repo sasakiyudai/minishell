@@ -54,7 +54,7 @@ argument.c		変数を取り扱うための関数
 
 	
 	int		arg_main_ini(t_arg_main *arg_main)				プログラムの初めに一度だけ呼ぶ
-	void	arg_list_ini(t_arg_main *arg_main)				リストをリセット（$?もリセット）
+	int	arg_list_ini(t_arg_main *arg_main)				リストをリセット（$?もリセット）
 
 	int		arg_add(t_arg_main *arg_main, t_arg *arg)		リストへの変数の追加　成功:0　失敗:-1
 	void	arg_delete(t_arg *arg, t_arg_list *arg_list)	リストから変数の消去　&  変数のfree 存在しない場合は何もしない
