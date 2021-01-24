@@ -35,7 +35,7 @@ int arg_charlen(t_arg *arg);
 int ft_strcpy_int(char *dest, char *src);
 char *arg_list_get_makestr(t_arg *arg);
 char **arg_list_get(t_arg_main *arg_main);
-t_arg_list    *_arg_delete_process(t_arg_main *arg_main, t_arg_list *arg_list, char *name);
+int    _arg_delete_process(t_arg_main *arg_main, t_arg_list *arg_list, char *name, t_arg_list **ret);
 void    arg_delete(t_arg_main *arg_main, char *name);
 t_arg_list   *_arg_isexist_process(t_arg_list *arg_list, char *name);
 t_arg_list   *arg_isexist(t_arg_main *arg_main, char *name);
@@ -91,9 +91,9 @@ char *ft_itoa(int n)
     if (n == INT_MIN)
         return (ft_strdup("-2147483648"));
     len = n < 0 ? 3 : 2;
-    tmp = n;
     if (n < 0)
         n *= -1;
+    tmp = n;
     while ((n /= 10))
         len++;
     if (!(ret = (char *)malloc(len)))
@@ -211,7 +211,10 @@ int arg_charlen(t_arg *arg)
     {
         tmp_data = (long long int)*((int *)(arg->data));
         if (tmp_data < 0)
+		{
             len++;
+			tmp_data *= -1;
+		}
         len++;
         while (tmp_data /= 10)
             len++;
@@ -292,30 +295,31 @@ void    split_free_all(char **ss)
     free(ss);
 }
 
-t_arg_list    *_arg_delete_process(t_arg_main *arg_main, t_arg_list *arg_list, char *name)
+int	_arg_delete_process(t_arg_main *arg_main, t_arg_list *arg_list, char *name, t_arg_list **ret)
 {
     t_arg_list *ret_arg_list;
 
     if (!ft_strcmp(arg_list->arg.name, name))
     {
-        ret_arg_list = arg_list->next;
+        *ret = arg_list->next;
         arg_free(&(arg_list->arg));
         free(arg_list);
         arg_main->arg_num--;
-        return (ret_arg_list);
+        return (1);
     }
     else if (arg_list->next)
-        if ((ret_arg_list = _arg_delete_process(arg_main, arg_list->next, name)))
+        if (_arg_delete_process(arg_main, arg_list->next, name, &ret_arg_list))
             arg_list->next = ret_arg_list;
-    return (NULL);
+    return (0);
 }
 
 void    arg_delete(t_arg_main *arg_main, char *name)
 {
     t_arg_list  *tmp;
 
-    if ((tmp = _arg_delete_process(arg_main, &(arg_main->head), name)))
-        arg_main->head.next = tmp;
+	if (arg_main->head.next)
+	    if (_arg_delete_process(arg_main, &(arg_main->head), name, &tmp))
+    	    arg_main->head.next = tmp;
 }
 
 t_arg_list   *_arg_isexist_process(t_arg_list *arg_list, char *name)
@@ -353,8 +357,6 @@ void    add_out(t_arg_main *arg_main, t_arg arg)
     arg_add(arg_main, &arg);
     ss=arg_list_get(arg_main);
 
-	printf("\n\n%p\n", ss);
-	printf("-------\n");
     i = -1;
 	while (ss[++i])
 		printf("%s\n", ss[i]);
@@ -365,12 +367,19 @@ void    add_out(t_arg_main *arg_main, t_arg arg)
 int main()
 {
     t_arg_main arg_main;
-	int j = 12345;
+	int j[] = {12345, 0, -12345, 1, -1, INT_MAX, INT_MIN};
     t_arg arg[] = {{"?", ARG_TYPE_STR, "abcde"},
                     {"arg1", ARG_TYPE_STR, "123"},
                     {"arg2", ARG_TYPE_STR, "456"},
                     {"arg3", ARG_TYPE_STR, "789"},
-                    {"arg4", ARG_TYPE_INT, &j}};
+                    {"arg4", ARG_TYPE_INT, &j[0]},
+					{"arg5", ARG_TYPE_INT, &j[1]},
+					{"arg6", ARG_TYPE_INT, &j[2]},
+					{"arg7", ARG_TYPE_INT, &j[3]},
+					{"arg8", ARG_TYPE_INT, &j[4]},
+					{"arg9", ARG_TYPE_INT, &j[5]},
+					{"arg10", ARG_TYPE_INT, &j[6]},
+					};
     int tmp;
     int i;
 
@@ -385,12 +394,12 @@ int main()
         printf("==============\n");
     }
 
-    printf("==============\nadd arg1");{
+    printf("==============\nadd arg1\n");{
         add_out(&arg_main, arg[1]);
         printf("==============\n");
     }
 
-    printf("==============\nadd arg2");{
+    printf("==============\nadd arg2\n");{
         add_out(&arg_main, arg[2]);
         printf("==============\n");
     }
@@ -435,9 +444,13 @@ int main()
         printf("==============\n");
     }
 
-    printf("==============\nadd arg4");{
-        add_out(&arg_main, arg[4]);
-        printf("==============\n");
-    }
-
+	int k;
+	k = -1;
+	while (++k < 7)
+	{
+    	printf("==============\nadd arg4\n");{
+        	add_out(&arg_main, arg[4 + k]);
+    	    printf("==============\n");
+	    }
+	}
 }
