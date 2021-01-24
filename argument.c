@@ -30,7 +30,7 @@ void    arg_free(t_arg *arg);
 int    arg_copy(t_arg *dest, t_arg *src);
 int     arg_new(t_arg_main *arg_main, t_arg *src);
 int arg_add(t_arg_main *arg_main, t_arg *arg);
-void    arg_main_ini(t_arg_main *arg_main);
+int    arg_main_ini(t_arg_main *arg_main);
 int arg_charlen(t_arg *arg);
 int ft_strcpy_int(char *dest, char *src);
 char *arg_list_get_makestr(t_arg *arg);
@@ -338,16 +338,16 @@ int     arg_get(t_arg_main *arg_main, t_arg *arg, char *name)
 void    add_out(t_arg_main arg_main, t_arg arg)
 {
     char **ss;
+    int i;
+
     arg_add(&arg_main, &arg);
     ss=arg_list_get(&arg_main);
 
 	printf("\n\n%p\n", ss);
 	printf("-------\n");
-	while (*ss)
-	{
-		printf("%s\n", *ss);
-		ss++;
-	}
+    i = -1;
+	while (ss[++i])
+		printf("%s\n", ss[i]);
     free(ss);
 }
 
