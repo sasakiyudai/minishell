@@ -351,16 +351,15 @@ int main()
     t_arg_main arg_main;
     t_arg arg;
     int tmp;
+    int i;
 
     arg_main_ini(&arg_main);
     char **ss = arg_list_get(&arg_main);
 	printf("\n\n%p\n", ss);
 	printf("-------\n");
-	while (*ss)
-	{
-		printf("%s\n", *ss);
-		ss++;
-	}
+    i = -1;
+	while (ss[++i])
+		printf("%s\n", ss[i]);
     free(ss);
     arg.name = "?";
     arg.type = ARG_TYPE_STR;
