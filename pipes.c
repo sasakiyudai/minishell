@@ -94,4 +94,3 @@ main(int argc, char *argv[])
 	pipeline(cmd);
 	return (0);
 }
-
