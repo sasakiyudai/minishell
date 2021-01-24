@@ -406,6 +406,16 @@ int main()
         printf("==============\n");
     }
 
+    printf("==============\ndelete  bad arg name\n");{
+        arg_delete(&arg_main, "bad name");
+		ss = arg_list_get(&arg_main);
+        i = -1;
+        while (ss[++i])
+            printf("%s\n", ss[i]);
+        split_free_all(ss);
+        printf("==============\n");
+    }
+
     printf("==============\nadd arg1\n");{
         add_out(&arg_main, arg[1]);
         printf("==============\n");
