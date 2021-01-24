@@ -365,50 +365,74 @@ void    add_out(t_arg_main *arg_main, t_arg arg)
 int main()
 {
     t_arg_main arg_main;
-    t_arg arg;
+    t_arg arg[] = {{"?", ARG_TYPE_STR, "abcde"},
+                    {"arg1", ARG_TYPE_STR, "123"},
+                    {"arg2", ARG_TYPE_STR, "456"},
+                    {"arg3", ARG_TYPE_STR, "789"},
+                    {"arg4", ARG_TYPE_INT, 12345}};
     int tmp;
     int i;
 
     if (arg_main_ini(&arg_main))
         return (-1);
     char **ss = arg_list_get(&arg_main);
-	printf("\n\n%p\n", ss);
-	printf("-------\n");
-    i = -1;
-	while (ss[++i])
-		printf("%s\n", ss[i]);
-    split_free_all(ss);
-    arg.name = "?";
-    arg.type = ARG_TYPE_STR;
-    arg.data = "abcde";
-    add_out(&arg_main, arg);
-    arg.name = "arg2";
-    arg.type = ARG_TYPE_STR;
-    tmp = 123;
-    arg.data = "123";
-    add_out(&arg_main, arg);
+    printf("==============\nprint  ini\n");{
+        i = -1;
+        while (ss[++i])
+            printf("%s\n", ss[i]);
+        split_free_all(ss);
+        printf("==============\n")
+    }
 
-	arg.name = "arg3";
-	arg.data = "456";
-	add_out(&arg_main, arg);
-	printf("=====\n");
+    printf("==============\nadd arg1");{
+        add_out(&arg_main, arg[1]);
+        printf("==============\n");
+    }
 
-	arg_delete(&arg_main, "badarg");
-	printf("arg_num:%d\n", arg_main.arg_num);
-	ss = arg_list_get(&arg_main);
-    i = -1;
-	while (ss[++i])
-		printf("%s\n", ss[i]);
-    split_free_all(ss);
-	printf("=====\n");
+    printf("==============\nadd arg2");{
+        add_out(&arg_main, arg[2]);
+        printf("==============\n");
+    }
 
-	arg_delete(&arg_main, "arg3");
-	ss = arg_list_get(&arg_main);
-    i = -1;
-	while (ss[++i])
-		printf("%s\n", ss[i]);
-    split_free_all(ss);
-			
-    printf("%d", arg_get(&arg_main, &arg, "?"));
-    printf("%s", (char *)(arg.data));
+    printf("==============\ndelete arg1\n");{
+        arg_delete(&arg_main, "arg1");
+        i = -1;
+        while (ss[++i])
+            printf("%s\n", ss[i]);
+        split_free_all(ss);
+        printf("==============\n")
+    }
+
+    printf("==============\ndelete  bad arg name\n");{
+        arg_delete(&arg_main, "bad name");
+        i = -1;
+        while (ss[++i])
+            printf("%s\n", ss[i]);
+        split_free_all(ss);
+        printf("==============\n")
+    }
+
+    printf("==============\ndelete arg2\n");{
+        arg_delete(&arg_main, "arg2");
+        i = -1;
+        while (ss[++i])
+            printf("%s\n", ss[i]);
+        split_free_all(ss);
+        printf("==============\n")
+    }
+
+    printf("==============\ndelete ?\n");{
+        arg_delete(&arg_main, "?")
+        i = -1;
+        while (ss[++i])
+            printf("%s\n", ss[i]);
+        split_free_all(ss);
+        printf("==============\n")
+    }
+
+    printf("==============\nadd arg4");{
+        add_out(&arg_main, arg[4]);
+        printf("==============\n");
+    }
+
 }
