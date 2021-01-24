@@ -116,6 +116,10 @@ int    ft_itoa(long long int n, char *dest)
         ft_strcat(dest, STR_LLONG_MIN);
         return (ft_strlen(STR_LLONG_MIN));
     }
+    if (!n)
+        dest[0] = '0';
+    if (n < 0)
+        dest[0] = '-';
     len = n < 0 ? 3 : 2;
     if (n < 0)
         n *= -1;
@@ -124,10 +128,6 @@ int    ft_itoa(long long int n, char *dest)
         len++;
     dest[--len] = '\0';
     ret = len;
-    if (!tmp)
-        dest[0] = '0';
-    if (tmp < 0)
-        dest[0] = '-';
     while (tmp)
     {
         dest[--len] = '0' + tmp % 10;
