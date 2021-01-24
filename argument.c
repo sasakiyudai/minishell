@@ -35,7 +35,7 @@ int arg_charlen(t_arg *arg);
 int ft_strcpy_int(char *dest, char *src);
 char *arg_list_get_makestr(t_arg *arg);
 char **arg_list_get(t_arg_main *arg_main);
-t_arg_list    *_arg_delete_process(t_arg_list *arg_list, char *name);
+t_arg_list    *_arg_delete_process(t_arg_main *arg_main, t_arg_list *arg_list, char *name);
 void    arg_delete(t_arg_main *arg_main, char *name);
 t_arg_list   *_arg_isexist_process(t_arg_list *arg_list, char *name);
 t_arg_list   *arg_isexist(t_arg_main *arg_main, char *name);
@@ -156,7 +156,6 @@ int     arg_new(t_arg_main *arg_main, t_arg *src)
     if (arg_main->arg_num == INT_MAX)
         return (-10);
     tmp_arg_list = arg_main->head.next;
-    printf("\nbb:%p\n", tmp_arg_list);
     if (!(arg_main->head.next = (t_arg_list *)malloc(sizeof(t_arg_list))))
     {
         arg_main->head.next = tmp_arg_list;
@@ -169,7 +168,6 @@ int     arg_new(t_arg_main *arg_main, t_arg *src)
         return (-1);
     }
     arg_main->arg_num++;
-    printf("aa:%p\n", tmp_arg_list);
     arg_main->head.next->next = tmp_arg_list;
     return (0);
 }
@@ -307,7 +305,7 @@ t_arg_list    *_arg_delete_process(t_arg_main *arg_main, t_arg_list *arg_list, c
         return (ret_arg_list);
     }
     else if (arg_list->next)
-        if (!(ret_arg_list = _arg_delete_process(arg_list->next, name)))
+        if ((ret_arg_list = _arg_delete_process(arg_main, arg_list->next, name)))
             arg_list->next = ret_arg_list;
     return (NULL);
 }
@@ -316,7 +314,7 @@ void    arg_delete(t_arg_main *arg_main, char *name)
 {
     t_arg_list  *tmp;
 
-    if (!(tmp = _arg_delete_process(arg_main, &(arg_main->head), name)))
+    if ((tmp = _arg_delete_process(arg_main, &(arg_main->head), name)))
         arg_main->head.next = tmp;
 }
 
@@ -347,13 +345,13 @@ int     arg_get(t_arg_main *arg_main, t_arg *arg, char *name)
     return (0);
 }
 
-void    add_out(t_arg_main arg_main, t_arg arg)
+void    add_out(t_arg_main *arg_main, t_arg arg)
 {
     char **ss;
     int i;
 
-    arg_add(&arg_main, &arg);
-    ss=arg_list_get(&arg_main);
+    arg_add(arg_main, &arg);
+    ss=arg_list_get(arg_main);
 
 	printf("\n\n%p\n", ss);
 	printf("-------\n");
@@ -383,13 +381,34 @@ int main()
     arg.name = "?";
     arg.type = ARG_TYPE_STR;
     arg.data = "abcde";
-    add_out(arg_main, arg);
+    add_out(&arg_main, arg);
     arg.name = "arg2";
     arg.type = ARG_TYPE_STR;
     tmp = 123;
     arg.data = "123";
-    add_out(arg_main, arg);
+    add_out(&arg_main, arg);
 
+	arg.name = "arg3";
+	arg.data = "456";
+	add_out(&arg_main, arg);
+	printf("=====\n");
+
+	arg_delete(&arg_main, "badarg");
+	printf("arg_num:%d\n", arg_main.arg_num);
+	ss = arg_list_get(&arg_main);
+    i = -1;
+	while (ss[++i])
+		printf("%s\n", ss[i]);
+    split_free_all(ss);
+	printf("=====\n");
+
+	arg_delete(&arg_main, "arg3");
+	ss = arg_list_get(&arg_main);
+    i = -1;
+	while (ss[++i])
+		printf("%s\n", ss[i]);
+    split_free_all(ss);
+			
     printf("%d", arg_get(&arg_main, &arg, "?"));
     printf("%s", (char *)(arg.data));
 }
