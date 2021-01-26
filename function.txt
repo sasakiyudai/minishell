@@ -46,3 +46,11 @@ argument.c
 	int     arg_free(t_arg *arg)	変数のfree 戻り値は0
 	int     arg_add(t_arg *arg, t_arg_list *arg_list)	変数の追加　成功:0　失敗:-1
 	int     arg_delete(t_arg *arg, t_arg_list *arg_list)　変数の消去 成功:0　失敗:-1
+
+char *separate_redirect(char *command);    | で区切ったレベルのコマンド群（文字列）からレダイレクトの前後をスペースを一つ以上追加してくれる関数
+
+void pipeline(char ***cmd, char ***raw_cmd);
+ cmdはstr_Bの文字列配列(整形後)の配列、 raw_cmdはstr_A（つまりはリダイレクトやfilenameを残したままの文字列配列）の配列
+　リダイレクトおよびパイプの影響をしっかり受けて実行する関数
+
+//　todo ・パイプで区切られて渡された文字列の文法チェックの関数　・str_Aからstr_Bを作る関数
