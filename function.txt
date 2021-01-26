@@ -27,6 +27,20 @@ export.c (未完)
 	export->　コマンドライン引数を　export　の引数と仮定して書いていて、コードとして書いたのは引数なしの時だけ（表示内容に自信なし）
 
 
+child_process.c
+	typedef struct s_cmd
+	{
+		char *name;
+		int (*func)(char **);
+	}               t_cmd;		//実際にはこれの配列を使う（最後の要素のnameはNULL）
+
+	int isbuiltin(char *name, t_cmd cmd[], int (**ret)(char **))	nameというビルトイン関数がある場合retに関数ポインタを代入	戻り値：ビルトインのとき1、違ければ0
+
+	int get_path(t_arg *arg_main, char **ret, char *name)		環境変数PATHにnameというファイルがあればretに名前を含むパスを代入	戻り値：存在したら0 しなければ1　失敗で-1
+
+
+
+
 argument.c		変数を取り扱うための関数
 
 	#define ARG_TYPE_STR 0
@@ -58,6 +72,7 @@ argument.c		変数を取り扱うための関数
 
 	int		arg_add(t_arg_main *arg_main, t_arg *arg)		リストへの変数の追加　成功:0　失敗:-1
 	void	arg_delete(t_arg *arg, t_arg_list *arg_list)	リストから変数の消去　&  変数のfree 存在しない場合は何もしない
-	
+	void    arg_free(t_arg *arg);
 	int     arg_get(t_arg_main *arg_main, t_arg *arg, char *name)	nameという名前の変数が存在する場合*argに格納	戻り値　格納:0  存在しない:1　失敗:-1
 	char	*arg_to_str(t_arg *arg)							argからname="data"の文字列を作成　戻り値：文字列　失敗またはargがNULLでNULLを返す
+
