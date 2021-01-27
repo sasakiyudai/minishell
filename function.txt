@@ -39,6 +39,16 @@ child_process.c
 	int get_path(t_arg *arg_main, char **ret, char *name)		環境変数PATHにnameというファイルがあればretに名前を含むパスを代入	戻り値：存在したら0 しなければ1　失敗で-1
 
 
+char *separate_redirect(char *command);    | で区切ったレベルのコマンド群（文字列）からレダイレクトの前後をスペースを一つ以上追加してくれる関数
+
+void pipeline(char ***cmd, char ***raw_cmd);
+ cmdはstr_Bの文字列配列(整形後)の配列、 raw_cmdはstr_A（つまりはリダイレクトやfilenameを残したままの文字列配列）の配列
+　リダイレクトおよびパイプの影響をしっかり受けて実行する関数
+
+//　todo ・パイプで区切られて渡された文字列の文法チェックの関数　・str_Aからstr_Bを作る関数
+
+char **make_strb(char **str_a);
+ str_aからstr_bを作ってstr_bを返す関数
 
 
 argument.c		変数を取り扱うための関数

@@ -1,10 +1,20 @@
-//#include "libft.h"
+#include "libft.h"
 //
 //char *get_path(t_arg *args, char *command);
 //void pipeline(char ***cmd, t_arg *args);
 //char *cmd_join(char *s1, char *s2);
 //char *search_dir(char *path, char *command);
 //
+size_t	ft_strlen(const char *s)
+{
+	size_t len;
+
+	len = 0;
+	while (s[len])
+		len++;
+	return (len);
+}
+
 int	ft_strcmp(char *s1, char *s2)
 {
 	int i;
@@ -18,6 +28,78 @@ int	ft_strcmp(char *s1, char *s2)
 	}
 	return (s1[i] > s2[i] ? 1 : -1);
 }
+
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	unsigned int	i;
+	char			*p;
+
+	if (!(p = (char *)malloc(sizeof(char) * (len + 1))))
+		return (NULL);
+	i = 0;
+	if (ft_strlen(s) <= start)
+	{
+		p[i] = 0;
+		return (p);
+	}
+	while (i < len)
+	{
+		p[i] = s[start + i];
+		i++;
+	}
+	p[i] = '\0';
+	return (p);
+}
+
+static int	ft_count(char const *s, char c)
+{
+	int word;
+	int len;
+
+	word = 0;
+	len = 0;
+	while (*s)
+	{
+		if (*s == c)
+		{
+			if (len > 0)
+				word++;
+			len = 0;
+		}
+		else
+			len++;
+		s++;
+	}
+	if (len > 0)
+		word++;
+	return (word);
+}
+
+char		**ft_split(char const *s, char c)
+{
+	char	**p;
+	int		cnt;
+	int		i;
+	int		j;
+
+	if (!(p = malloc(sizeof(char*) * (ft_count(s, c) + 1))))
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (s[j])
+	{
+		while (s[j] == c)
+			j++;
+		cnt = j;
+		while (s[j] != c && s[j])
+			j++;
+		if (j > cnt)
+			p[i++] = ft_substr(s, cnt, j - cnt);
+	}
+	p[i] = NULL;
+	return (p);
+}
+
 //
 //void pipeline(char ***cmd, t_arg *args)
 //{
@@ -154,6 +236,32 @@ int count(char ***cmd)
 	return i;
 }
 
+int ft_tablen(char **tab)
+{
+	int i;
+
+	i = 0;
+	while (tab[i])
+		i++;
+	return (i);
+}
+
+int num_of_redirect(char **tab)
+{
+	int i;
+	int res;
+
+	i = 0;
+	res = 0;
+	while (tab[i])
+	{
+		if (ft_strcmp(tab[i], ">") == 0 || ft_strcmp(tab[i], ">>") == 0 || ft_strcmp(tab[i], "<") == 0)
+			res++;
+		i++;
+	}
+	return (res);
+}
+
 int is_right(char **cmd)
 {
 	int i;
@@ -284,30 +392,178 @@ void pipeline(char ***cmd, char ***raw_cmd)
         wait(NULL);
 }
 
+char *separate_redirect(char *command);
 
+void print_tab(char *tab[])
+{
+	int i;
+
+	i = 0;
+	while (tab[i])
+		printf("%s\n", tab[i++]);
+}
+
+char **make_strb(char **str_a);
 
 int main(int argc, char *argv[])
 {
 	// ">" "<" ">>"　を見つけたら、前後にスペースを開けた文字列を生成する関数　→　その後にスプリット
+	char *raw_cat = "cat architecture.c > hi";
+	char *raw_cat_ret;
+	char *raw_echo = "echo toto";
+	char *raw_echo_ret;
+	
+	raw_cat_ret = separate_redirect(raw_cat);
+	raw_echo_ret = separate_redirect(raw_echo);
+
+	char **cat = ft_split(raw_cat_ret, ' ');
+	//char *cat1[] = {"cat", "architecture.c", NULL};
+	char **cat1 = make_strb(cat);
+
+	print_tab(cat);
+	print_tab(cat1);
+	//print_tab(cat1);
 	char *ls[] = {"ls", NULL};
 	char *ls1[] = {"ls", NULL};
 
 	char *rev[] = {"rev", NULL};
 	char *nl[] = {"nl", NULL};
 
-	char *cat[] = {"cat", "architecture.c", ">", "hi", ">", "hii" ,NULL};
-	char *cat1[] = {"cat", "architecture.c", NULL};
+	// char *cat[] = {"cat", "architecture.c", ">", "hi", NULL};
+	// char *cat1[] = {"cat", "architecture.c", NULL};
 
-	char *wc[] = {"wc", "-c", NULL};
-	char *head[] = {"head", "-c", "1000", NULL};
-	char *time[] = {"time", "-p", "sleep", "3", NULL};
-	char *echo[] = {"echo", "toto", NULL};
+	// char *wc[] = {"wc", "-c", NULL};
+	// char *head[] = {"head", "-c", "1000", NULL};
+	// char *time[] = {"time", "-p", "sleep", "3", NULL};
+	// char *echo[] = {"echo", "toto", NULL};
 
 	// raw_cmd　→　リダイレクトもファイル名も残したままのやつ
 	// cmd →　リダイレクトもファイル名も削ぎ落として整形したやつ
 	char **raw_cmd[] = {cat, NULL};
 	char **cmd[] = {cat1, NULL};
 
-	pipeline(cmd, raw_cmd);
+	//pipeline(cmd, raw_cmd);
 	return (0);
+}
+
+// ex) command = "ls > filename"
+// ex) command = "ls >> filename"
+
+int is_space(char c)
+{
+	if (c == ' ' || c == '\f' || c == '\n' || c == '\r' || c == '\t' || c == '\v')
+		return (1);
+	return (0);
+}
+
+int is_redirect(char c)
+{
+	if (c == '<' || c == '>')
+		return (1);
+	return (0);
+}
+
+int is_ok(char *command, int i)
+{
+	int len = ft_strlen(command);
+
+	if (command[i] == '<')
+		return (1);
+	if (i < len - 1 && command[i] == '>' && command[i + 1] == '>')
+		return (1);
+	if (1 < i && command[i] != '>' && command[i - 1] == '>' && command[i - 2] == '>')
+		return (1);
+	if (0 < i && i < len - 1 && command[i] == '>' && command[i - 1] != '>' && command[i + 1] != '>')
+		return (1);
+	if (0 < i && command[i] != '>' && command[i - 1] == '>' && command[i - 2])
+		return (1);
+	return (0);
+}
+
+char *set_res(char *res, char *command)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while (command[i])
+	{
+		if (is_ok(command, i))
+			res[j++] = ' ';
+		res[j++] = command[i++];
+	}
+	res[j] = '\0';
+	return (res);
+}
+
+char *separate_redirect(char *command)
+{
+	int i;
+	int redirect;
+	char *res;
+
+	i = 0;
+	redirect = 0;
+	while (command[i])
+	{
+		if (is_redirect(command[i]))
+			redirect++;
+		i++;
+	}
+	res = malloc(sizeof(char) * (i + redirect + 1));
+	return (set_res(res, command));
+}
+
+char **really_make_strb(char **str_a, int *table)
+{
+	int i;
+	int j;
+	int len;
+	int cnt_redirect;
+	char **str_b;
+	
+	i = 0;
+	j = 0;
+	len = ft_tablen(str_a);
+	cnt_redirect = num_of_redirect(str_a);
+	str_b = malloc(sizeof(char *) * (len - cnt_redirect * 2 + 1));
+	while (str_a[i])
+	{
+		if (table[i] == 1)
+		{
+			i++;
+			continue;
+		}
+		str_b[j++] = str_a[i++];
+	}
+	str_b[j] = NULL;
+	return (str_b);
+}
+
+char **make_strb(char **str_a)
+{
+	int i;
+	int *table;
+
+	i = 0;
+	table = malloc(sizeof(int) * ft_tablen(str_a));
+	while (str_a[i])
+	{
+		if (ft_strcmp(str_a[i], ">>") == 0 || ft_strcmp(str_a[i], ">") == 0)
+		{
+			table[i] = 1;
+			table[i + 1] = 1;
+			i += 2;
+		}
+		else if (ft_strcmp(str_a[i], "<") == 0)
+		{
+			table[i] = 1;
+			table[i - 1] = 1;
+		}
+		else
+			table[i] = 0;
+		i++;
+	}
+	return (really_make_strb(str_a, table));
 }
