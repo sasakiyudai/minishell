@@ -54,3 +54,6 @@ void pipeline(char ***cmd, char ***raw_cmd);
 　リダイレクトおよびパイプの影響をしっかり受けて実行する関数
 
 //　todo ・パイプで区切られて渡された文字列の文法チェックの関数　・str_Aからstr_Bを作る関数
+
+char **make_strb(char **str_a);
+ str_aからstr_bを作ってstr_bを返す関数
