@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 15:25:45 by syudai            #+#    #+#             */
-/*   Updated: 2021/01/23 18:22:54 by syudai           ###   ########.fr       */
+/*   Updated: 2021/01/28 17:39:42 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,17 @@
 # define LIBFT_H
 # include <unistd.h>
 # include <stdlib.h>
-# include <string.h>
 # include <limits.h>
 # include <stdio.h>
+# include <fcntl.h>
 # include <dirent.h>
+# include <sys/wait.h>
 
 typedef struct	s_list
 {
 	void			*content;
 	struct s_list	*next;
 }				t_list;
-
-
-typedef struct s_arg
-{
-	char *name;
-	int type;
-	void *data;
-	struct s_arg *next;
-}               t_arg;
 
 void			*ft_memset(void *b, int c, size_t len);
 void			ft_bzero(void *s, size_t n);
@@ -49,6 +41,7 @@ char			*ft_strrchr(const char *s, int c);
 char			*ft_strnstr(const char *haystack, const char *needle\
 , size_t len);
 int				ft_strncmp(const char *s1, char *s2, size_t n);
+int				ft_strcmp(char *s1, char *s2);
 int				ft_atoi(const char *str);
 int				ft_isalpha(int c);
 int				ft_isdigit(int c);
