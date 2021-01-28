@@ -1,4 +1,4 @@
-#include "libft.h"
+#include "minishell.h"
 
 int ft_len(char *args[])
 {
@@ -8,20 +8,6 @@ int ft_len(char *args[])
 	while (args[i])
 		i++;
 	return (i);
-}
-
-int	ft_strcmp(char *s1, char *s2)
-{
-	int i;
-
-	i = 0;
-	while (s1[i] == s2[i])
-	{
-		if (s1[i] == '\0')
-			return (0);
-		i++;
-	}
-	return (s1[i] > s2[i] ? 1 : -1);
 }
 
 void sort(char *envp[])
@@ -58,17 +44,17 @@ void print_with_declare(char *envp[])
 		printf("declare -x %s\n", envp[i++]);
 }
 
-int export(char *args[], char *envp[])
+int ft_export(char *args[], char *envp[], t_arg_main *arg_main)
 {
-	if (!args[1])
-	{
-		print_with_declare(envp);
-		return (0);
-	}
-	return (0);
-}
+    t_arg arg;
 
-int main(int argc, char *argv[], char *envp[])
-{
-	export(argv, envp);
+    if (!args[1])
+    {
+        print_with_declare(envp);
+        return (0);
+    }
+    arg.name = args[2];
+    arg.data = (char *)args[4];
+    arg_add(arg_main, &arg);
+    return (0);
 }

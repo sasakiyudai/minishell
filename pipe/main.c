@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 17:48:31 by syudai            #+#    #+#             */
-/*   Updated: 2021/01/28 17:48:32 by syudai           ###   ########.fr       */
+/*   Updated: 2021/01/28 23:58:34 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,16 @@
 
 int main(void)
 {
+	t_arg_main arg_main;
+	t_arg		arg;
+
+	arg.name = "PATH";
+	arg.data = "/bin";
+	arg.type = ARG_TYPE_STR;
+
+	arg_main_ini(&arg_main);
+	arg_add(&arg_main, &arg);
+	
 	char *ls[] = {"ls", ">", "hoge", NULL};
 	char *ls1[] = {"ls", NULL};
 	char *cat[] = {"cat", NULL};
@@ -22,6 +32,6 @@ int main(void)
 	char **raw_cmd[] = {ls, cat, NULL};
 	char **cmd[] = {ls1, cat1, NULL};
 
-	pipeline(cmd, raw_cmd);
+	pipeline(cmd, raw_cmd, &arg_main);
 	return (0);
 }

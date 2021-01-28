@@ -1,7 +1,7 @@
-#include "libft.h"
+#include "minishell.h"
 #define MAX_FILENAME 1024
 
-int pwd(void)
+int ft_pwd(void)
 {
 	char s[MAX_FILENAME];
 
@@ -10,9 +10,4 @@ int pwd(void)
 	else
 		ft_putendl_fd(s, 1);
 	return (0);
-}
-
-int main(int argc, char *argv[])
-{
-	pwd();
 }

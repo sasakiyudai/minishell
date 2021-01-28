@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 17:47:28 by syudai            #+#    #+#             */
-/*   Updated: 2021/01/28 17:47:47 by syudai           ###   ########.fr       */
+/*   Updated: 2021/01/28 23:55:03 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,20 +67,89 @@ int		error(char *path)
 	return (exit_code);
 }
 
-void	exec_child(int cmd_len, int *fd, char ***cmd)
+int		is_builtin(char *command)
 {
-	int exit_code;
-	int i;
-
-	i = 0;
-	while (i < 2 * cmd_len)
-		close(fd[i++]);
-	execvp((*cmd)[0], *cmd);
-	exit_code = error((*cmd)[0]);
-	exit(exit_code);
+	if (ft_strcmp(command, "echo") == 0)
+		return (1);
+	else if (ft_strcmp(command, "cd") == 0)
+		return (2);
+	else if (ft_strcmp(command, "pwd") == 0)
+		return (3);
+	else if (ft_strcmp(command, "export") == 0)
+		return (4);
+	else if (ft_strcmp(command, "unset") == 0)
+		return (5);
+	else if (ft_strcmp(command, "env") == 0)
+		return (6);
+	else if (ft_strcmp(command, "exit") == 0)
+		return (7);
+	return (0);
 }
 
-void	pipeline(char ***cmd, char ***raw_cmd)
+void	call_builtin(int tmp, char **str_b, t_arg_main *arg_main, char **envs)
+{
+	if (tmp == 1)
+		ft_echo(str_b);
+	else if (tmp == 2)
+		ft_cd(str_b);
+	else if (tmp == 3)
+		ft_pwd();
+	else if (tmp == 4)
+		ft_export(str_b, envs, arg_main);
+	else if (tmp == 5)
+		ft_unset(str_b, arg_main);
+	else if (tmp == 6)
+		ft_env(envs);
+	else if (tmp == 7)
+		exit(0);
+	exit(EXIT_SUCCESS);
+}
+
+void print_tab(char *env[])
+{
+	int i = 0;
+
+	while (env[i])
+		fprintf(stderr, "%s\n", env[i++]);
+}
+
+void	exec_child(int cmd_len, int *fd, char ***cmd, t_arg_main *arg_main)
+{
+	int		exit_code;
+	int		i;
+	int		tmp;
+	char	*path;
+	char	**envs;
+
+	i = 0;
+	if (!(envs = arg_list_get(arg_main)))
+		exit(1);
+	while (i < 2 * cmd_len)
+		close(fd[i++]);
+	ft_putstr_fd("oh my god...\n", 2);
+	if ((tmp = is_builtin((*cmd)[0])))
+	{
+		//printf("hello, builtin\n");
+		//exit(0);
+		call_builtin(tmp, *cmd, arg_main, envs);
+	}
+	else
+	{
+		if (!(tmp = get_path(arg_main, &path, (*cmd)[0])))
+		{
+			fprintf(stderr, "ue %s\n", (*cmd)[0]);
+			fprintf(stderr, "ue %s\n", path);
+			print_tab(envs);
+			execve(path, *cmd, envs);
+		}
+		else if (tmp == -1)
+			print_error(MALLOC_FAIL);
+		exit_code = error(path);
+		exit(exit_code);
+	}
+}
+
+void	pipeline(char ***cmd, char ***raw_cmd, t_arg_main *arg_main)
 {
 	int		i;
 	int		j;
@@ -101,7 +170,7 @@ void	pipeline(char ***cmd, char ***raw_cmd)
 		if (pid == 0)
 		{
 			set_fd(cmd, raw_cmd, fd, j);
-			exec_child(cmd_len, fd, cmd);
+			exec_child(cmd_len, fd, cmd, arg_main);
 		}
 		cmd++;
 		j += 2;

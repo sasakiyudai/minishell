@@ -1,64 +1,4 @@
-#include <stdlib.h>
-#include <limits.h>
-#include <stdio.h>
-#include <stdint.h>
-
-#define ARG_TYPE_STR 0
-#define ARG_TYPE_LLINT 1
-#define STR_LLONG_MIN "-9223372036854775808"
-#define STR_LLONG_MAX "9223372036854775807"
-
-typedef struct s_arg
-{
-    char *name;
-    int type;
-    void *data;
-}               t_arg;
-
-typedef struct s_arg_list
-{
-    t_arg   arg;
-    struct s_arg_list  *next;
-}               t_arg_list;
-
-
-typedef struct s_arg_main
-{
-    t_arg_list  head;
-    int arg_num;
-}               t_arg_main;
-
-
-void    arg_free(t_arg *arg);
-int    arg_copy(t_arg *dest, t_arg *src);
-int     arg_new(t_arg_main *arg_main, t_arg *src);
-int arg_add(t_arg_main *arg_main, t_arg *arg);
-int    arg_main_ini(t_arg_main *arg_main);
-int arg_charlen(t_arg *arg);
-int ft_strcat_int(char *dest, char *src);
-char *arg_to_str(t_arg *arg);
-char **arg_list_get(t_arg_main *arg_main);
-int    _arg_delete_process(t_arg_main *arg_main, t_arg_list *arg_list, char *name, t_arg_list **ret);
-void    arg_delete(t_arg_main *arg_main, char *name);
-t_arg_list   *_arg_isexist_process(t_arg_list *arg_list, char *name);
-t_arg_list   *arg_isexist(t_arg_main *arg_main, char *name);
-int     arg_get(t_arg_main *arg_main, t_arg *arg, char *name);
-int    arg_list_ini(t_arg_main *arg_main);
-void    _arg_list_ini_process(t_arg_list *arg_list);
-
-
-int ft_strlen(char *s)
-{
-    int ret;
-
-    ret = 0;
-    while (*s)
-    {
-        ret++;
-        s++;
-    }
-    return (ret);
-}
+#include "minishell.h"
 
 char    *ft_strcat(char *dest, char *src)
 {
@@ -81,31 +21,6 @@ int ft_strcat_int(char *dest, char *src)
     dest[i] = '\0';
     return (i);
 }
-
-char *ft_strdup(char *s)
-{
-    char *ret;
-    int i;
-
-    if (!(ret = (char *)malloc(ft_strlen(s) + 1)))
-        return (NULL);
-    return (ft_strcat(ret, s));
-}
-
-int ft_strcmp(char *s1, char *s2)
-{
-    int i;
-
-    if (!s1 || !s2)
-        return (-1);
-    i = -1;
-    while (s1[++i])
-        if (s1[i] != s2[i])
-            return (1);
-    return (!!s2[i]);
-}
-
-
 
 int    ft_itoa(long long int n, char *dest)
 {
@@ -272,7 +187,6 @@ char *arg_to_str(t_arg *arg)
 {
     char *ret;
     int i;
-    int j;
 
     if (!arg)
         return (NULL);
@@ -375,7 +289,7 @@ int     arg_get(t_arg_main *arg_main, t_arg *arg, char *name)
 
     if (!(tmp_arg = arg_isexist(arg_main, name)))
         return (1);
-    if (!(arg_copy(arg, &(tmp_arg->arg))))
+    if (-1 == (arg_copy(arg, &(tmp_arg->arg))))
         return (-1);
     return (0);
 }
@@ -394,7 +308,7 @@ void    add_out(t_arg_main *arg_main, t_arg arg)
     split_free_all(ss);
 }
 
-
+/*
 int main()
 {
     t_arg_main arg_main;
@@ -411,7 +325,6 @@ int main()
 					{"arg9", ARG_TYPE_LLINT, &j[5]},
 					{"arg10", ARG_TYPE_LLINT, &j[6]},
 					};
-    int tmp;
     int i;
 
     if (arg_main_ini(&arg_main))
@@ -495,3 +408,4 @@ int main()
 	    }
 	}
 }
+*/

@@ -1,27 +1,15 @@
-#include <stdlib.h>
-#include <stdio.h>
-
+#include "minishell.h"
 #define MALLOC_FAIL 1
 #define EXIT 2
 #define INI_FAIL MALLOC_FAIL + EXIT
 
-
-
-
-
 typedef int t_all;
 
 char	**split_command(char *s, char c);
-void	free_split_command_all(char **s);
-
-void split_free_all(char **s)
-{
-	free_split_command_all(s);
-}
 
 void	print_error(int i)
 {
-
+	i++;
 }
 
 char **make_command_array_splitpipe(char *cmd)
@@ -35,6 +23,7 @@ char **make_command_array_splitpipe(char *cmd)
 		free(cmd);
 		return (NULL);
 	}
+	return (cmd_split);
 }
 
 char ***make_command_array_malloc(char **tmp)
@@ -85,10 +74,9 @@ char ***make_command_array(char *cmd)
 	return (ret);
 }
 
-void command_main(t_all *all, char *cmd_raw)
+void command_main(char *cmd_raw)
 {
 	char ***cmd_split;
-	int process_num;
 
 	if (!(cmd_split = make_command_array(cmd_raw)))
 		return;
@@ -100,6 +88,7 @@ void command_main(t_all *all, char *cmd_raw)
 			printf("%s\n", cmd_split[i][j]);
 	}
 }
+/*
 
 typedef struct s_syntax_check
 {
@@ -107,8 +96,7 @@ typedef struct s_syntax_check
 	char redirect;
 }	t_syntax_check;
 
-int _syntax_check_main_process
-
+ int _syntax_check_main_process
 int syntax_check_main(char *cmd)
 {
 	char bitflag_quote;
@@ -131,7 +119,6 @@ int main(void)
 	command_main(NULL, "cat >text ||| ls");
 }
 
-/*
 
 int ini(t_all *all)
 {
