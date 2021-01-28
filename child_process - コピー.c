@@ -11,7 +11,7 @@ int isbuiltin(char *name, t_cmd cmd[], int (**ret)(char **))
 {
     while (cmd[0].name)
     {
-        if (!ft_strcmp(name, cmd[0].name))
+        if (!strcmp(name, cmd[0].name))
         {
             *ret = cmd[0].func;
             return (1);
@@ -28,16 +28,26 @@ int ispath_ok(char *path, char *name)
 
     if (!(dir = opendir(path)))
         return (0);
+        printf("s");
     while (!(dent = readdir(dir)))
-        if (!ft_strcmp(dent->d_name, name))
+    {
+        printf("a");
+        if (!strcmp(dent->d_name, name))
         {
             closedir(dir);
             return (1);
         }
+    }
     closedir(dir);
     return (0);
 }
 
+int main(void)
+{
+    printf("%d", ispath_ok("./", "main.c"));
+}
+
+/*
 int get_path_makestr(char **ret, char *path, char *name)
 {
     int path_len;
@@ -90,3 +100,5 @@ int get_path(t_arg *arg_main, char **ret, char *name)
     split_free_all(tmp_path);
     return (0);
 }
+
+*/

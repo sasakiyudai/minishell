@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 void     _bcopy(void *dest, void *src, int size)
 {
     char    *s1;
@@ -20,7 +18,8 @@ int     _bcopy_int(void *dest, void *src, int size)
 void	_bzero(void	 *s, int n)
 {
 	char *str = (char *)s;
-	size_t i = 0;
+	int i = 0;
+
 	while (i < n)
 	{
 		str[i] = 0;
