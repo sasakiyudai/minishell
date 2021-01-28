@@ -5,6 +5,8 @@
 #define FLAG_DOUBLE_QUOTE 2
 #define FLAG_SINGLE_QUOTE 1
 
+void	_bzero(void *dest, int size);
+
 typedef	struct	s_split
 {
 	int		cnt_splitnum;
@@ -155,9 +157,7 @@ int		split_command_ini(char *s, char c, t_split *split_arg, char ***ret)
 	if (!*ret)
 		return (-1);
 	_bzero(split_arg, sizeof(t_split));
-	printf("12345\n");
 	split_arg->flag_sequencial = 1;
-	printf("abcde\n");
 	return (0);
 }
 
@@ -197,16 +197,22 @@ char	**split_command(char *s, char c)
 			if (!ret[split_arg.cnt_splitnum++])
 				return (split_command_free(ret, split_arg.cnt_splitnum - 1));
 		}
+		else
+		{
+			split_arg.cnt_moji = 0;
+			s++;
+		}
 	}
 	split_command_last(s, &split_arg, &ret);
 	return (ret);
 }
 
-
+/*
 int main()
 {
 	char *s = read_all(0);
 	char **ps = split_command(s, ';');
+	char **tmp = ps;
 	printf("\n\n%p\n", ps);
 	printf("-------\n");
 	while (*ps)
@@ -214,5 +220,6 @@ int main()
 		printf("%s\n", *ps);
 		ps++;
 	}
-	free_split_command_all(ps);
+	free_split_command_all(tmp);
 }
+*/

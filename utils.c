@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 void     _bcopy(void *dest, void *src, int size)
 {
     char    *s1;
@@ -11,7 +13,7 @@ void     _bcopy(void *dest, void *src, int size)
 
 int     _bcopy_int(void *dest, void *src, int size)
 {
-    _bcopy(dest, srcm size);
+    _bcopy(dest, src, size);
     return (0);
 }
 

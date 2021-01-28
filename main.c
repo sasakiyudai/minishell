@@ -1,28 +1,40 @@
 #include <stdlib.h>
-#include "minishell.h"
+#include <stdio.h>
 
 #define MALLOC_FAIL 1
 #define EXIT 2
 #define INI_FAIL MALLOC_FAIL + EXIT
 
-/*
+
+
+
+
+typedef int t_all;
+
+char	**split_command(char *s, char c);
+void	free_split_command_all(char **s);
+
+void split_free_all(char **s)
+{
+	free_split_command_all(s);
+}
+
+void	print_error(int i)
+{
+
+}
+
 char **make_command_array_splitpipe(char *cmd)
 {
 	char **cmd_split;
 
-	if (!(cmd = separate_redirect(cmd)))
-		return (NULL);
+//	if (!(cmd = separate_redirect(cmd)))
+//		return (NULL);
 	if (!(cmd_split = split_command(cmd, '|')))
 	{
 		free(cmd);
 		return (NULL);
 	}
-}
-*/
-
-void	print_error(int i)
-{
-
 }
 
 char ***make_command_array_malloc(char **tmp)
@@ -48,7 +60,7 @@ void	command_array_free(char ***cmd)
 
 	i = -1;
 	while (cmd[++i])
-		split_fre_all(cmd[i]);
+		split_free_all(cmd[i]);
 	free(cmd);
 }
 
@@ -84,10 +96,42 @@ void command_main(t_all *all, char *cmd_raw)
 	while (cmd_split[++i])
 	{
 		int j = -1;
-		while (cmd[i][++j])
-			printf("%s\n", cmd[i][j]);
+		while (cmd_split[i][++j])
+			printf("%s\n", cmd_split[i][j]);
 	}
 }
+
+typedef struct s_syntax_check
+{
+	char pipe;
+	char redirect;
+}	t_syntax_check;
+
+int _syntax_check_main_process
+
+int syntax_check_main(char *cmd)
+{
+	char bitflag_quote;
+	t_syntax_check check;
+	int tmp;
+
+	_bzero(&check, sizeof (t_syntax_check));
+	bitflag_quote = 0;
+	while (*cmd)
+	{
+		if (!(tmp = _syntax_check_main_process(cmd, &check)))
+			return (tmp);
+		cmd++;
+	}
+	return (0);
+}
+
+int main(void)
+{
+	command_main(NULL, "cat >text ||| ls");
+}
+
+/*
 
 int ini(t_all *all)
 {
@@ -126,3 +170,5 @@ int main(void)
 		}
 
 }
+
+*/
