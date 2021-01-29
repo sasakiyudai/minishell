@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 17:48:31 by syudai            #+#    #+#             */
-/*   Updated: 2021/01/28 23:58:34 by syudai           ###   ########.fr       */
+/*   Updated: 2021/01/29 15:00:42 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int main(void)
 	t_arg		arg;
 
 	arg.name = "PATH";
-	arg.data = "/bin";
+	arg.data = read_all(0);
 	arg.type = ARG_TYPE_STR;
 
 	arg_main_ini(&arg_main);

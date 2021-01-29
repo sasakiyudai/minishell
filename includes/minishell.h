@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 22:32:19 by syudai            #+#    #+#             */
-/*   Updated: 2021/01/28 23:03:58 by syudai           ###   ########.fr       */
+/*   Updated: 2021/01/29 14:38:30 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,6 @@ void			print_error(int i);
 int 			ft_len(char *args[]);
 void     		_bcopy(void *dest, void *src, int size);
 int     		_bcopy_int(void *dest, void *src, int size);
-
+char			*read_all(int fd);
 
 #endif

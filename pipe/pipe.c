@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 17:47:28 by syudai            #+#    #+#             */
-/*   Updated: 2021/01/28 23:55:03 by syudai           ###   ########.fr       */
+/*   Updated: 2021/01/29 14:16:35 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int		error(char *path)
 	DIR	*folder;
 	int	fd;
 	int	exit_code;
-
+	
 	fd = open(path, O_WRONLY);
 	folder = opendir(path);
 	ft_putstr_fd("minishell: ", 2);
@@ -126,7 +126,7 @@ void	exec_child(int cmd_len, int *fd, char ***cmd, t_arg_main *arg_main)
 		exit(1);
 	while (i < 2 * cmd_len)
 		close(fd[i++]);
-	ft_putstr_fd("oh my god...\n", 2);
+
 	if ((tmp = is_builtin((*cmd)[0])))
 	{
 		//printf("hello, builtin\n");
@@ -135,16 +135,13 @@ void	exec_child(int cmd_len, int *fd, char ***cmd, t_arg_main *arg_main)
 	}
 	else
 	{
-		if (!(tmp = get_path(arg_main, &path, (*cmd)[0])))
+		if (0 == (tmp = get_path(arg_main, &path, (*cmd)[0])))
 		{
-			fprintf(stderr, "ue %s\n", (*cmd)[0]);
-			fprintf(stderr, "ue %s\n", path);
-			print_tab(envs);
 			execve(path, *cmd, envs);
 		}
 		else if (tmp == -1)
 			print_error(MALLOC_FAIL);
-		exit_code = error(path);
+		exit_code = error((*cmd)[0]);
 		exit(exit_code);
 	}
 }
