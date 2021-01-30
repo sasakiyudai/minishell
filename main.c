@@ -90,30 +90,6 @@ void command_main(char *cmd_raw)
 }
 /*
 
-typedef struct s_syntax_check
-{
-	char pipe;
-	char redirect;
-}	t_syntax_check;
-
- int _syntax_check_main_process
-int syntax_check_main(char *cmd)
-{
-	char bitflag_quote;
-	t_syntax_check check;
-	int tmp;
-
-	_bzero(&check, sizeof (t_syntax_check));
-	bitflag_quote = 0;
-	while (*cmd)
-	{
-		if (!(tmp = _syntax_check_main_process(cmd, &check)))
-			return (tmp);
-		cmd++;
-	}
-	return (0);
-}
-
 int main(void)
 {
 	command_main(NULL, "cat >text ||| ls");

@@ -1,4 +1,26 @@
 #include "minishell.h"
+#include <dirent.h>
+
+typedef struct s_cmd
+{
+    char *name;
+    int (*func)(char **);
+}               t_cmd;
+
+
+int isbuiltin(char *name, t_cmd cmd[], int (**ret)(char **))
+{
+    while (cmd[0].name)
+    {
+        if (!ft_strcmp(name, cmd[0].name))
+        {
+            *ret = cmd[0].func;
+            return (1);
+        }
+        cmd++;
+    }
+    return (0);
+}
 
 int ispath_ok(char *path, char *name)
 {
