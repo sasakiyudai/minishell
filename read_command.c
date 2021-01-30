@@ -1,19 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>	
-
-#define FLAG_DOUBLE_QUOTE 2
-#define FLAG_SINGLE_QUOTE 1
-
-void	_bzero(void *dest, int size);
-
-typedef	struct	s_split
-{
-	int		cnt_splitnum;
-	int		cnt_moji;
-	int		flag_sequencial;
-	char	bitflag_quote;
-}				t_split;
+#include "minishell.h"
 
 char	*ft_newstr_ncat(char *src1, char *src2, int n)
 {
@@ -65,8 +50,6 @@ char	*read_all(int fd)
 	return (NULL);
 }
 
-
-
 char	*ft_strndup(char *src, int n)
 {
 	char *ret;
@@ -90,9 +73,9 @@ int		cnt_splitnum_command(char *s, char c)
 	flag_sequencial = 1;
 	while (*s)
 	{
-		if (*s == '\'' && !bitflag_quote & FLAG_DOUBLE_QUOTE)
+		if (*s == '\'' && (!bitflag_quote) & FLAG_DOUBLE_QUOTE)
 			bitflag_quote ^= FLAG_SINGLE_QUOTE;
-		if (*s == '\"' && !bitflag_quote & FLAG_SINGLE_QUOTE)
+		if (*s == '\"' && (!bitflag_quote) & FLAG_SINGLE_QUOTE)
 			bitflag_quote ^= FLAG_DOUBLE_QUOTE;
 		if (*s != c)
 			flag_sequencial = 0;
@@ -121,8 +104,8 @@ char	**split_command_free(char **ret, int cnt_splitnum)
 	free(ret);
 	return (NULL);
 }
-
-void	free_split_command_all(char **s)
+/*
+void	split_free_all(char **s)
 {
 	int	i;
 
@@ -131,7 +114,7 @@ void	free_split_command_all(char **s)
 		free(s[i++]);
 	free(s);
 }
-
+*/
 void	check_quote(char c, char *bitflag_quote)
 {
 	if (c == '\'' && !(*bitflag_quote & FLAG_DOUBLE_QUOTE))
@@ -220,6 +203,6 @@ int main()
 		printf("%s\n", *ps);
 		ps++;
 	}
-	free_split_command_all(tmp);
+	split_free_all(tmp);
 }
 */

@@ -1,3 +1,5 @@
+#include "minishell.h"
+
 void     _bcopy(void *dest, void *src, int size)
 {
     char    *s1;
@@ -19,7 +21,6 @@ void	_bzero(void	 *s, int n)
 {
 	char *str = (char *)s;
 	int i = 0;
-
 	while (i < n)
 	{
 		str[i] = 0;

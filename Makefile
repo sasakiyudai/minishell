@@ -1,7 +1,10 @@
 NAME = minishell
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra -I libft/ -I includes/
-SRCS = pipe/pipe.c pipe/is_x.c pipe/utils_a.c pipe/main.c print_error.c
+SRCS = pipe/pipe.c pipe/is_x.c pipe/utils_a.c pipe/main.c builtins/cd.c\
+		builtins/echo.c builtins/export.c builtins/pwd.c builtins/unset.c \
+		builtins/env.c read_command.c get_exec_path.c utils.c argument.c\
+		main.c
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
