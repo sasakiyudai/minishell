@@ -1,10 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+
 # define MALLOC_FAIL 1
 # define ARG_TYPE_STR 0
 # define ARG_TYPE_int 0
-#define SYNTAX_ERROR_QUOTE 1
 #define ARG_TYPE_STR 0
 #define ARG_TYPE_LLINT 1
 #define STR_LLONG_MIN "-9223372036854775808"
@@ -12,7 +12,12 @@
 #define FLAG_DOUBLE_QUOTE 2
 #define FLAG_SINGLE_QUOTE 1
 
-typedef int t_all;
+
+
+
+//new
+//-------
+#define SYNTAX_ERROR_QUOTE 1
 
 typedef struct s_syntax_flag
 {
@@ -21,33 +26,38 @@ typedef struct s_syntax_flag
 	char l_redirect;
     char semi;
 }               t_syntax_flag;
+//--------
 
+//delete
+//---------
 char	**split_command(char *s, char c);
 
 
-void	_bzero(void	 *s, int n)
-{
-	char *str = (char *)s;
-	int i = 0;
-
-	while (i < n)
+	void	_bzero(void	 *s, int n)
 	{
-		str[i] = 0;
-		i++;
-	}
-}
-void	check_quote(char c, char *bitflag_quote)
-{
-	if (c == '\'' && !(*bitflag_quote & FLAG_DOUBLE_QUOTE))
-		*bitflag_quote ^= FLAG_SINGLE_QUOTE;
-	if (c == '\"' && !(*bitflag_quote & FLAG_SINGLE_QUOTE))
-		*bitflag_quote ^= FLAG_DOUBLE_QUOTE;
-}
+		char *str = (char *)s;
+		int i = 0;
 
-void    print_error(int i)
-{
-    
-}
+		while (i < n)
+		{
+			str[i] = 0;
+			i++;
+		}
+	}
+	void	check_quote(char c, char *bitflag_quote)
+	{
+		if (c == '\'' && !(*bitflag_quote & FLAG_DOUBLE_QUOTE))
+			*bitflag_quote ^= FLAG_SINGLE_QUOTE;
+		if (c == '\"' && !(*bitflag_quote & FLAG_SINGLE_QUOTE))
+			*bitflag_quote ^= FLAG_DOUBLE_QUOTE;
+	}
+
+	void    print_error(int i)
+	{
+		
+	}
+//--------------
+
 
 int	_syntax_check_make_sedstr(char *cmd_raw, char **ret)
 {
@@ -178,10 +188,11 @@ int syntax_check_main(char *cmd)
 	return (0);
 }
 
-void myprint_error(int i)
+int myprint_error(int i)
 {
     if (SYNTAX_ERROR_QUOTE)
         printf("bash: bad quote\n");
+	return (258);
 }
 
 int syntax_check(char *cmd_raw)
@@ -192,8 +203,7 @@ int syntax_check(char *cmd_raw)
 	if (_syntax_check_make_sedstr(cmd_raw, &cmd) == 1)
 	{
 		free(cmd);
-		myprint_error(SYNTAX_ERROR_QUOTE);
-		return (1);
+		return (myprint_error(SYNTAX_ERROR_QUOTE));
 	}
 	if (!cmd)
 		return (-1);
@@ -280,48 +290,8 @@ int main(void)
         printf("%d\n\n", syntax_check(strdup("cat >\"\"\n")));
 
     }
-
+    
+	printf("bad quote\n======================================\n");
+	printf("%d\n\n", syntax_check(strdup("cat \"\n")));
 	printf("finish");
 }
-
-
-/*
-int ini(t_all *all)
-{
-	if (!(arg_main_ini(&(all->arg_main))))
-	{
-		error(INI_FAIL);
-		return (-1);
-	}
-}
-
-int main(void)
-{
-	char *cmd_all;
-	char **cmd_split;
-	char **tmp_cmd_split;
-	t_all all;
-
-	if (ini(&all))
-		while (1)
-		{
-			while (!(cmd_all = read_all(0)))
-				error(MALLOC_FAIL);
-			if (!(cmd_split = split_command(cmd_all, ';')))
-				error(MALLOC_FAIL);
-			else
-			{
-				tmp_cmd_split = cmd_split;
-				while (*cmd_split)
-				{
-					command_main(*cmd_split);
-					cmd_split++;
-				}
-				split_free_all(tmp_cmd_split);
-			}
-			free(cmd_all);	
-		}
-
-}
-
-*/
