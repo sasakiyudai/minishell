@@ -55,7 +55,7 @@ int	_syntax_check_make_sedstr(char *cmd_raw, char **ret)
 	int i;
 	int j;
 
-	if (!(*ret = (char *)malloc(strlen(cmd_raw))))
+	if (!(*ret = (char *)malloc(strlen(cmd_raw) + 1)))
     {
         print_error(MALLOC_FAIL);
 		return (-1);
@@ -280,6 +280,8 @@ int main(void)
         printf("%d\n\n", syntax_check(strdup("cat >\"\"\n")));
 
     }
+
+	printf("finish");
 }
 
 
