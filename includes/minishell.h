@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 22:32:19 by syudai            #+#    #+#             */
-/*   Updated: 2021/01/29 14:38:30 by syudai           ###   ########.fr       */
+/*   Updated: 2021/01/30 16:23:30 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ typedef    struct    s_split
     char    bitflag_quote;
 }                t_split;
 
-void			set_right(char ***raw_cmd, int j, int *fd);
-void			set_left(char ***raw_cmd, int j, int *fd);
+void			set_right(char ***raw_cmd, int j, int *fd, int is_pipe);
+void			set_left(char ***raw_cmd, int j, int *fd, int is_pipe);
 int				count(char ***cmd);
 void			pipeline(char ***cmd, char ***raw_cmd, t_arg_main *arg_main);
 void			safe_close(int fd);
@@ -109,5 +109,10 @@ int 			ft_len(char *args[]);
 void     		_bcopy(void *dest, void *src, int size);
 int     		_bcopy_int(void *dest, void *src, int size);
 char			*read_all(int fd);
+int				count(char ***cmd);
+int				is_builtin(char *command);
+void			call_builtin(int tmp, char **str_b, t_arg_main *arg_main, char **envs);
+int				error(char *path);
+char			*ft_strndup(char *src, int n);
 
 #endif

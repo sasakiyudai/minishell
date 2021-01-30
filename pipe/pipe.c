@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 17:47:28 by syudai            #+#    #+#             */
-/*   Updated: 2021/01/29 14:16:35 by syudai           ###   ########.fr       */
+/*   Updated: 2021/01/29 19:58:00 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	set_fd(char ***cmd, char ***raw_cmd, int *fd, int j)
 		dup2(fd[j + 1], 1);
 	if (j != 0)
 		dup2(fd[j - 2], 0);
-	set_right(raw_cmd, j, fd);
-	set_left(raw_cmd, j, fd);
+	set_right(raw_cmd, j, fd, 1);
+	set_left(raw_cmd, j, fd, 1);
 }
 
 void	wait_chiledren_and_free_fd(int cmd_len, int *fd)
@@ -123,7 +123,7 @@ void	exec_child(int cmd_len, int *fd, char ***cmd, t_arg_main *arg_main)
 
 	i = 0;
 	if (!(envs = arg_list_get(arg_main)))
-		exit(1);
+		exit(1); //　これでいいのか
 	while (i < 2 * cmd_len)
 		close(fd[i++]);
 
