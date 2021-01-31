@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "minishell.h"
 
 # define MALLOC_FAIL 1
 # define ARG_TYPE_STR 0
@@ -18,7 +19,7 @@
 //new
 //-------
 #define SYNTAX_ERROR_QUOTE 1
-
+	void    print_error(int i);
 typedef struct s_syntax_flag
 {
 	char pipe;
@@ -28,6 +29,7 @@ typedef struct s_syntax_flag
 }               t_syntax_flag;
 //--------
 
+/*
 //delete
 //---------
 char	**split_command(char *s, char c);
@@ -57,7 +59,7 @@ char	**split_command(char *s, char c);
 		
 	}
 //--------------
-
+*/
 
 int	_syntax_check_make_sedstr(char *cmd_raw, char **ret)
 {
@@ -93,7 +95,7 @@ int print_synerr(char *cmd)
 
 	s[0] = cmd[0];
 	s[2] = '\0';
-	if (cmd[0] == '\n')
+	if (cmd[0] == '\n' || cmd[0] == '\0')
 		strcpy(s, "newline");
 	else if (cmd[0] == '>')
 		s[1] = cmd[1] * (cmd[1] == cmd[0]);
@@ -110,7 +112,7 @@ int print_synerr(char *cmd)
 
 int _syntax_check_process3(char *cmd, t_syntax_flag *syntax_flag)
 {
-    if (*cmd == '\n')
+    if (*cmd == '\n' || *cmd == '\0')
     {
         if (syntax_flag->pipe || syntax_flag->r_redirect || syntax_flag->l_redirect)
             return (print_synerr(cmd));
@@ -185,6 +187,8 @@ int syntax_check_main(char *cmd)
 			return (258);
 		cmd++;
 	}
+	if (_syntax_check_process(cmd, &syntax_flag))
+			return (258);
 	return (0);
 }
 
@@ -211,7 +215,7 @@ int syntax_check(char *cmd_raw)
 	free(cmd);
 	return (tmp);	
 }
-
+/*
 int main(void)
 {
 	//printf("\n%d", syntax_check(strdup("cat > text\n")));
@@ -295,3 +299,4 @@ int main(void)
 	printf("%d\n\n", syntax_check(strdup("cat \"\n")));
 	printf("finish");
 }
+*/

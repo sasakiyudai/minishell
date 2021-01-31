@@ -14,6 +14,8 @@ void	ft_strncpy(char *dest, char *src, size_t n)
 		dest[n] = src[n];
 }
 
+
+
 void	print_error(int i)
 {
 	i++;
@@ -103,7 +105,7 @@ void ini(t_arg_main *arg_main, char *env[])
 	arg.type = ARG_TYPE_STR;
 	while (env[++i])
 	{
-		tmp = (size_t)(ft_strchar(env[i], '=') - env[i]);
+		tmp = (size_t)(ft_strchr(env[i], '=') - env[i]);
 		arg.name = malloc(tmp + 1);
 		ft_strncpy(arg.name, env[i], tmp);
 		arg.data = malloc(ft_strlen(env[i]) - tmp);
@@ -112,6 +114,7 @@ void ini(t_arg_main *arg_main, char *env[])
 	}
 }
 
+/*
 int main(int argc, char *argv[], char *env[])
 {
 	t_arg_main arg_main;
@@ -122,10 +125,9 @@ int main(int argc, char *argv[], char *env[])
 	{
 		printf("%s\n", s[i]);
 	}
-
 }
+*/
 
-/*
 int main(int argc, char *argv[], char *env[])
 {
 	char *cmd_all;
@@ -137,16 +139,21 @@ int main(int argc, char *argv[], char *env[])
 	while (1)
 	{
 		cmd_all = read_all(0);
+		if (syntax_check(cmd_all))
+		{
+			free(cmd_all);
+			continue;
+		}
 		cmd_split = split_command(cmd_all, ';');
 		tmp_cmd_split = cmd_split;
+		printf("abc");
 		while (*cmd_split)
 		{
 			command_main(*cmd_split);
 			cmd_split++;
 		}
 		split_free_all(tmp_cmd_split);
-		free(cmd_all);	
+		free(cmd_all);
+		systemcall("leaks a.out");	
 	}
 }
-
-*/

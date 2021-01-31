@@ -69,6 +69,7 @@ int				arg_add(t_arg_main *arg_main, t_arg *arg);
 int 			arg_main_ini(t_arg_main *arg_main);
 int				arg_charlen(t_arg *arg);
 int				ft_strcat_int(char *dest, char *src);
+int				syntax_check(char *cmd_raw);
 char			*arg_to_str(t_arg *arg);
 char			**arg_list_get(t_arg_main *arg_main);
 int				_arg_delete_process(t_arg_main *arg_main, t_arg_list *arg_list, char *name, t_arg_list **ret);
