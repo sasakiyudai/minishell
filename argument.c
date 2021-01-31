@@ -288,7 +288,10 @@ int     arg_get(t_arg_main *arg_main, t_arg *arg, char *name)
     t_arg_list *tmp_arg;
 
     if (!(tmp_arg = arg_isexist(arg_main, name)))
+    {
+        printf("no...\n");
         return (1);
+    }
     if (-1 == (arg_copy(arg, &(tmp_arg->arg))))
         return (-1);
     return (0);
