@@ -5,16 +5,15 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "(lldb) Launch",
-			"type": "cppdbg",
+			"name": "Launch",
+			"type": "gdb",
 			"request": "launch",
-			"program": "enter program name, for example ${workspaceFolder}/a.out",
-			"args": [],
+			"program": "a.out",
+			"args": ["AudioMxrMgr4Subaru.conf"],
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",
 			"environment": [],
-			"console": "externalTerminal",
-			"MIMode": "lldb"
+			"externalConsole": true
 		}
 	]
 }

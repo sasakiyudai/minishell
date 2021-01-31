@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 22:32:19 by syudai            #+#    #+#             */
-/*   Updated: 2021/01/30 16:23:30 by syudai           ###   ########.fr       */
+/*   Updated: 2021/01/31 14:04:12 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 #define STR_LLONG_MAX "9223372036854775807"
 #define FLAG_DOUBLE_QUOTE 2
 #define FLAG_SINGLE_QUOTE 1
+#define FLAG_MINUS_ONE 4
+
 # include "libft.h"
 # include <stdint.h>
 

@@ -1,10 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#define FLAG_SINGLE_QUOTE 1
-#define FLAG_DOUBLE_QUOTE 2
-#define FLAG_MINUS_ONE 4
+#include "includes/minishell.h"
 
 int		ft_isalnum(int c)
 {
@@ -45,8 +39,6 @@ char	*ft_strjoin(char *s1, char *s2)
 		p[ft_strlen(s1) + i] = s2[i];
 		i++;
 	}
-	free(s1);
-	free(s2);
 	return (p);
 }
 
@@ -61,7 +53,6 @@ char	*ft_strndup(char *src, int n)
 		ret[n] = src[n];
 	return (ret);
 }
-
 
 char *surround_minus_one(char *value)
 {
@@ -150,16 +141,14 @@ int single_quote(char now, int flag)
 		return (flag);
 }
 
-char *deploy(char *input, t_arg_main *arg_main)
+char *deploy(char *input, t_arg_main *arg_main, t_arg *arg, char name)
 {
 	int i;
 	char flag;
 	char *tmp;
+	char *tmp_2;
 	int len;
-	char *ret = malloc(1);
-	t_arg arg;
-
-	ret[0] = '\0';
+	char *ret = "";
 
 	i = 0;
 	flag = 0;
@@ -190,10 +179,11 @@ char *deploy(char *input, t_arg_main *arg_main)
 			}
 			tmp = ft_strndup(input + i - len, len);
 
-			arg_get(arg_main, &arg, tmp);
+			// arg_get(arg_main, arg, tmp);
 
-			tmp = surround_minus_one((char *)arg->data);
-			arg_free(arg);
+
+			// tmp = surround_minus_one((char *)arg->data);
+			tmp = surround_minus_one(tmp);
 		}
 		else
 		{				
@@ -203,21 +193,39 @@ char *deploy(char *input, t_arg_main *arg_main)
 			i++;
 		}
 		ret = ft_strjoin(ret, tmp);
+		free(tmp);
 	}
-	remove_quotes(ret);
+	// remove_quotes(ret);
 	return (ret);
 }
 
 
 int main()
 {
+	t_arg_main arg_main;
+	t_arg		arg;
 
-	// char *input = "a$TMPa\"nb$TMPm\'azi\"de\'ab$TMPcd\'$ARIGATO$";
-	char *input = "echo";
+	arg.name = "PATH";
+	arg.data = "/bin";
+	arg.type = ARG_TYPE_STR;
 
-	char *output = deploy(input, arg_main);
+	arg_main_ini(&arg_main);
+	arg_add(&arg_main, &arg);
 
-	printf("%s\n", output);
-	free(output);
+	char *input = "a$TMPa\"nb$TMPm\'azi\"de\'ab$TMPcd\'$ARIGATO$";
 
+	printf("%s\n", deploy(input, ));
+	while(1);
 }
+
+void *malloc2(size_t size)
+{
+	void *ret;
+
+	if (size == 0)
+		return (NULL);
+	if (!(ret = malloc(size)))
+		exit(-1);
+	return (ret);
+}
+

@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 17:48:01 by syudai            #+#    #+#             */
-/*   Updated: 2021/01/29 19:03:48 by syudai           ###   ########.fr       */
+/*   Updated: 2021/01/31 01:56:10 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void	set_right(char ***raw_cmd, int j, int *fd, int is_pipe)
 			ft_putstr_fd("minishell: ", 2);
 			ft_putstr_fd(raw_cmd[j / 2][-r], 2);
 			ft_putstr_fd(": No such file or directory", 2);
+			
 			return ;
 		}
 		dup2(out, 1);
