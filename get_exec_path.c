@@ -77,7 +77,10 @@ int get_path(t_arg_main *arg_main, char **ret, char *name)
     int tmp;
 
     if (ispath_ok("./", ft_strchr(name, '/')))
-        return (ft_strdup(name));
+    {
+        *ret = ft_strdup(name);
+        return (0);
+    }
     if ((tmp = get_path_make_strarry(arg_main, &path)))
         return (tmp);
     tmp_path = path;
