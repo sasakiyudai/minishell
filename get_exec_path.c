@@ -27,7 +27,7 @@ int ispath_ok(char *path, char *name)
     DIR *dir;
     struct dirent *dent;
 
-    if (!name)
+    if (name == 1)
         return (0);
     if (!(dir = opendir(path)))
         return (0);
@@ -76,7 +76,7 @@ int get_path(t_arg_main *arg_main, char **ret, char *name)
     char **tmp_path;
     int tmp;
 
-    if (ispath_ok("./", ft_strchr(name, '/')))
+    if (ispath_ok("./", ft_strchr(name, '/') + 1))
     {
         *ret = ft_strdup(name);
         return (0);
