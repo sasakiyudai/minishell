@@ -308,7 +308,7 @@ void    set_hatena(t_arg_main *arg_main, int i)
     arg.name = "?";
     arg.type = ARG_TYPE_STR;
     arg.data = malloc(len + 1);
-    ft_itoa(i, (char *)(arg.data));
+    ft_itoa(j, (char *)(arg.data));
     arg_add(arg_main, &arg);
 }
 

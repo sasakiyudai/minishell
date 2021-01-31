@@ -217,6 +217,7 @@ int main(int argc, char *argv[], char *env[])
 	ini(&arg_main, env);
 	while (1)
 	{
+		set_hatena(&arg_main, 12);
 		signal(SIGINT, sig_handler);
 		signal(SIGQUIT, sig_handler);
 		write(1, "$ ", 2);
