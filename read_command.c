@@ -115,13 +115,6 @@ void	split_free_all(char **s)
 	free(s);
 }
 */
-void	check_quote(char c, char *bitflag_quote)
-{
-	if (c == '\'' && !(*bitflag_quote & FLAG_DOUBLE_QUOTE))
-		*bitflag_quote ^= FLAG_SINGLE_QUOTE;
-	if (c == '\"' && !(*bitflag_quote & FLAG_SINGLE_QUOTE))
-		*bitflag_quote ^= FLAG_DOUBLE_QUOTE;
-}
 
 
 void	split_make_str(char **s, t_split *split_arg, char **ret)

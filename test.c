@@ -1,10 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#define FLAG_SINGLE_QUOTE 1
-#define FLAG_DOUBLE_QUOTE 2
-#define FLAG_MINUS_ONE 4
+#include "minishell.h"
 
 int		ft_isalnum(int c)
 {
@@ -15,17 +9,8 @@ int		ft_isalnum(int c)
 		return (0);
 }
 
-size_t ft_strlen(char *s)
-{
-	int i;
 
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
-}
-
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin_free(char *s1, char *s2)
 {
 	size_t	i;
 	char	*p;
@@ -48,18 +33,6 @@ char	*ft_strjoin(char *s1, char *s2)
 	free(s1);
 	free(s2);
 	return (p);
-}
-
-char	*ft_strndup(char *src, int n)
-{
-	char *ret;
-
-	if (!(ret = (char *)malloc(n + 1)))
-		return (NULL);
-	ret[n] = '\0';
-	while (n--)
-		ret[n] = src[n];
-	return (ret);
 }
 
 
@@ -192,8 +165,8 @@ char *deploy(char *input, t_arg_main *arg_main)
 
 			arg_get(arg_main, &arg, tmp);
 
-			tmp = surround_minus_one((char *)arg->data);
-			arg_free(arg);
+			tmp = surround_minus_one((char *)arg.data);
+			arg_free(&arg);
 		}
 		else
 		{				
@@ -202,21 +175,8 @@ char *deploy(char *input, t_arg_main *arg_main)
 			tmp[1] = '\0';
 			i++;
 		}
-		ret = ft_strjoin(ret, tmp);
+		ret = ft_strjoin_free(ret, tmp);
 	}
 	remove_quotes(ret);
 	return (ret);
-}
-
-int main()
-{
-
-	// char *input = "a$TMPa\"nb$TMPm\'azi\"de\'ab$TMPcd\'$ARIGATO$";
-	char *input = "echo";
-
-	char *output = deploy(input, arg_main);
-
-	printf("%s\n", output);
-	free(output);
-
 }

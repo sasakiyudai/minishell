@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 17:48:31 by syudai            #+#    #+#             */
-/*   Updated: 2021/01/31 02:04:54 by syudai           ###   ########.fr       */
+/*   Updated: 2021/01/31 16:26:52 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void one_command(char ***cmd, char ***raw_cmd, t_arg_main *arg_main)
 	wait(NULL);
 }
 
+/*
 int main(void)
 {
 	t_arg_main arg_main;
@@ -72,7 +73,7 @@ int main(void)
 	return (0);
 }
 
-
+*/
 /*
 
 ほんとのmainのしょっぱなの方で

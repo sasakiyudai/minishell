@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "includes/minishell.h"
 #define MALLOC_FAIL 1
 #define EXIT 2
 #define INI_FAIL MALLOC_FAIL + EXIT
@@ -25,8 +25,8 @@ char **make_command_array_splitpipe(char *cmd)
 {
 	char **cmd_split;
 
-//	if (!(cmd = separate_redirect(cmd)))
-//		return (NULL);
+	if (!(cmd = separate_redirect(cmd)))
+		return (NULL);
 	if (!(cmd_split = split_command(cmd, '|')))
 	{
 		free(cmd);
@@ -83,13 +83,58 @@ char ***make_command_array(char *cmd)
 	return (ret);
 }
 
-void command_main(char *cmd_raw)
+void print_tabs(char ***tabs)
+{
+	int i;
+
+	i = 0;
+	while (tabs[i])
+	{
+		print_tab(tabs[i]);
+		i++;
+	}
+}
+
+char ***make_strb_array(char ***cmd_split)
+{
+    char ***ret;
+    int i;
+
+    ret = malloc(sizeof (char **) * (count(cmd_split) + 1));
+    i = -1;
+	
+    while (cmd_split[++i])
+        ret[i] = make_strb(cmd_split[i]);
+    ret[i] = NULL;
+    return (ret);
+}
+
+void command_main(char *cmd_raw, t_arg_main *arg_main)
 {
 	char ***cmd_split;
+	int i;
+	int j;
+	char *tmp;
 
 	if (!(cmd_split = make_command_array(cmd_raw)))
 		return;
 	//pipeline
+	i = 0;
+	while (cmd_split[i])
+	{
+		j = 0;
+		while (cmd_split[i][j])
+		{
+			tmp = cmd_split[i][j];
+			cmd_split[i][j] = deploy(tmp, arg_main);
+			free(tmp);
+			j++;
+		}
+		i++;
+	}
+	print_tabs(cmd_split);
+
+	print_tabs(make_strb_array(cmd_split));
 }
 
 
@@ -134,7 +179,8 @@ int main(int argc, char *argv[], char *env[])
 	char **cmd_split;
 	char **tmp_cmd_split;
 	t_arg_main arg_main;
-
+	(void)argc;
+	(void)argv;
 	ini(&arg_main, env);
 	while (1)
 	{
@@ -146,14 +192,12 @@ int main(int argc, char *argv[], char *env[])
 		}
 		cmd_split = split_command(cmd_all, ';');
 		tmp_cmd_split = cmd_split;
-		printf("abc");
 		while (*cmd_split)
 		{
-			command_main(*cmd_split);
+			command_main(*cmd_split, &arg_main);
 			cmd_split++;
 		}
 		split_free_all(tmp_cmd_split);
 		free(cmd_all);
-		systemcall("leaks a.out");	
 	}
 }
