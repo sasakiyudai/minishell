@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 15:25:45 by syudai            #+#    #+#             */
-/*   Updated: 2021/01/30 16:11:42 by syudai           ###   ########.fr       */
+/*   Updated: 2021/01/31 16:47:07 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ char			*ft_strnstr(const char *haystack, const char *needle\
 , size_t len);
 int				ft_strncmp(const char *s1, char *s2, size_t n);
 int				ft_strcmp(char *s1, char *s2);
-int				ft_atoi(const char *str);
 int				ft_isalpha(int c);
 int				ft_isdigit(int c);
 int				ft_isalnum(int c);

@@ -65,7 +65,6 @@ int	_syntax_check_make_sedstr(char *cmd_raw, char **ret)
 {
 	char bitflag_quote;
 	int i;
-	int j;
 
 	if (!(*ret = (char *)malloc(strlen(cmd_raw) + 1)))
     {
@@ -194,6 +193,7 @@ int syntax_check_main(char *cmd)
 
 int myprint_error(int i)
 {
+	i++;
     if (SYNTAX_ERROR_QUOTE)
         printf("bash: bad quote\n");
 	return (258);

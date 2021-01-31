@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 22:32:19 by syudai            #+#    #+#             */
-/*   Updated: 2021/01/30 16:23:30 by syudai           ###   ########.fr       */
+/*   Updated: 2021/01/31 17:46:23 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@
 #define STR_LLONG_MAX "9223372036854775807"
 #define FLAG_DOUBLE_QUOTE 2
 #define FLAG_SINGLE_QUOTE 1
-# include "libft.h"
+#define FLAG_MINUS_ONE 4
+
+# include "../libft/libft.h"
 # include <stdint.h>
 
 typedef struct s_arg
@@ -116,5 +118,10 @@ void			call_builtin(int tmp, char **str_b, t_arg_main *arg_main, char **envs);
 int				error(char *path);
 char			*ft_strndup(char *src, int n);
 char			*ft_strchar(const char *s, int c);
+char			*deploy(char *input, t_arg_main *arg_main);
+void			print_tab(char *env[]);
+char 			**make_strb(char **str_a);
+int				syntax_check(char *cmd_raw);
+char 			*separate_redirect(char *command);
 
 #endif

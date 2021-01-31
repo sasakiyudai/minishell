@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "includes/minishell.h"
 
 int		ft_isalnum(int c)
 {
@@ -9,8 +9,17 @@ int		ft_isalnum(int c)
 		return (0);
 }
 
+size_t ft_strlen(char *s)
+{
+	int i;
 
-char	*ft_strjoin_free(char *s1, char *s2)
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
+
+char	*ft_strjoin(char *s1, char *s2)
 {
 	size_t	i;
 	char	*p;
@@ -30,11 +39,20 @@ char	*ft_strjoin_free(char *s1, char *s2)
 		p[ft_strlen(s1) + i] = s2[i];
 		i++;
 	}
-	free(s1);
-	free(s2);
 	return (p);
 }
 
+char	*ft_strndup(char *src, int n)
+{
+	char *ret;
+
+	if (!(ret = (char *)malloc(n + 1)))
+		return (NULL);
+	ret[n] = '\0';
+	while (n--)
+		ret[n] = src[n];
+	return (ret);
+}
 
 char *surround_minus_one(char *value)
 {
@@ -123,16 +141,14 @@ int single_quote(char now, int flag)
 		return (flag);
 }
 
-char *deploy(char *input, t_arg_main *arg_main)
+char *deploy(char *input, t_arg_main *arg_main, t_arg *arg, char name)
 {
 	int i;
 	char flag;
 	char *tmp;
+	char *tmp_2;
 	int len;
-	char *ret = malloc(1);
-	t_arg arg;
-
-	ret[0] = '\0';
+	char *ret = "";
 
 	i = 0;
 	flag = 0;
@@ -163,10 +179,11 @@ char *deploy(char *input, t_arg_main *arg_main)
 			}
 			tmp = ft_strndup(input + i - len, len);
 
-			arg_get(arg_main, &arg, tmp);
+			// arg_get(arg_main, arg, tmp);
 
-			tmp = surround_minus_one((char *)arg.data);
-			arg_free(&arg);
+
+			// tmp = surround_minus_one((char *)arg->data);
+			tmp = surround_minus_one(tmp);
 		}
 		else
 		{				
@@ -175,8 +192,40 @@ char *deploy(char *input, t_arg_main *arg_main)
 			tmp[1] = '\0';
 			i++;
 		}
-		ret = ft_strjoin_free(ret, tmp);
+		ret = ft_strjoin(ret, tmp);
+		free(tmp);
 	}
-	remove_quotes(ret);
+	// remove_quotes(ret);
 	return (ret);
 }
+
+
+int main()
+{
+	t_arg_main arg_main;
+	t_arg		arg;
+
+	arg.name = "PATH";
+	arg.data = "/bin";
+	arg.type = ARG_TYPE_STR;
+
+	arg_main_ini(&arg_main);
+	arg_add(&arg_main, &arg);
+
+	char *input = "a$TMPa\"nb$TMPm\'azi\"de\'ab$TMPcd\'$ARIGATO$";
+
+	printf("%s\n", deploy(input, ));
+	while(1);
+}
+
+void *malloc2(size_t size)
+{
+	void *ret;
+
+	if (size == 0)
+		return (NULL);
+	if (!(ret = malloc(size)))
+		exit(-1);
+	return (ret);
+}
+
