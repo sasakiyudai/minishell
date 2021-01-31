@@ -7,6 +7,13 @@ typedef int t_all;
 
 char	**split_command(char *s, char c);
 
+void	ft_strncpy(char *dest, char *src, size_t n)
+{
+	dest[n] = '\0';
+	while (n--)
+		dest[n] = src[n];
+}
+
 void	print_error(int i)
 {
 	i++;
@@ -80,58 +87,66 @@ void command_main(char *cmd_raw)
 
 	if (!(cmd_split = make_command_array(cmd_raw)))
 		return;
+	//pipeline
+}
+
+
+
+void ini(t_arg_main *arg_main, char *env[])
+{
+	int i;
+	size_t tmp;
+	t_arg arg;
+
+	arg_main_ini(arg_main);
+	i = -1;
+	arg.type = ARG_TYPE_STR;
+	while (env[++i])
+	{
+		tmp = (size_t)(ft_strchar(env[i], '=') - env[i]);
+		arg.name = malloc(tmp + 1);
+		ft_strncpy(arg.name, env[i], tmp);
+		arg.data = malloc(ft_strlen(env[i]) - tmp);
+		ft_strcpy((char *)(arg.data), env[i] + tmp + 1);
+		arg_add(arg_main, &arg);
+	}
+}
+
+int main(int argc, char *argv[], char *env[])
+{
+	t_arg_main arg_main;
+	ini(&arg_main, env);
+	char **s = arg_list_get(&arg_main);
 	int i = -1;
-	while (cmd_split[++i])
+	while (s[++i])
 	{
-		int j = -1;
-		while (cmd_split[i][++j])
-			printf("%s\n", cmd_split[i][j]);
+		printf("%s\n", s[i]);
 	}
+
 }
+
 /*
-
-int main(void)
-{
-	command_main(NULL, "cat >text ||| ls");
-}
-
-
-int ini(t_all *all)
-{
-	if (!(arg_main_ini(&(all->arg_main))))
-	{
-		error(INI_FAIL);
-		return (-1);
-	}
-}
-
-int main(void)
+int main(int argc, char *argv[], char *env[])
 {
 	char *cmd_all;
 	char **cmd_split;
 	char **tmp_cmd_split;
-	t_all all;
+	t_arg_main arg_main;
 
-	if (ini(&all))
-		while (1)
+	ini(&arg_main, env);
+	while (1)
+	{
+		cmd_all = read_all(0);
+		cmd_split = split_command(cmd_all, ';');
+		tmp_cmd_split = cmd_split;
+		while (*cmd_split)
 		{
-			while (!(cmd_all = read_all(0)))
-				error(MALLOC_FAIL);
-			if (!(cmd_split = split_command(cmd_all, ';')))
-				error(MALLOC_FAIL);
-			else
-			{
-				tmp_cmd_split = cmd_split;
-				while (*cmd_split)
-				{
-					command_main(*cmd_split);
-					cmd_split++;
-				}
-				split_free_all(tmp_cmd_split);
-			}
-			free(cmd_all);	
+			command_main(*cmd_split);
+			cmd_split++;
 		}
-
+		split_free_all(tmp_cmd_split);
+		free(cmd_all);	
+	}
 }
 
 */

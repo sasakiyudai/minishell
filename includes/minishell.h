@@ -114,5 +114,6 @@ int				is_builtin(char *command);
 void			call_builtin(int tmp, char **str_b, t_arg_main *arg_main, char **envs);
 int				error(char *path);
 char			*ft_strndup(char *src, int n);
+char			*ft_strchar(const char *s, int c);
 
 #endif

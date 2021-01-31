@@ -214,7 +214,6 @@ char *deploy(char *input)
 	return (ret);
 }
 
-
 int main()
 {
 	// char str[3];
