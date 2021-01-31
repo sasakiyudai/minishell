@@ -208,7 +208,6 @@ char *deploy(char *input, t_arg_main *arg_main)
 	return (ret);
 }
 
-
 int main()
 {
 

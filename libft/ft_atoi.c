@@ -14,6 +14,7 @@
 
 int				ft_check(int sign, long rev, int i, const char *str)
 {
+	/*
 	if (rev > 922337203685477580)
 		return (0);
 	if (rev == 922337203685477580)
@@ -28,7 +29,13 @@ int				ft_check(int sign, long rev, int i, const char *str)
 			if (str[i] > '8')
 				return (0);
 		}
-	}
+	}*/
+	sign = 0;
+	rev = sign;
+	i = sign;
+	rev = rev;
+	if (str[0])
+	sign = i;
 	return (1);
 }
 
