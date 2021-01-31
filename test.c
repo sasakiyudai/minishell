@@ -156,17 +156,23 @@ char *deploy(char *input, t_arg_main *arg_main)
 		{
 			i++;
 			len = 0;
-			while (ft_isalnum(input[i]))
+			while (ft_isalnum(input[i]) || (input[i] == '?' && len == 0))
 			{
 				len++;
 				i++;
 			}
 			tmp = ft_strndup(input + i - len, len);
 
-			arg_get(arg_main, &arg, tmp);
-
-			tmp = surround_minus_one((char *)arg.data);
-			arg_free(&arg);
+			if (0 == arg_get(arg_main, &arg, tmp))
+			{	
+				tmp = surround_minus_one((char *)arg.data);
+				arg_free(&arg);
+			}
+			else
+			{
+				free(tmp);
+				tmp = ft_strdup("");
+			}
 		}
 		else
 		{				

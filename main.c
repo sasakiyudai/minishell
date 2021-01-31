@@ -5,6 +5,9 @@
 
 typedef int t_all;
 
+char* g_signal;
+t_arg_main* g_arg_main;
+
 char	**split_command(char *s, char c);
 
 void	ft_strncpy(char *dest, char *src, size_t n)
@@ -132,9 +135,10 @@ void command_main(char *cmd_raw, t_arg_main *arg_main)
 		}
 		i++;
 	}
-	print_tabs(cmd_split);
+	//print_tabs(cmd_split);
+	//print_tabs(make_strb_array(cmd_split));
 
-	print_tabs(make_strb_array(cmd_split));
+	pipeline(make_strb_array(cmd_split), cmd_split, arg_main);
 }
 
 
@@ -146,6 +150,7 @@ void ini(t_arg_main *arg_main, char *env[])
 	t_arg arg;
 
 	arg_main_ini(arg_main);
+	g_arg_main = arg_main;
 	i = -1;
 	arg.type = ARG_TYPE_STR;
 	while (env[++i])
@@ -173,6 +178,34 @@ int main(int argc, char *argv[], char *env[])
 }
 */
 
+void sig_handler(int sig)
+{
+	t_arg arg;
+	
+	arg.name = "?";
+	arg.type = ARG_TYPE_STR;
+	if (sig == SIGINT)
+	{
+		arg.data = ft_strdup(g_signal);
+		arg_add(g_arg_main, &arg);
+		free((char *)(arg.data));
+		if (!ft_strcmp(g_signal, "1"))
+			write(1, "\b\b  \n$ ", 7);
+		else
+			write(1, "\n", 1);
+	}
+	else if (sig == SIGQUIT && ft_strcmp(g_signal, "1"))
+	{
+		arg.data = "131";
+		arg_add(g_arg_main, &arg);
+		write(1, "Quit: 3\n", 8);
+	}
+	else if (sig == SIGQUIT)
+		write(1, "\b\b  \b\b", 6);
+	// else if (sig == )
+	printf("%d\n", sig);
+}
+
 int main(int argc, char *argv[], char *env[])
 {
 	char *cmd_all;
@@ -184,7 +217,12 @@ int main(int argc, char *argv[], char *env[])
 	ini(&arg_main, env);
 	while (1)
 	{
+		signal(SIGINT, sig_handler);
+		signal(SIGQUIT, sig_handler);
+		write(1, "$ ", 2);
+		g_signal = "1";
 		cmd_all = read_all(0);
+		g_signal = "130";
 		if (syntax_check(cmd_all))
 		{
 			free(cmd_all);

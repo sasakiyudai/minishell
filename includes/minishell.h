@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 22:32:19 by syudai            #+#    #+#             */
-/*   Updated: 2021/01/31 17:46:23 by syudai           ###   ########.fr       */
+/*   Updated: 2021/01/31 19:58:50 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,9 @@ typedef    struct    s_split
     int        flag_sequencial;
     char    bitflag_quote;
 }                t_split;
+
+extern char* g_signal;
+extern t_arg_main* g_arg_main;
 
 void			set_right(char ***raw_cmd, int j, int *fd, int is_pipe);
 void			set_left(char ***raw_cmd, int j, int *fd, int is_pipe);
@@ -123,5 +126,6 @@ void			print_tab(char *env[]);
 char 			**make_strb(char **str_a);
 int				syntax_check(char *cmd_raw);
 char 			*separate_redirect(char *command);
+void 			one_command(char ***cmd, char ***raw_cmd, t_arg_main *arg_main);
 
 #endif
