@@ -116,7 +116,6 @@ int is_strb_empty(char *s)
 {
 	int ret;
 
-	printf("%hhd\n", s[0]);
 	if (!*s)
 		return (0);
 	ret = 1;
