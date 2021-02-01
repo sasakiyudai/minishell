@@ -230,8 +230,6 @@ void sig_handler(int sig)
 	}
 	else if (sig == SIGQUIT)
 		write(1, "\b\b  \b\b", 6);
-	// else if (sig == )
-	printf("%d\n", sig);
 }
 
 int main(int argc, char *argv[], char *env[])
