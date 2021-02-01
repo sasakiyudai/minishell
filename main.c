@@ -145,24 +145,26 @@ void	remove_empty_strb(char **cmd_split, int *i)
 void command_main(char *cmd_raw, t_arg_main *arg_main)
 {
 	char ***cmd_split;
+	char ***tmp_cmd_split;
 	int i;
 	int j;
 	char *tmp;
 
 	cmd_split = make_command_array(cmd_raw);
-	while (*cmd_split)
+	tmp_cmd_split = cmd_split;
+	while (*tmp_cmd_split)
 	{
 		j = -1;
 		i = 0;
-		while (cmd_split[0][++j])
+		while (tmp_cmd_split[0][++j])
 		{
-			tmp = cmd_split[0][j];
-			cmd_split[0][i] = deploy(tmp, arg_main);
+			tmp = tmp_cmd_split[0][j];
+			tmp_cmd_split[0][i] = deploy(tmp, arg_main);
 			free(tmp);
-			remove_empty_strb(cmd_split[0], &i);
+			remove_empty_strb(tmp_cmd_split[0], &i);
 		}
-		cmd_split[0][i] = NULL;
-		cmd_split++;
+		tmp_cmd_split[0][i] = NULL;
+		tmp_cmd_split++;
 	}
 	pipeline(make_strb_array(cmd_split), cmd_split, arg_main);
 }
