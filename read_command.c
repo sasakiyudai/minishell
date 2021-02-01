@@ -29,25 +29,32 @@ char	*ft_newstr_ncatfree(char *src1, char *src2, int n, int bitflag)
 	return (ret);
 }
 
-char	*read_all(int fd)
+char    *read_all(int fd)
 {
-	char	*ret;
-	char	buf[1000];
-	int		cnt_read;
-	int		ret_read;
+    char    *ret;
+    char    buf[1000];
+    int        cnt_read;
+    int        ret_read;
+    int     f;
 
-	cnt_read = 0;
-	ret = (char *)malloc(1);
-	ret[0] = '\0';
-	while ((ret_read = read(fd, buf, 1000)) > 0 && buf[ret_read - 1] != '\n')
-		if (!(ret = ft_newstr_ncatfree(ret, buf, (cnt_read += ret_read), 1)))
-			return (NULL);
-	if (!(ret = ft_newstr_ncatfree(ret, buf, (cnt_read += ret_read), 1)))
-		return (NULL);
-	if (ret_read >= 0)
-		return (ret);
-	free(ret);
-	return (NULL);
+    cnt_read = 0;
+    f = 0;
+    ret = (char *)malloc(1);
+    ret[0] = '\0';
+    while ((ret_read = read(fd, buf, 1000)) > 0 && (f = 1) && buf[ret_read - 1] != '\n')
+        if (!(ret = ft_newstr_ncatfree(ret, buf, (cnt_read += ret_read), 1)))
+            return (NULL);
+    if (!f)
+	{
+		write(1, "exit\n", 5);
+        exit(0);
+	}
+    if (!(ret = ft_newstr_ncatfree(ret, buf, (cnt_read += ret_read), 1)))
+        return (NULL);
+    if (ret_read >= 0)
+        return (ret);
+    free(ret);
+    return (NULL);
 }
 
 char	*ft_strndup(char *src, int n)
