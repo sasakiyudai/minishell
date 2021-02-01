@@ -27,7 +27,7 @@ int ispath_ok(char *path, char *name)
     DIR *dir;
     struct dirent *dent;
 
-    if (name == 1)
+    if (name == (char *)1)
         return (0);
     if (!(dir = opendir(path)))
         return (0);
