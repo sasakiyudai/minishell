@@ -116,7 +116,6 @@ int is_strb_empty(char *s)
 {
 	int ret;
 
-	printf("%hhd\n", s[0]);
 	if (!*s)
 		return (0);
 	ret = 1;
@@ -140,6 +139,7 @@ void	remove_empty_strb(char **cmd_split, int *i)
 	else
 	{
 		tmp = cmd_split[*i];
+		remove_quotes(cmd_split[*i]);
 		(*i)++;
 	}
 }
@@ -232,6 +232,8 @@ void sig_handler(int sig)
 	}
 	else if (sig == SIGQUIT)
 		write(1, "\b\b  \b\b", 6);
+	// else if (sig == )
+	printf("%d\n", sig);
 }
 
 int main(int argc, char *argv[], char *env[])

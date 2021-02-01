@@ -9,7 +9,7 @@ int ft_echo(char *args[])
 	is_n = 0;
 	if (ft_len(args) != 1)
 	{
-		while (args[i] && ft_strncmp("-n", args[i], ft_strlen(args[i])) == 0)
+		while (args[i] && ft_strcmp("-n", args[i]) == 0)
 		{
 			is_n = 1;
 			i++;

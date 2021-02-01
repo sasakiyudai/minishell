@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 17:47:28 by syudai            #+#    #+#             */
-/*   Updated: 2021/01/31 19:30:58 by syudai           ###   ########.fr       */
+/*   Updated: 2021/01/31 21:13:29 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,10 @@ void	call_builtin(int tmp, char **str_b, t_arg_main *arg_main, char **envs)
 	else if (tmp == 6)
 		ft_env(envs);
 	else if (tmp == 7)
+	{
+		write(2, "exit\n", 5);
 		exit(0);
+	}
 }
 
 void print_tab(char *env[])
@@ -181,4 +184,3 @@ void	pipeline(char ***cmd, char ***raw_cmd, t_arg_main *arg_main)
 	else if (count(cmd) >= 1)
 		pipeline(cmd, raw_cmd, arg_main);
 }
-
