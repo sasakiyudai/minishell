@@ -128,7 +128,7 @@ int is_strb_empty(char *s)
 	return (ret);
 }
 
-void	remove_empty_strb(char **cmd_split, int *i, int *num)
+void	remove_empty_strb(char **cmd_split, int *i)
 {
 	char *tmp;
 
@@ -148,20 +148,18 @@ void command_main(char *cmd_raw, t_arg_main *arg_main)
 	int i;
 	int j;
 	char *tmp;
-	int num;
 
 	cmd_split = make_command_array(cmd_raw);
 	while (*cmd_split)
 	{
 		j = -1;
 		i = 0;
-		num = ft_len(*cmd_split);
 		while (cmd_split[0][++j])
 		{
 			tmp = cmd_split[0][j];
 			cmd_split[0][i] = deploy(tmp, arg_main);
 			free(tmp);
-			remove_empty_strb(cmd_split[0], &i, &num);
+			remove_empty_strb(cmd_split[0], &i);
 		}
 		cmd_split[0][i] = NULL;
 		cmd_split++;
