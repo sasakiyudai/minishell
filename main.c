@@ -112,32 +112,63 @@ char ***make_strb_array(char ***cmd_split)
     return (ret);
 }
 
+int is_strb_empty(char *s)
+{
+	int ret;
+
+	if (!*s)
+		return (0);
+	ret = 1;
+	while (*s)
+	{
+		if (*s != -1)
+			ret = 0;
+		s++;
+	}
+	return (ret);
+}
+
+void	remove_empty_strb(char **cmd_split, int *j, int *num)
+{
+	char *tmp;
+
+	if (is_strb_empty(cmd_split[*j]))
+	{
+		free(cmd_split[*num - 1]);
+		cmd_split[*num - 1] = NULL;
+		(*num)--;
+		(*j)--;
+	}
+	else
+	{
+		tmp = cmd_split[*j];
+		cmd_split[*j] =	remove_quotes(cmd_split[j]);
+		free(tmp);
+	}
+}
+
 void command_main(char *cmd_raw, t_arg_main *arg_main)
 {
 	char ***cmd_split;
 	int i;
 	int j;
 	char *tmp;
+	int num;
 
-	if (!(cmd_split = make_command_array(cmd_raw)))
-		return;
-	//pipeline
-	i = 0;
-	while (cmd_split[i])
+	cmd_split = make_command_array(cmd_raw);
+	i = -1;
+	while (cmd_split[++i])
 	{
-		j = 0;
-		while (cmd_split[i][j])
+		j = -1;
+		num = ft_len(cmd_split[i]);
+		while (cmd_split[i][++j])
 		{
 			tmp = cmd_split[i][j];
 			cmd_split[i][j] = deploy(tmp, arg_main);
 			free(tmp);
-			j++;
+			remove_empty_strb(cmd_split[i], &j, &num);
 		}
-		i++;
 	}
-	//print_tabs(cmd_split);
-	//print_tabs(make_strb_array(cmd_split));
-
 	pipeline(make_strb_array(cmd_split), cmd_split, arg_main);
 }
 

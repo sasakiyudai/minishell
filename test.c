@@ -183,6 +183,5 @@ char *deploy(char *input, t_arg_main *arg_main)
 		}
 		ret = ft_strjoin_free(ret, tmp);
 	}
-	remove_quotes(ret);
 	return (ret);
 }
