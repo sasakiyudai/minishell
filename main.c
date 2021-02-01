@@ -142,7 +142,7 @@ void	remove_empty_strb(char **cmd_split, int *j, int *num)
 	else
 	{
 		tmp = cmd_split[*j];
-		cmd_split[*j] =	remove_quotes(cmd_split[j]);
+		cmd_split[*j] =	remove_quotes(cmd_split[*j]);
 		free(tmp);
 	}
 }
