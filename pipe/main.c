@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 17:48:31 by syudai            #+#    #+#             */
-/*   Updated: 2021/01/31 21:54:33 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/01 22:16:01 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void one_command(char ***cmd, char ***raw_cmd, t_arg_main *arg_main)
 	int semi[2];
 	char **envs;
 	char *path;
+	int status;
 
 	if (!(envs = arg_list_get(arg_main)))
 		exit(1); //　これでいいのか
@@ -27,21 +28,23 @@ void one_command(char ***cmd, char ***raw_cmd, t_arg_main *arg_main)
 		set_right(raw_cmd, 0, semi, 0);
 		set_left(raw_cmd, 0, semi, 0);
 		call_builtin(tmp, *cmd, arg_main, envs);
-		return ;
 	}
-	else if ((pid = fork()) == 0)
+	else 
 	{
-		if (0 == (tmp = get_path(arg_main, &path, (*cmd)[0])))
+		pid = fork();
+		if (pid == 0)
 		{
 			set_right(raw_cmd, 0, semi, 0);
 			set_left(raw_cmd, 0, semi, 0);
-			execve(path, *cmd, envs); // えらーおきたときfd戻るか？
+			if (0 == (tmp = get_path(arg_main, &path, (*cmd)[0])))
+				execve(path, *cmd, envs); // えらーおきたときfd戻るか？
+			exit(error((*cmd)[0]));
 		}
 		else if (tmp == -1)
 			print_error(MALLOC_FAIL);
-		exit(error((*cmd)[0]));
+		waitpid(pid, &status, 0);
+		set_hatena(arg_main, WEXITSTATUS(status));  //　ここじゃ反映されない？？？
 	}
-	wait(NULL);
 }
 
 /*

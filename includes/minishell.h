@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 22:32:19 by syudai            #+#    #+#             */
-/*   Updated: 2021/01/31 19:58:50 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/01 20:13:43 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void			set_left(char ***raw_cmd, int j, int *fd, int is_pipe);
 int				count(char ***cmd);
 void			pipeline(char ***cmd, char ***raw_cmd, t_arg_main *arg_main);
 void			safe_close(int fd);
-int				ft_cd(char *args[]);
+int				ft_cd(char **args, t_arg_main *arg_main);
 int				ft_echo(char *args[]);
 int				ft_pwd(void);
 int				ft_export(char *args[], char *envp[], t_arg_main *arg_main);
