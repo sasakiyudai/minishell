@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 17:47:28 by syudai            #+#    #+#             */
-/*   Updated: 2021/01/31 21:13:29 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/02 01:18:17 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,72 @@ void	set_fd(char ***cmd, char ***raw_cmd, int *fd, int j)
 	set_left(raw_cmd, j, fd, 1);
 }
 
-void	wait_chiledren_and_free_fd(int cmd_len, int *fd)
+void	wait_chiledren_and_free_fd(int cmd_len, int *fd, pid_t *pids, t_arg_main *arg_main)
 {
 	int i;
+	int status;
 
 	i = 0;
+	//while (i < 2 * cmd_len)
+	//	close(fd[i++]);
 	i = 0;
-	while (i < 2 * cmd_len)
-		close(fd[i++]);
-	i = 0;
-	while (i < cmd_len)
+	/* while (i < cmd_len)
 	{
-		wait(NULL);
+		// wait(NULL);
+		waitpid(pids[i], &status, 0);
 		i++;
-	}
+	} */
+
+	// int cnt = cmd_len;
+
+    /* while (cnt)
+    {
+        i = 0;
+        while (i < cmd_len)
+        {
+            waitpid(pids[i], &status, WNOHANG);
+            if (WIFEXITED(status))
+            {
+				printf("%d\n", i);
+                close(fd[i]);
+                close(fd[i + 1]);
+                cnt--;
+                if (i == cmd_len - 1)
+                    set_hatena(g_arg_main, WEXITSTATUS(status));
+            }
+            i++;
+        }
+    } */
+
+	pid_t ret;
+    int cnt = cmd_len;
+    int j;
+	char c = 4;
+    while (cnt--)
+    {
+        ret = waitpid(-1, &status, 0);
+        j = -1;
+		printf("68にきた\n");
+        while (++j < cmd_len)
+        {
+            if (ret == pids[j])
+            {
+                if (j != 0)
+                    printf("%d\n", close(fd[j * 2 - 2]));
+                if (j != cmd_len - 1)
+				{
+					write(fd[j * 2 + 1], &c, 1);
+                    printf("%d\n", close(fd[j * 2 + 1]));
+				}
+                else
+                    set_hatena(g_arg_main, WEXITSTATUS(status));
+            }
+        }
+    }
+	
+	free(pids);
 	free(fd);
+	set_hatena(arg_main, WEXITSTATUS(status)); //　反映されない？？？
 }
 
 int		error(char *path)
@@ -88,12 +139,15 @@ int		is_builtin(char *command)
 
 void	call_builtin(int tmp, char **str_b, t_arg_main *arg_main, char **envs)
 {
+	int result;
+
+	result = 0;
 	if (tmp == 1)
 		ft_echo(str_b);
 	else if (tmp == 2)
-		ft_cd(str_b);
+		result = ft_cd(str_b, arg_main);
 	else if (tmp == 3)
-		ft_pwd();
+		result = ft_pwd();
 	else if (tmp == 4)
 		ft_export(str_b, envs, arg_main);
 	else if (tmp == 5)
@@ -105,6 +159,7 @@ void	call_builtin(int tmp, char **str_b, t_arg_main *arg_main, char **envs)
 		write(2, "exit\n", 5);
 		exit(0);
 	}
+	set_hatena(arg_main, result);
 }
 
 void print_tab(char *env[])
@@ -112,7 +167,7 @@ void print_tab(char *env[])
 	int i = 0;
 
 	while (env[i])
-		fprintf(stderr, "%s\n", env[i++]);
+		fprintf(stdout, "%s\n", env[i++]);
 }
 
 void	exec_child(int cmd_len, int *fd, char ***cmd, t_arg_main *arg_main)
@@ -131,9 +186,10 @@ void	exec_child(int cmd_len, int *fd, char ***cmd, t_arg_main *arg_main)
 
 	if ((tmp = is_builtin((*cmd)[0])))
 	{
-		//printf("hello, builtin\n");
-		//exit(0);
 		call_builtin(tmp, *cmd, arg_main, envs);
+		//close(0);
+		//close(1);
+		exit(0);
 	}
 	else
 	{
@@ -153,15 +209,14 @@ void	pipeline2(char ***cmd, char ***raw_cmd, t_arg_main *arg_main)
 	int		i;
 	int		j;
 	pid_t	pid;
-	int		cmd_len;
+	pid_t	*pids;
 	int		*fd;
 
-	cmd_len = count(cmd);
-	if (!(fd = malloc(sizeof(int) * 2 * cmd_len)))
+	if (!(fd = malloc(sizeof(int) * 2 * count(cmd))) || !(pids = malloc(sizeof(pid_t) * count(cmd))))
 		return (print_error(MALLOC_FAIL));
 	i = 0;
 	j = 0;
-	while (i < cmd_len)
+	while (i < count(cmd))
 		pipe(fd + i++ * 2);
 	while (*cmd != NULL)
 	{
@@ -169,18 +224,20 @@ void	pipeline2(char ***cmd, char ***raw_cmd, t_arg_main *arg_main)
 		if (pid == 0)
 		{
 			set_fd(cmd, raw_cmd, fd, j);
-			exec_child(cmd_len, fd, cmd, arg_main);
+			exec_child(count(cmd), fd, cmd, arg_main);
 		}
+		pids[j / 2] = pid;
 		cmd++;
 		j += 2;
 	}
-	wait_chiledren_and_free_fd(cmd_len, fd);
+	wait_chiledren_and_free_fd(i, fd, pids, arg_main);
 }
 
 void	pipeline(char ***cmd, char ***raw_cmd, t_arg_main *arg_main)
 {
+	
 	if (count(cmd) == 1)
 		one_command(cmd, raw_cmd, arg_main);
 	else if (count(cmd) >= 1)
-		pipeline(cmd, raw_cmd, arg_main);
+		pipeline2(cmd, raw_cmd, arg_main);
 }
