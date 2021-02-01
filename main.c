@@ -130,9 +130,12 @@ void command_main(char *cmd_raw, t_arg_main *arg_main)
 		{
 			tmp = cmd_split[i][j];
 			cmd_split[i][j] = deploy(tmp, arg_main);
+			remove_empty_str(cmd_split[i][j], &j);
+			remove_quotes(ret);
 			free(tmp);
 			j++;
 		}
+		cmd_split[i][j] = NULL;
 		i++;
 	}
 	//print_tabs(cmd_split);
@@ -202,8 +205,6 @@ void sig_handler(int sig)
 	}
 	else if (sig == SIGQUIT)
 		write(1, "\b\b  \b\b", 6);
-	// else if (sig == )
-	printf("%d\n", sig);
 }
 
 int main(int argc, char *argv[], char *env[])
