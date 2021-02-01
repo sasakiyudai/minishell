@@ -112,35 +112,60 @@ char ***make_strb_array(char ***cmd_split)
     return (ret);
 }
 
+int is_strb_empty(char *s)
+{
+	int ret;
+
+	if (!*s)
+		return (0);
+	ret = 1;
+	while (*s)
+	{
+		if (*s != -1)
+			ret = 0;
+		s++;
+	}
+	return (ret);
+}
+
+void	remove_empty_strb(char **cmd_split, int *i)
+{
+	char *tmp;
+
+	if (is_strb_empty(cmd_split[*i]))
+		free(cmd_split[*i]);
+	else
+	{
+		tmp = cmd_split[*i];
+		remove_quotes(cmd_split[*i]);
+		(*i)++;
+	}
+}
+
 void command_main(char *cmd_raw, t_arg_main *arg_main)
 {
 	char ***cmd_split;
+	char ***tmp_cmd_split;
 	int i;
 	int j;
 	char *tmp;
 
-	if (!(cmd_split = make_command_array(cmd_raw)))
-		return;
-	//pipeline
-	i = 0;
-	while (cmd_split[i])
+	cmd_split = make_command_array(cmd_raw);
+	tmp_cmd_split = cmd_split;
+	while (*tmp_cmd_split)
 	{
-		j = 0;
-		while (cmd_split[i][j])
+		j = -1;
+		i = 0;
+		while (tmp_cmd_split[0][++j])
 		{
-			tmp = cmd_split[i][j];
-			cmd_split[i][j] = deploy(tmp, arg_main);
-			remove_empty_str(cmd_split[i][j], &j);
-			remove_quotes(ret);
+			tmp = tmp_cmd_split[0][j];
+			tmp_cmd_split[0][i] = deploy(tmp, arg_main);
 			free(tmp);
-			j++;
+			remove_empty_strb(tmp_cmd_split[0], &i);
 		}
-		cmd_split[i][j] = NULL;
-		i++;
+		tmp_cmd_split[0][i] = NULL;
+		tmp_cmd_split++;
 	}
-	//print_tabs(cmd_split);
-	//print_tabs(make_strb_array(cmd_split));
-
 	pipeline(make_strb_array(cmd_split), cmd_split, arg_main);
 }
 
@@ -218,6 +243,7 @@ int main(int argc, char *argv[], char *env[])
 	ini(&arg_main, env);
 	while (1)
 	{
+		set_hatena(&arg_main, 12);
 		signal(SIGINT, sig_handler);
 		signal(SIGQUIT, sig_handler);
 		write(1, "$ ", 2);

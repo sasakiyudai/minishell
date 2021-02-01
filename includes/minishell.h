@@ -56,6 +56,8 @@ typedef    struct    s_split
 extern char* g_signal;
 extern t_arg_main* g_arg_main;
 
+void			remove_quotes(char *cmd);
+void			set_hatena(t_arg_main *arg_main, int i);
 void			set_right(char ***raw_cmd, int j, int *fd, int is_pipe);
 void			set_left(char ***raw_cmd, int j, int *fd, int is_pipe);
 int				count(char ***cmd);

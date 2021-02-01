@@ -288,12 +288,28 @@ int     arg_get(t_arg_main *arg_main, t_arg *arg, char *name)
     t_arg_list *tmp_arg;
 
     if (!(tmp_arg = arg_isexist(arg_main, name)))
-    {
         return (1);
-    }
     if (-1 == (arg_copy(arg, &(tmp_arg->arg))))
         return (-1);
     return (0);
+}
+
+void    set_hatena(t_arg_main *arg_main, int i)
+{
+    int j;
+    int len;
+    t_arg arg;
+
+    j = i;
+    len = 1 + (i < 0);
+    i = i < 0 ? -i : i;
+    while (i > 9 && len++)
+        i /= 10;
+    arg.name = "?";
+    arg.type = ARG_TYPE_STR;
+    arg.data = malloc(len + 1);
+    ft_itoa(j, (char *)(arg.data));
+    arg_add(arg_main, &arg);
 }
 
 void    add_out(t_arg_main *arg_main, t_arg arg)
