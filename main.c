@@ -128,21 +128,17 @@ int is_strb_empty(char *s)
 	return (ret);
 }
 
-void	remove_empty_strb(char **cmd_split, int *j, int *num)
+void	remove_empty_strb(char **cmd_split, int *i, int *num)
 {
 	char *tmp;
 
-	if (is_strb_empty(cmd_split[*j]))
-	{
-		free(cmd_split[*num - 1]);
-		cmd_split[*num - 1] = NULL;
-		(*num)--;
-		(*j)--;
-	}
+	if (is_strb_empty(cmd_split[*i]))
+		free(cmd_split[*i]);
 	else
 	{
-		tmp = cmd_split[*j];
-		remove_quotes(cmd_split[*j]);
+		tmp = cmd_split[*i];
+		remove_quotes(cmd_split[*i]);
+		(*i)++;
 	}
 }
 
@@ -155,18 +151,20 @@ void command_main(char *cmd_raw, t_arg_main *arg_main)
 	int num;
 
 	cmd_split = make_command_array(cmd_raw);
-	i = -1;
-	while (cmd_split[++i])
+	while (*cmd_split)
 	{
 		j = -1;
-		num = ft_len(cmd_split[i]);
-		while (cmd_split[i][++j])
+		i = 0;
+		num = ft_len(*cmd_split);
+		while (cmd_split[0][++j])
 		{
-			tmp = cmd_split[i][j];
-			cmd_split[i][j] = deploy(tmp, arg_main);
+			tmp = cmd_split[0][j];
+			cmd_split[0][i] = deploy(tmp, arg_main);
 			free(tmp);
-			remove_empty_strb(cmd_split[i], &j, &num);
+			remove_empty_strb(cmd_split[0], &i, &num);
 		}
+		cmd_split[0][i] = NULL;
+		cmd_split++;
 	}
 	pipeline(make_strb_array(cmd_split), cmd_split, arg_main);
 }
