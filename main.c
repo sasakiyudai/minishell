@@ -143,7 +143,6 @@ void	remove_empty_strb(char **cmd_split, int *j, int *num)
 	{
 		tmp = cmd_split[*j];
 		remove_quotes(cmd_split[*j]);
-		free(tmp);
 	}
 }
 
