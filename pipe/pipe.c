@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 17:47:28 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/02 01:18:17 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/02 16:43:21 by rnitta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,71 +27,45 @@ void	wait_chiledren_and_free_fd(int cmd_len, int *fd, pid_t *pids, t_arg_main *a
 	int i;
 	int status;
 
+	(void)arg_main;
 	i = 0;
-	//while (i < 2 * cmd_len)
-	//	close(fd[i++]);
+	while (i < 2 * (cmd_len - 1))
+		close(fd[i++]);
 	i = 0;
-	/* while (i < cmd_len)
-	{
-		// wait(NULL);
-		waitpid(pids[i], &status, 0);
-		i++;
-	} */
-
-	// int cnt = cmd_len;
-
-    /* while (cnt)
-    {
-        i = 0;
-        while (i < cmd_len)
-        {
-            waitpid(pids[i], &status, WNOHANG);
-            if (WIFEXITED(status))
-            {
-				printf("%d\n", i);
-                close(fd[i]);
-                close(fd[i + 1]);
-                cnt--;
-                if (i == cmd_len - 1)
-                    set_hatena(g_arg_main, WEXITSTATUS(status));
-            }
-            i++;
-        }
-    } */
 
 	pid_t ret;
     int cnt = cmd_len;
     int j;
-	char c = 4;
+//:q
+//char c = 4;
     while (cnt--)
     {
         ret = waitpid(-1, &status, 0);
         j = -1;
-		printf("68にきた\n");
         while (++j < cmd_len)
         {
             if (ret == pids[j])
             {
+				/*
                 if (j != 0)
 				{
                     close(fd[j * 2 - 2]);
-					close(fd[(j - 1) * 2 + 1]);
 				}
                 if (j != cmd_len - 1)
 				{
-					//write(fd[j * 2 + 1], &c, 1);
+					write(fd[j * 2 + 1], &c, 1);
                     close(fd[j * 2 + 1]);
-					close(fd[(j + 1) * 2 - 2]);
 				}
                 else
+				*/
                     set_hatena(g_arg_main, WEXITSTATUS(status));
             }
         }
     }
 	
+	printf("finish\n");
 	free(pids);
 	free(fd);
-	set_hatena(arg_main, WEXITSTATUS(status)); //　反映されない？？？
 }
 
 int		error(char *path)
@@ -185,9 +159,9 @@ void	exec_child(int cmd_len, int *fd, char ***cmd, t_arg_main *arg_main)
 	i = 0;
 	if (!(envs = arg_list_get(arg_main)))
 		exit(1); //　これでいいのか
-	while (i < 2 * cmd_len)
+	while (i < 2 * (cmd_len - 1))
 		close(fd[i++]);
-
+(void)fd; (void)cmd_len;
 	if ((tmp = is_builtin((*cmd)[0])))
 	{
 		call_builtin(tmp, *cmd, arg_main, envs);
@@ -216,11 +190,11 @@ void	pipeline2(char ***cmd, char ***raw_cmd, t_arg_main *arg_main)
 	pid_t	*pids;
 	int		*fd;
 
-	if (!(fd = malloc(sizeof(int) * 2 * count(cmd))) || !(pids = malloc(sizeof(pid_t) * count(cmd))))
+	if (!(fd = malloc(sizeof(int) * 2 * (count(cmd) - 1))) || !(pids = malloc(sizeof(pid_t) * count(cmd))))
 		return (print_error(MALLOC_FAIL));
 	i = 0;
 	j = 0;
-	while (i < count(cmd))
+	while (i < count(cmd) - 1)
 		pipe(fd + i++ * 2);
 	while (*cmd != NULL)
 	{
@@ -228,13 +202,13 @@ void	pipeline2(char ***cmd, char ***raw_cmd, t_arg_main *arg_main)
 		if (pid == 0)
 		{
 			set_fd(cmd, raw_cmd, fd, j);
-			exec_child(count(cmd), fd, cmd, arg_main);
+			exec_child(i + 1, fd, cmd, arg_main);
 		}
 		pids[j / 2] = pid;
 		cmd++;
 		j += 2;
 	}
-	wait_chiledren_and_free_fd(i, fd, pids, arg_main);
+	wait_chiledren_and_free_fd(i + 1, fd, pids, arg_main);
 }
 
 void	pipeline(char ***cmd, char ***raw_cmd, t_arg_main *arg_main)
