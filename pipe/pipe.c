@@ -73,11 +73,15 @@ void	wait_chiledren_and_free_fd(int cmd_len, int *fd, pid_t *pids, t_arg_main *a
             if (ret == pids[j])
             {
                 if (j != 0)
-                    printf("%d\n", close(fd[j * 2 - 2]));
+				{
+                    close(fd[j * 2 - 2]);
+					close(fd[(j - 1) * 2 + 1]);
+				}
                 if (j != cmd_len - 1)
 				{
-					write(fd[j * 2 + 1], &c, 1);
-                    printf("%d\n", close(fd[j * 2 + 1]));
+					//write(fd[j * 2 + 1], &c, 1);
+                    close(fd[j * 2 + 1]);
+					close(fd[(j + 1) * 2 - 2]);
 				}
                 else
                     set_hatena(g_arg_main, WEXITSTATUS(status));
