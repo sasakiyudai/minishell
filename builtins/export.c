@@ -86,7 +86,7 @@ void	export_argadd(char *args[], t_arg_main *arg_main)
 			arg.name = ft_strdup(*args);
 			arg.data = NULL;
 		}
-		arg_add(arg_main, &arg.data);
+		arg_add(arg_main, &arg);
 		free(&arg);
 		args++;
 	}
