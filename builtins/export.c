@@ -68,7 +68,6 @@ int export_name_check(char *cmd)
 void	export_argadd(char *args[], t_arg_main *arg_main)
 {
 	t_arg arg;
-	int len;
 	char *tmp;
 
 	arg.type = ARG_TYPE_STR;
@@ -92,7 +91,7 @@ void	export_argadd(char *args[], t_arg_main *arg_main)
 	}
 }
 
-int ft_export(char *args[], char *envp[], t_arg_main *arg_main)
+int ft_export(char *args[], t_arg_main *arg_main)
 {
 	if (!args[1])
     {
@@ -100,4 +99,5 @@ int ft_export(char *args[], char *envp[], t_arg_main *arg_main)
         return (0);
     }
 	export_argadd(args, arg_main);
+	return (0);
 }
