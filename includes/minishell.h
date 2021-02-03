@@ -22,6 +22,7 @@
 #define FLAG_DOUBLE_QUOTE 2
 #define FLAG_SINGLE_QUOTE 1
 #define FLAG_MINUS_ONE 4
+#define BAD_ARGNAME 1
 
 # include "../libft/libft.h"
 # include <stdint.h>
