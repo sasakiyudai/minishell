@@ -44,17 +44,60 @@ void print_with_declare(char *envp[])
 		printf("declare -x %s\n", envp[i++]);
 }
 
+void	export_err(int err, char *cmd)
+{
+	if (err == BAD_ARGNAME)
+		printf("bash: export: `%s\': not a valid identifier\n", cmd);
+}
+
+int export_name_check(char *cmd)
+{
+	if (!ft_isalpha(*cmd) && *cmd != '_')
+		return (1);
+	while (*cmd)
+	{
+		if (*cmd == '=')
+			return (0);
+		if (!ft_isalnum(*cmd) && *cmd != '_')
+			return (1);
+		cmd++;
+	}
+	return (0);
+}
+
+void	export_argadd(char *args[], t_arg_main *arg_main)
+{
+	t_arg arg;
+	int len;
+	char *tmp;
+
+	arg.type = ARG_TYPE_STR;
+	while (*args)
+	{
+		if (export_name_check(*args))
+			export_err(BAD_NAME, *args);
+		else if ((tmp = ft_strchr(*args, '=')))
+		{
+			arg.name = ft_strndup(*args, (int)(tmp - *args));
+			arg.data = ft_strdup(tmp + 1);
+		}
+		else
+		{
+			arg.name = ft_strdup(*args);
+			arg.data = NULL;
+		}
+		arg_add(arg_main, &arg.data);
+		free(&arg);
+		args++;
+	}
+}
+
 int ft_export(char *args[], char *envp[], t_arg_main *arg_main)
 {
-    t_arg arg;
-
-    if (!args[1])
+	if (!args[1])
     {
         print_with_declare(envp);
         return (0);
     }
-    arg.name = args[2];
-    arg.data = (char *)args[4];
-    arg_add(arg_main, &arg);
-    return (0);
+	export_argadd(args, arg_main);
 }
