@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 17:47:28 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/02 16:43:21 by rnitta           ###   ########.fr       */
+/*   Updated: 2021/02/04 00:11:46 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ void	wait_chiledren_and_free_fd(int cmd_len, int *fd, pid_t *pids, t_arg_main *a
         }
     }
 	
-	printf("finish\n");
 	free(pids);
 	free(fd);
 }
@@ -115,7 +114,7 @@ int		is_builtin(char *command)
 	return (0);
 }
 
-void	call_builtin(int tmp, char **str_b, t_arg_main *arg_main, char **envs)
+int	call_builtin(int tmp, char **str_b, t_arg_main *arg_main)
 {
 	int result;
 
@@ -127,17 +126,17 @@ void	call_builtin(int tmp, char **str_b, t_arg_main *arg_main, char **envs)
 	else if (tmp == 3)
 		result = ft_pwd();
 	else if (tmp == 4)
-		ft_export(str_b, envs, arg_main);
+		ft_export(str_b, arg_main);
 	else if (tmp == 5)
 		ft_unset(str_b, arg_main);
 	else if (tmp == 6)
-		ft_env(envs);
+		ft_env(arg_main);
 	else if (tmp == 7)
 	{
 		write(2, "exit\n", 5);
 		exit(0);
 	}
-	set_hatena(arg_main, result);
+	return (result);
 }
 
 void print_tab(char *env[])
@@ -158,16 +157,16 @@ void	exec_child(int cmd_len, int *fd, char ***cmd, t_arg_main *arg_main)
 
 	i = 0;
 	if (!(envs = arg_list_get(arg_main)))
-		exit(1); //　これでいいのか
+		exit(1);
 	while (i < 2 * (cmd_len - 1))
 		close(fd[i++]);
 (void)fd; (void)cmd_len;
 	if ((tmp = is_builtin((*cmd)[0])))
 	{
-		call_builtin(tmp, *cmd, arg_main, envs);
+		
 		//close(0);
 		//close(1);
-		exit(0);
+		exit(call_builtin(tmp, *cmd, arg_main));
 	}
 	else
 	{

@@ -199,7 +199,7 @@ char *arg_to_str(t_arg *arg)
     else if (arg->type == ARG_TYPE_LLINT)
         i += ft_itoa(*(long long int *)(arg->data), ret + i);
     i += ft_strcat_int(ret + i, "\"");
-    return (ret);   
+    return (ret);
 }
 
 

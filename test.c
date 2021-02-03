@@ -123,6 +123,11 @@ int single_quote(char now, int flag)
 		return (flag);
 }
 
+int is_dollarble(char c)
+{
+	return (ft_isalnum(c) || c == '_' || c == '?');
+}
+
 char *deploy(char *input, t_arg_main *arg_main)
 {
 	int i;
@@ -152,17 +157,22 @@ char *deploy(char *input, t_arg_main *arg_main)
 			i++;
 			flag = 0;
 		}
-		else if (input[i] == '$' && input[i + 1])
+		else if (input[i] == '$' && is_dollarble(input[i + 1]))
 		{
 			i++;
 			len = 0;
-			while (ft_isalnum(input[i]) || (input[i] == '?' && len == 0))
+			if (input[i] == '?')
 			{
-				len++;
+				len = 1;
 				i++;
 			}
+			else
+				while (ft_isalnum(input[i]) || input[i] == '_')
+				{
+					len++;
+					i++;
+				}
 			tmp = ft_strndup(input + i - len, len);
-
 			if (0 == arg_get(arg_main, &arg, tmp))
 			{	
 				tmp = surround_minus_one((char *)arg.data);
