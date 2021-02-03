@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 17:48:01 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/01 23:53:20 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/02 14:54:31 by rnitta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ void	set_right(char ***raw_cmd, int j, int *fd, int is_pipe)
 	int r;
 	int out;
 
-	if (is_pipe && count(raw_cmd) != j / 2 + 1)
-		close(fd[j + 1]);
+	(void)is_pipe;
+	(void)fd;
 	if ((r = is_right(raw_cmd[j / 2])))
 	{
 		if (r > 0)
@@ -95,8 +95,8 @@ void	set_left(char ***raw_cmd, int j, int *fd, int is_pipe)
 	int r;
 	int in;
 
-	if (is_pipe && j != 0)
-		close(fd[j - 2]);
+	(void)is_pipe;
+	(void)fd;
 	if ((r = is_left(raw_cmd[j / 2])))
 	{
 		in = open(raw_cmd[j / 2][r], O_RDONLY, S_IRWXU);
