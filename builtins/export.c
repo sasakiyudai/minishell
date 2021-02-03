@@ -75,7 +75,7 @@ void	export_argadd(char *args[], t_arg_main *arg_main)
 	while (*args)
 	{
 		if (export_name_check(*args))
-			export_err(BAD_NAME, *args);
+			export_err(BAD_ARGNAME, *args);
 		else if ((tmp = ft_strchr(*args, '=')))
 		{
 			arg.name = ft_strndup(*args, (int)(tmp - *args));
