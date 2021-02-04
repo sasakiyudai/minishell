@@ -127,8 +127,8 @@ int arg_charlen(t_arg *arg)
 
     len = ft_strlen(arg->name) + 3;
     len += ft_strlen(arg->data);
-    if (len > INT_MAX)
-        return (-1);
+    if (!arg->data)
+        len += 2;
     return (len);
 }
 
@@ -142,9 +142,14 @@ char *arg_to_str(t_arg *arg)
         return (NULL);
     ret = (char *)malloc(arg_charlen(arg) + 1);
     i = ft_strcat_int(ret, arg->name);
-    i += ft_strcat_int(ret + i, "=\"");
-    i += ft_strcat_int(ret + i, arg->data);
-    i += ft_strcat_int(ret + i, "\"");
+    i += ft_strcat_int(ret + i, "=");
+    if (arg->data)
+        i += ft_strcat_int(ret + i, arg->data);
+    else
+    {
+        ret[i] = -1;
+        ret[i + 1] = '\0';
+    }
     return (ret);
 }
 
