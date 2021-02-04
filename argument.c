@@ -16,6 +16,8 @@ int ft_strcat_int(char *dest, char *src)
     int i;
 
     i = -1;
+    if (!src)
+        return (0);
     while (src[++i])
         dest[i] = src[i];
     dest[i] = '\0';
@@ -56,36 +58,15 @@ int    ft_itoa(long long int n, char *dest)
 void    arg_free(t_arg *arg)
 {
     free(arg->name);
-    if (arg->type == ARG_TYPE_STR)
-        free((char *)(arg->data));
-    else if (arg->type == ARG_TYPE_LLINT)
-        free(arg->data);
+    free(arg->data);
     arg->name = NULL;
     arg->data = NULL;
 }
 
 int    arg_copy(t_arg *dest, t_arg *src)
 {
-    if (!(dest->name = ft_strdup(src->name)))
-        return (-1);
-    if (src->type == ARG_TYPE_STR)
-    {
-        if (!(dest->data = ft_strdup((char *)(src->data))))
-        {
-            free(dest->name);
-            return (-1);
-        }
-    }
-    else
-    {
-        if (!(dest->data = (long long int *)malloc(sizeof (long long int))))
-        {
-            free(dest->name);
-            return (-1);
-        }
-        *(long long int *)(dest->data) = *(long long int *)(src->data);
-    }
-    dest->type = src->type;
+    dest->name = ft_strdup(src->name);
+    dest->data = ft_strdup(src->data);
     return (0);
 }
 
@@ -96,17 +77,8 @@ int     arg_new(t_arg_main *arg_main, t_arg *src)
     if (arg_main->arg_num == INT_MAX)
         return (-10);
     tmp_arg_list = arg_main->head.next;
-    if (!(arg_main->head.next = (t_arg_list *)malloc(sizeof(t_arg_list))))
-    {
-        arg_main->head.next = tmp_arg_list;
-        return (-1);
-    }
-    if (arg_copy(&(arg_main->head.next->arg), src))
-    {
-        free(arg_main->head.next);
-        arg_main->head.next = tmp_arg_list;
-        return (-1);
-    }
+    arg_main->head.next = (t_arg_list *)malloc(sizeof(t_arg_list));
+    arg_copy(&(arg_main->head.next->arg), src);
     arg_main->arg_num++;
     arg_main->head.next->next = tmp_arg_list;
     return (0);
@@ -143,14 +115,8 @@ int    arg_list_ini(t_arg_main *arg_main)
 int    arg_main_ini(t_arg_main *arg_main)
 {
     arg_main->arg_num = 1;
-    if (!(arg_main->head.arg.name = ft_strdup("?")))
-        return (-1);
-    arg_main->head.arg.type = ARG_TYPE_STR;
-    if (!(arg_main->head.arg.data = ft_strdup("0")))
-    {
-        free(arg_main->head.arg.name);
-        return (-1);
-    }
+    arg_main->head.arg.name = ft_strdup("?");
+    arg_main->head.arg.data = ft_strdup("0");
     arg_main->head.next = NULL;
     return (0);
 }
@@ -158,30 +124,28 @@ int    arg_main_ini(t_arg_main *arg_main)
 int arg_charlen(t_arg *arg)
 {
     long long int len;
-    long long int tmp_data;
 
-    len = ft_strlen(arg->name) + 3;
-    if (arg->type == ARG_TYPE_STR)
-        len += ft_strlen((char *)(arg->data));
-    else if (arg->type == ARG_TYPE_LLINT)
-    {
-        tmp_data = (long long int)*((long long int *)(arg->data));
-        if (tmp_data == LLONG_MIN)
-            return (len + ft_strlen(STR_LLONG_MIN));
-        if (tmp_data < 0)
-		{
-            len++;
-			tmp_data *= -1;
-		}
-        len++;
-        while (tmp_data /= 10)
-            len++;
-    }
-    if (len > INT_MAX)
-        return (-1);
+    len = ft_strlen(arg->name) + 1;
+    len += ft_strlen(arg->data);
+    if (!arg->data)
+        len += 2;
     return (len);
 }
 
+char *arg_to_str_quotes(t_arg *arg)
+{
+    char *ret;
+    int i;
+
+    if (!arg)
+        return (NULL);
+    ret = (char *)malloc(arg_charlen(arg) + 3);
+    i = ft_strcat_int(ret, arg->name);
+    i += ft_strcat_int(ret + i, "=\"");
+    i += ft_strcat_int(ret + i, arg->data);
+    i += ft_strcat_int(ret + i, "\"");
+    return (ret);
+}
 
 char *arg_to_str(t_arg *arg)
 {
@@ -190,20 +154,21 @@ char *arg_to_str(t_arg *arg)
 
     if (!arg)
         return (NULL);
-    if (!(ret = (char *)malloc(arg_charlen(arg) + 1)))
-        return (NULL);
+    ret = (char *)malloc(arg_charlen(arg) + 1);
     i = ft_strcat_int(ret, arg->name);
-    i += ft_strcat_int(ret + i, "=\"");
-    if (arg->type == ARG_TYPE_STR)
-        i += ft_strcat_int(ret + i, (char *)arg->data);
-    else if (arg->type == ARG_TYPE_LLINT)
-        i += ft_itoa(*(long long int *)(arg->data), ret + i);
-    i += ft_strcat_int(ret + i, "\"");
+    i += ft_strcat_int(ret + i, "=");
+    if (arg->data)
+        i += ft_strcat_int(ret + i, arg->data);
+    else
+    {
+        ret[i] = -1;
+        ret[i + 1] = '\0';
+    }
     return (ret);
 }
 
 
-char **arg_list_get(t_arg_main *arg_main)
+char **arg_list_get(t_arg_main *arg_main, int quote)
 {
     char **ret;
     t_arg_list  *current;
@@ -211,21 +176,21 @@ char **arg_list_get(t_arg_main *arg_main)
     int arg_num;
 
     arg_num = arg_main->arg_num;
-    if (!(ret = (char **)malloc(sizeof (char *) * (arg_num + 1))))
-        return (NULL);
+    ret = (char **)malloc(sizeof (char *) * (arg_num + 1));
     current = &(arg_main->head);
     i = -1;
-    while (++i < arg_num)
-    {
-        if (!(ret[i] = arg_to_str(&(current->arg))))
+    if (quote)
+        while (++i < arg_num)
         {
-            while (--i >= 0)
-                free(ret[i]);
-            free(ret);
-            return (NULL);
+            ret[i] = arg_to_str_quotes(&(current->arg));
+            current = current->next;
         }
-        current = current->next;
-    }
+    else
+        while (++i < arg_num)
+        {
+            ret[i] = arg_to_str(&(current->arg));
+            current = current->next;
+        }
     ret[i] = NULL;
     return (ret);
 }
@@ -289,8 +254,7 @@ int     arg_get(t_arg_main *arg_main, t_arg *arg, char *name)
 
     if (!(tmp_arg = arg_isexist(arg_main, name)))
         return (1);
-    if (-1 == (arg_copy(arg, &(tmp_arg->arg))))
-        return (-1);
+    arg_copy(arg, &(tmp_arg->arg));
     return (0);
 }
 
@@ -306,9 +270,8 @@ void    set_hatena(t_arg_main *arg_main, int i)
     while (i > 9 && len++)
         i /= 10;
     arg.name = "?";
-    arg.type = ARG_TYPE_STR;
     arg.data = malloc(len + 1);
-    ft_itoa(j, (char *)(arg.data));
+    ft_itoa(j, (arg.data));
     arg_add(arg_main, &arg);
 }
 
@@ -318,7 +281,7 @@ void    add_out(t_arg_main *arg_main, t_arg arg)
     int i;
 
     arg_add(arg_main, &arg);
-    ss=arg_list_get(arg_main);
+    ss=arg_list_get(arg_main, 1);
 
     i = -1;
 	while (ss[++i])

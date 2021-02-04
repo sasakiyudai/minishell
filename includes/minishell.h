@@ -57,6 +57,7 @@ typedef    struct    s_split
 extern char* g_signal;
 extern t_arg_main* g_arg_main;
 
+char			*arg_to_str_quotes(t_arg *arg);
 void			remove_quotes(char *cmd);
 void			set_hatena(t_arg_main *arg_main, int i);
 void			set_right(char ***raw_cmd, int j, int *fd, int is_pipe);
@@ -79,7 +80,7 @@ int				arg_charlen(t_arg *arg);
 int				ft_strcat_int(char *dest, char *src);
 int				syntax_check(char *cmd_raw);
 char			*arg_to_str(t_arg *arg);
-char			**arg_list_get(t_arg_main *arg_main);
+char			**arg_list_get(t_arg_main *arg_main, int quote);
 int				_arg_delete_process(t_arg_main *arg_main, t_arg_list *arg_list, char *name, t_arg_list **ret);
 void			arg_delete(t_arg_main *arg_main, char *name);
 t_arg_list		*_arg_isexist_process(t_arg_list *arg_list, char *name);

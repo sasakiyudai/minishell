@@ -71,10 +71,15 @@ void	export_argadd(char *args[], t_arg_main *arg_main)
 	char *tmp;
 
 	arg.type = ARG_TYPE_STR;
+	args++;
 	while (*args)
 	{
 		if (export_name_check(*args))
+		{
 			export_err(BAD_ARGNAME, *args);
+			args++;
+			continue;
+		}
 		else if ((tmp = ft_strchr(*args, '=')))
 		{
 			arg.name = ft_strndup(*args, (int)(tmp - *args));
@@ -86,16 +91,18 @@ void	export_argadd(char *args[], t_arg_main *arg_main)
 			arg.data = NULL;
 		}
 		arg_add(arg_main, &arg);
-		free(&arg);
+		arg_free(&arg);
 		args++;
 	}
 }
 
 int ft_export(char *args[], t_arg_main *arg_main)
 {
+	char **env;
 	if (!args[1])
     {
-        print_with_declare(envp);
+		env = arg_list_get(arg_main, 1);
+        print_with_declare(env);
         return (0);
     }
 	export_argadd(args, arg_main);
