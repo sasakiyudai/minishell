@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 22:32:19 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/04 19:43:24 by rnitta           ###   ########.fr       */
+/*   Updated: 2021/02/04 22:01:34 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void			safe_close(int fd);
 int				ft_cd(char **args, t_arg_main *arg_main);
 int				ft_echo(char *args[]);
 int				ft_pwd(void);
+int 			ft_exit(char *args[]);
 int				ft_export(char *args[], t_arg_main *arg_main);
 int				ft_unset(char *argv[], t_arg_main *arg_main);
 int				ft_env(t_arg_main *arg_main);

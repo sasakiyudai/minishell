@@ -18,7 +18,6 @@ void	ft_strncpy(char *dest, char *src, size_t n)
 }
 
 
-
 void	print_error(int i)
 {
 	i++;
