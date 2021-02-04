@@ -168,7 +168,7 @@ char *arg_to_str(t_arg *arg)
 }
 
 
-char **arg_list_get(t_arg_main *arg_main)
+char **arg_list_get(t_arg_main *arg_main, int quote)
 {
     char **ret;
     t_arg_list  *current;
@@ -179,11 +179,18 @@ char **arg_list_get(t_arg_main *arg_main)
     ret = (char **)malloc(sizeof (char *) * (arg_num + 1));
     current = &(arg_main->head);
     i = -1;
-    while (++i < arg_num)
-    {
-        ret[i] = arg_to_str(&(current->arg));
-        current = current->next;
-    }
+    if (quote)
+        while (++i < arg_num)
+        {
+            ret[i] = arg_to_str_quote(&(current->arg));
+            current = current->next;
+        }
+    else
+        while (++i < arg_num)
+        {
+            ret[i] = arg_to_str(&(current->arg));
+            current = current->next;
+        }
     ret[i] = NULL;
     return (ret);
 }
