@@ -208,11 +208,9 @@ char **arg_list_get(t_arg_main *arg_main)
     i = 0;
     while (i < arg_num)
     {
-        if (current->arg.data)
-        {
+        if (cnrrent->arg.data)
             ret[i++] = arg_to_str(&(current->arg));
-            current = current->next;
-        }
+        current = current->next;
     }
     ret[i] = NULL;
     return (ret);
