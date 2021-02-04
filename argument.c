@@ -182,7 +182,7 @@ char **arg_list_get(t_arg_main *arg_main, int quote)
     if (quote)
         while (++i < arg_num)
         {
-            ret[i] = arg_to_str_quote(&(current->arg));
+            ret[i] = arg_to_str_quotes(&(current->arg));
             current = current->next;
         }
     else
