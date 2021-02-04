@@ -6,13 +6,13 @@ char	*ft_newstr_ncat(char *src1, char *src2, int n)
 	int	 i;
 	int	 j;
 
-	if (!(ret = (char *)malloc(n)))
+	if (!(ret = (char *)malloc(n + 1)))
 		return (NULL);
 	i = -1;
 	while (src1[++i])
 		ret[i] = src1[i];
 	j = 0;
-	while (i < n - 1)
+	while (src2[j] != '\0' && src2[j] != '\n')
 		ret[i++] = src2[j++];
 	ret[i] = '\0';
 	return (ret);
