@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 22:32:19 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/01 20:13:43 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/04 00:12:48 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,9 @@ void			safe_close(int fd);
 int				ft_cd(char **args, t_arg_main *arg_main);
 int				ft_echo(char *args[]);
 int				ft_pwd(void);
-int				ft_export(char *args[], char *envp[], t_arg_main *arg_main);
+int				ft_export(char *args[], t_arg_main *arg_main);
 int				ft_unset(char *argv[], t_arg_main *arg_main);
-int				ft_env(char *env[]);
+int				ft_env(t_arg_main *arg_main);
 void    		arg_free(t_arg *arg);
 int				arg_copy(t_arg *dest, t_arg *src);
 int 			arg_new(t_arg_main *arg_main, t_arg *src);
@@ -120,7 +120,7 @@ int     		_bcopy_int(void *dest, void *src, int size);
 char			*read_all(int fd);
 int				count(char ***cmd);
 int				is_builtin(char *command);
-void			call_builtin(int tmp, char **str_b, t_arg_main *arg_main, char **envs);
+int				call_builtin(int tmp, char **str_b, t_arg_main *arg_main);
 int				error(char *path);
 char			*ft_strndup(char *src, int n);
 char			*ft_strchar(const char *s, int c);
@@ -130,5 +130,5 @@ char 			**make_strb(char **str_a);
 int				syntax_check(char *cmd_raw);
 char 			*separate_redirect(char *command);
 void 			one_command(char ***cmd, char ***raw_cmd, t_arg_main *arg_main);
-
+void			remove_quotes(char *cmd);
 #endif

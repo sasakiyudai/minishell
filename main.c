@@ -130,15 +130,13 @@ int is_strb_empty(char *s)
 
 void	remove_empty_strb(char **cmd_split, int *i)
 {
-	char *tmp;
-
 	if (is_strb_empty(cmd_split[*i]))
-	{printf("rd\n\n");
+	{
 		free(cmd_split[*i]);
 	}
 	else
 	{
-		tmp = cmd_split[*i];
+		remove_quotes(cmd_split[*i]);
 		(*i)++;
 	}
 }
@@ -160,6 +158,7 @@ void command_main(char *cmd_raw, t_arg_main *arg_main)
 		while (tmp_cmd_split[0][++j])
 		{
 			tmp = tmp_cmd_split[0][j];
+			
 			tmp_cmd_split[0][i] = deploy(tmp, arg_main);
 			free(tmp);
 			remove_empty_strb(tmp_cmd_split[0], &i);
@@ -242,9 +241,9 @@ int main(int argc, char *argv[], char *env[])
 	(void)argc;
 	(void)argv;
 	ini(&arg_main, env);
+	
 	while (1)
 	{
-		set_hatena(&arg_main, 12);
 		signal(SIGINT, sig_handler);
 		signal(SIGQUIT, sig_handler);
 		write(1, "$ ", 2);

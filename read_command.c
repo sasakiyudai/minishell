@@ -41,16 +41,24 @@ char    *read_all(int fd)
     f = 0;
     ret = (char *)malloc(1);
     ret[0] = '\0';
-    while ((ret_read = read(fd, buf, 1000)) > 0 && (f = 1) && buf[ret_read - 1] != '\n')
-        if (!(ret = ft_newstr_ncatfree(ret, buf, (cnt_read += ret_read), 1)))
-            return (NULL);
-    if (!f)
+	while (1)
 	{
-		write(1, "exit\n", 5);
-        exit(0);
+		if ((ret_read = read(fd, buf, 1000)) > 0)
+		{
+			f = 1;
+			if (!(ret = ft_newstr_ncatfree(ret, buf, (cnt_read += ret_read), 1)))
+				return (NULL);
+		}
+		if (!f)
+		{
+			write(1, "exit\n", 5);
+			exit(0);
+		}
+		if (buf[ret_read - 1] == '\n')
+			break ;
+		else
+			write(1, "  \b\b", 4);
 	}
-    if (!(ret = ft_newstr_ncatfree(ret, buf, (cnt_read += ret_read), 1)))
-        return (NULL);
     if (ret_read >= 0)
         return (ret);
     free(ret);
@@ -180,13 +188,14 @@ char	**split_command(char *s, char c)
 			if (!ret[split_arg.cnt_splitnum++])
 				return (split_command_free(ret, split_arg.cnt_splitnum - 1));
 		}
-		else
+		//else
 		{
-			split_arg.cnt_moji = 0;
-			s++;
+			//split_arg.cnt_moji = 0;
+			//s++;
 		}
 	}
 	split_command_last(s, &split_arg, &ret);
+
 	return (ret);
 }
 
