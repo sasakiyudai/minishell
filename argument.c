@@ -125,13 +125,27 @@ int arg_charlen(t_arg *arg)
 {
     long long int len;
 
-    len = ft_strlen(arg->name) + 3;
+    len = ft_strlen(arg->name) + 1;
     len += ft_strlen(arg->data);
     if (!arg->data)
         len += 2;
     return (len);
 }
 
+char *arg_to_str_quotes(t_arg *arg)
+{
+    char *ret;
+    int i;
+
+    if (!arg)
+        return (NULL);
+    ret = (char *)malloc(arg_charlen(arg) + 3);
+    i = ft_strcat_int(ret, arg->name);
+    i += ft_strcat_int(ret + i, "=\"");
+    i += ft_strcat_int(ret + i, arg->data);
+    i += ft_strcat_int(ret + i, "\"");
+    return (ret);
+}
 
 char *arg_to_str(t_arg *arg)
 {
