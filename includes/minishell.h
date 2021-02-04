@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 22:32:19 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/04 00:12:48 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/04 19:43:24 by rnitta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ int				arg_copy(t_arg *dest, t_arg *src);
 int 			arg_new(t_arg_main *arg_main, t_arg *src);
 int				arg_add(t_arg_main *arg_main, t_arg *arg);
 int 			arg_main_ini(t_arg_main *arg_main);
-int				arg_charlen(t_arg *arg);
 int				ft_strcat_int(char *dest, char *src);
 int				syntax_check(char *cmd_raw);
 char			*arg_to_str(t_arg *arg);
