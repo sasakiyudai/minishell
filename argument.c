@@ -175,9 +175,9 @@ char **arg_list_get_quote(t_arg_main *arg_main)
     int i;
     int arg_num;
 
-    arg_num = arg_main->arg_num;
+    arg_num = arg_main->arg_num - 1;
     ret = (char **)malloc(sizeof (char *) * (arg_num + 1));
-    current = &(arg_main->head);
+    current = &(arg_main->head->next);
     i = -1;
     while (++i < arg_num)
     {
@@ -202,9 +202,9 @@ char **arg_list_get(t_arg_main *arg_main)
     int i;
     int arg_num;
 
-    arg_num = arg_list_cnt(&(arg_main->head));
+    arg_num = arg_list_cnt(&(arg_main->head)) - 1;
     ret = (char **)malloc(sizeof (char *) * (arg_num + 1));
-    current = &(arg_main->head);
+    current = &(arg_main->head->next);
     i = 0;
     while (i < arg_num)
     {
