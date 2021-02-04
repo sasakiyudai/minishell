@@ -4,10 +4,10 @@ int ft_env(t_arg_main *arg_main)
 {
     int i;
     int j;
-    char **envs;
+    char **env;
 
     i = 0;
-    envs = arg_list_get(arg_main, 0);
+    env = arg_list_get(arg_main, 0);
     while (env[i])
     {
         j = 0;
