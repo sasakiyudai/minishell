@@ -7,7 +7,7 @@ int ft_env(t_arg_main *arg_main)
     char **env;
 
     i = 0;
-    env = arg_list_get(arg_main, 0);
+    env = arg_list_get(arg_main);
     while (env[i])
     {
         j = 0;

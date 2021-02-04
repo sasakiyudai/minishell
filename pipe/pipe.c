@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 17:47:28 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/04 00:11:46 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/04 18:42:48 by rnitta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,22 +156,20 @@ void	exec_child(int cmd_len, int *fd, char ***cmd, t_arg_main *arg_main)
 	char	**envs;
 
 	i = 0;
-	if (!(envs = arg_list_get(arg_main)))
-		exit(1);
 	while (i < 2 * (cmd_len - 1))
 		close(fd[i++]);
 (void)fd; (void)cmd_len;
 	if ((tmp = is_builtin((*cmd)[0])))
 	{
 		
-		//close(0);
-		//close(1);
 		exit(call_builtin(tmp, *cmd, arg_main));
 	}
 	else
 	{
 		if (0 == (tmp = get_path(arg_main, &path, (*cmd)[0])))
 		{
+			if (!(envs = arg_list_get(arg_main)))
+				exit(1);
 			execve(path, *cmd, envs);
 		}
 		else if (tmp == -1)
