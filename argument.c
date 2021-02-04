@@ -75,8 +75,8 @@ int     arg_new(t_arg_main *arg_main, t_arg *src)
     if (arg_main->arg_num == INT_MAX)
         return (-10);
     tmp_arg_list = arg_main->head.next;
-    arg_main->head.next = (t_arg_list *)malloc(sizeof(t_arg_list))
-    arg_copy(&(arg_main->head.next->arg), src)
+    arg_main->head.next = (t_arg_list *)malloc(sizeof(t_arg_list));
+    arg_copy(&(arg_main->head.next->arg), src);
     arg_main->arg_num++;
     arg_main->head.next->next = tmp_arg_list;
     return (0);
@@ -122,7 +122,6 @@ int    arg_main_ini(t_arg_main *arg_main)
 int arg_charlen(t_arg *arg)
 {
     long long int len;
-    long long int tmp_data;
 
     len = ft_strlen(arg->name) + 3;
     len += ft_strlen(arg->data);
@@ -156,7 +155,7 @@ char **arg_list_get(t_arg_main *arg_main)
     int arg_num;
 
     arg_num = arg_main->arg_num;
-    ret = (char **)malloc(sizeof (char *) * (arg_num + 1))
+    ret = (char **)malloc(sizeof (char *) * (arg_num + 1));
     current = &(arg_main->head);
     i = -1;
     while (++i < arg_num)
