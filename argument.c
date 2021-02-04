@@ -191,7 +191,7 @@ char **arg_list_get_quote(t_arg_main *arg_main)
 int arg_list_cnt(t_arg_list *arg_list)
 {
     if (arg_list->next)
-        return ((!!arg_list->arg.data) + _arg_list_cnt_process(arg_list->next));
+        return ((!!arg_list->arg.data) + arg_list_cnt(arg_list->next));
     return (!!arg_list->arg.data);
 }
 
@@ -302,7 +302,7 @@ void    add_out(t_arg_main *arg_main, t_arg arg)
     int i;
 
     arg_add(arg_main, &arg);
-    ss=arg_list_get(arg_main, 1);
+    ss=arg_list_get(arg_main);
 
     i = -1;
 	while (ss[++i])
