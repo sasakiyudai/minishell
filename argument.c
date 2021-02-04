@@ -16,6 +16,8 @@ int ft_strcat_int(char *dest, char *src)
     int i;
 
     i = -1;
+    if (!src)
+        return (0);
     while (src[++i])
         dest[i] = src[i];
     dest[i] = '\0';
