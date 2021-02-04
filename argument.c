@@ -121,14 +121,17 @@ int    arg_main_ini(t_arg_main *arg_main)
     return (0);
 }
 
-int arg_charlen(t_arg *arg)
+int arg_charlen(t_arg *arg, int quote)
 {
     long long int len;
 
     len = ft_strlen(arg->name) + 1;
     len += ft_strlen(arg->data);
     if (!arg->data)
-        len += 2;
+        if (quote)
+            len--;
+        else
+            len += 2;
     return (len);
 }
 
@@ -141,9 +144,12 @@ char *arg_to_str_quotes(t_arg *arg)
         return (NULL);
     ret = (char *)malloc(arg_charlen(arg) + 3);
     i = ft_strcat_int(ret, arg->name);
-    i += ft_strcat_int(ret + i, "=\"");
-    i += ft_strcat_int(ret + i, arg->data);
-    i += ft_strcat_int(ret + i, "\"");
+    if (arg->data)
+    {
+        i += ft_strcat_int(ret + i, "=\"");
+        i += ft_strcat_int(ret + i, arg->data);
+        i += ft_strcat_int(ret + i, "\"");
+    }
     return (ret);
 }
 
