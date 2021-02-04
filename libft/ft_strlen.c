@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 19:11:22 by syudai            #+#    #+#             */
-/*   Updated: 2020/11/03 23:36:19 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/04 17:37:52 by rnitta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ size_t	ft_strlen(const char *s)
 {
 	size_t len;
 
+	if (!s)
+		return (0);
 	len = 0;
 	while (s[len])
 		len++;

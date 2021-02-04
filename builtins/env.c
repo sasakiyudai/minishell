@@ -3,10 +3,11 @@
 int ft_env(t_arg_main *arg_main)
 {
     int i;
-// arg_list_getでenvs作成
-	(void)arg_main;
+	char **env;
+
+	env = arg_list_get(arg_main, 0);
     i = 0;
-//    while (env[i])
-  //      printf("%s\n", env[i++]);
+    while (env[i])
+        printf("%s\n", env[i++]);
     return (0);
 }

@@ -281,7 +281,7 @@ void    add_out(t_arg_main *arg_main, t_arg arg)
     int i;
 
     arg_add(arg_main, &arg);
-    ss=arg_list_get(arg_main);
+    ss=arg_list_get(arg_main, 1);
 
     i = -1;
 	while (ss[++i])
