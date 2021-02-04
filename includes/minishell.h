@@ -106,7 +106,7 @@ int    			arg_copy(t_arg *dest, t_arg *src);
 int     		arg_new(t_arg_main *arg_main, t_arg *src);
 int 			arg_add(t_arg_main *arg_main, t_arg *arg);
 int    			arg_main_ini(t_arg_main *arg_main);
-int 			arg_charlen(t_arg *arg);
+int 			arg_charlen(t_arg *arg, int quote);
 int 			ft_strcat_int(char *dest, char *src);
 char 			*arg_to_str(t_arg *arg);
 void   			arg_delete(t_arg_main *arg_main, char *name);

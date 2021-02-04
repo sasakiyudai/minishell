@@ -128,10 +128,12 @@ int arg_charlen(t_arg *arg, int quote)
     len = ft_strlen(arg->name) + 1;
     len += ft_strlen(arg->data);
     if (!arg->data)
+    {
         if (quote)
             len--;
         else
             len += 2;
+    }
     return (len);
 }
 
@@ -142,7 +144,7 @@ char *arg_to_str_quotes(t_arg *arg)
 
     if (!arg)
         return (NULL);
-    ret = (char *)malloc(arg_charlen(arg) + 3);
+    ret = (char *)malloc(arg_charlen(arg) + 3, 1);
     i = ft_strcat_int(ret, arg->name);
     if (arg->data)
     {
@@ -160,7 +162,7 @@ char *arg_to_str(t_arg *arg)
 
     if (!arg)
         return (NULL);
-    ret = (char *)malloc(arg_charlen(arg) + 1);
+    ret = (char *)malloc(arg_charlen(arg) + 1, 0);
     i = ft_strcat_int(ret, arg->name);
     i += ft_strcat_int(ret + i, "=");
     if (arg->data)
