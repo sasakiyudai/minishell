@@ -101,7 +101,7 @@ int ft_export(char *args[], t_arg_main *arg_main)
 	char **env;
 	if (!args[1])
     {
-		env = arg_list_get_quote(arg_main);
+		env = arg_list_get(arg_main, 1);
         print_with_declare(env);
         return (0);
     }
