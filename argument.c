@@ -168,7 +168,7 @@ char *arg_to_str(t_arg *arg)
 }
 
 
-char **arg_list_get(t_arg_main *arg_main, int quote)
+char **arg_list_get_quote(t_arg_main *arg_main)
 {
     char **ret;
     t_arg_list  *current;
@@ -179,18 +179,41 @@ char **arg_list_get(t_arg_main *arg_main, int quote)
     ret = (char **)malloc(sizeof (char *) * (arg_num + 1));
     current = &(arg_main->head);
     i = -1;
-    if (quote)
-        while (++i < arg_num)
+    while (++i < arg_num)
+    {
+        ret[i] = arg_to_str_quotes(&(current->arg));
+        current = current->next;
+    }
+    ret[i] = NULL;
+    return (ret);
+}
+
+int arg_list_cnt(t_arg_list *arg_list)
+{
+    if (arg_list->next)
+        return ((!!arg_list->arg.data) + _arg_list_cnt_process(arg_list->next));
+    return (!!arg_list->arg.data);
+}
+
+char **arg_list_get(t_arg_main *arg_main)
+{
+    char **ret;
+    t_arg_list  *current;
+    int i;
+    int arg_num;
+
+    arg_num = arg_list_cnt(&(arg_main->head));
+    ret = (char **)malloc(sizeof (char *) * (arg_num + 1));
+    current = &(arg_main->head);
+    i = 0;
+    while (i < arg_num)
+    {
+        if (cnrrent->arg.data)
         {
-            ret[i] = arg_to_str_quotes(&(current->arg));
+            ret[i++] = arg_to_str(&(current->arg));
             current = current->next;
         }
-    else
-        while (++i < arg_num)
-        {
-            ret[i] = arg_to_str(&(current->arg));
-            current = current->next;
-        }
+    }
     ret[i] = NULL;
     return (ret);
 }
