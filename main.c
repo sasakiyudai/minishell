@@ -83,8 +83,8 @@ char ***make_command_array(char *cmd)
 			command_array_free(ret);
 			return (NULL);
 		}
-		split_free_all(&tmp[i]);
 	}
+	split_free_all(tmp);
 	ret[i] = NULL;
 	return (ret);
 }
@@ -169,11 +169,15 @@ void command_main(char *cmd_raw, t_arg_main *arg_main)
 		tmp_cmd_split[0][i] = NULL;
 		tmp_cmd_split++;
 	}
-	pipeline(make_strb_array(cmd_split), cmd_split, arg_main);
+	pipeline((tmp_cmd_split = make_strb_array(cmd_split)), cmd_split, arg_main);
 	i = -1;
 	while (cmd_split[++i])
 		split_free_all(cmd_split[i]);
 	free(cmd_split);
+	i = -1;
+	while (tmp_cmd_split[++i])
+		free(tmp_cmd_split[i]);	
+	free(tmp_cmd_split);
 }
 
 
@@ -278,6 +282,6 @@ int main(int argc, char *argv[], char *env[])
 	arg_list_ini(&arg_main);
 	arg_free(&arg_main.head.arg);
 	free(cmd_all);
-	//system("leaks minishell");
+	// system("leaks minishell");
 	return (0);
 }

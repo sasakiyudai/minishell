@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 17:47:28 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/04 22:00:44 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/05 23:23:49 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,19 +46,7 @@ void	wait_chiledren_and_free_fd(int cmd_len, int *fd, pid_t *pids, t_arg_main *a
         {
             if (ret == pids[j])
             {
-				/*
-                if (j != 0)
-				{
-                    close(fd[j * 2 - 2]);
-				}
-                if (j != cmd_len - 1)
-				{
-					write(fd[j * 2 + 1], &c, 1);
-                    close(fd[j * 2 + 1]);
-				}
-                else
-				*/
-                    set_hatena(g_arg_main, WEXITSTATUS(status));
+                set_hatena(g_arg_main, WEXITSTATUS(status));
             }
         }
     }
@@ -159,18 +147,16 @@ void	exec_child(int cmd_len, int *fd, char ***cmd, t_arg_main *arg_main)
 	i = 0;
 	while (i < 2 * (cmd_len - 1))
 		close(fd[i++]);
-(void)fd; (void)cmd_len;
+
 	if ((tmp = is_builtin((*cmd)[0])))
 	{
-		
 		exit(call_builtin(tmp, *cmd, arg_main));
 	}
 	else
 	{
 		if (0 == (tmp = get_path(arg_main, &path, (*cmd)[0])))
 		{
-			if (!(envs = arg_list_get(arg_main)))
-				exit(1);
+			envs = arg_list_get(arg_main);
 			execve(path, *cmd, envs);
 		}
 		else if (tmp == -1)

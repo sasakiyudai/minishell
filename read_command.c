@@ -196,7 +196,7 @@ char	**split_command(char *s, char c)
 		check_quote(s[split_arg.cnt_moji], &split_arg.bitflag_quote);
 		if (s[split_arg.cnt_moji++] != c)
 			split_arg.flag_sequencial = 0;
-		else if (!split_arg.bitflag_quote && !split_arg.flag_sequencial)
+		else if (!split_arg.bitflag_quote && !split_arg.flag_sequencial && (split_arg.cnt_moji >= 2 && s[split_arg.cnt_moji - 2] != '\\'))
 		{
 			split_make_str(&s, &split_arg, ret);
 			if (!ret[split_arg.cnt_splitnum++])

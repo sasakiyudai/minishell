@@ -302,6 +302,7 @@ void    set_hatena(t_arg_main *arg_main, int i)
     arg.data = malloc(len + 1);
     ft_itoa(j, (arg.data));
     arg_add(arg_main, &arg);
+    free(arg.data);
 }
 
 void    add_out(t_arg_main *arg_main, t_arg arg)
