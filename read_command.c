@@ -12,7 +12,7 @@ char	*ft_newstr_ncat(char *src1, char *src2, int n)
 	while (src1[++i])
 		ret[i] = src1[i];
 	j = 0;
-	while (src2[j] != '\0' && src2[j] != '\n')
+	while (src2[j] != '\0')
 		ret[i++] = src2[j++];
 	ret[i] = '\0';
 	return (ret);
@@ -43,6 +43,7 @@ char    *read_all(int fd)
     ret[0] = '\0';
 	while (1)
 	{
+		printf("z\n");
 		while ((ret_read = read(fd, buf, 1000)) == 1000)
 		{
 			buf[ret_read] = '\0';
@@ -59,7 +60,10 @@ char    *read_all(int fd)
 		if (!(ret = ft_newstr_ncatfree(ret, buf, (cnt_read += ret_read), 1)))
 			return (NULL);
 		if (buf[ret_read - 1] == '\n')
+		{
+//			ret[cnt_read - 1] = '\0';
 			break ;
+		}
 		else
 			write(1, "  \b\b", 4);
 	}

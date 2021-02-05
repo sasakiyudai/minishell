@@ -248,6 +248,7 @@ int main(int argc, char *argv[], char *env[])
 		write(1, "$ ", 2);
 		g_signal = "1";
 		cmd_all = read_all(0);
+		printf("[%s]\n", cmd_all);
 		g_signal = "130";
 		if (syntax_check(cmd_all))
 		{
