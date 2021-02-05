@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 22:32:19 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/04 22:01:34 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/05 14:22:09 by rnitta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ char    		**split_command_free(char **ret, int cnt_splitnum);
 void    		free_split_command_all(char **s);
 void    		check_quote(char c, char *bitflag_quote);
 void    		split_make_str(char **s, t_split *split_arg, char **ret);
-int				split_command_ini(char *s, char c, t_split *split_arg, char ***ret);
+int				split_command_ini(char **s, char c, t_split *split_arg, char ***ret);
 void    		split_command_last(char *s, t_split *split_arg, char ***ret);
 char    		**split_command(char *s, char c);
 void			_bzero(void	 *s, int n);
