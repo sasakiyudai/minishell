@@ -69,6 +69,13 @@ int which_quote(char c, int flag)
 
 void    check_quote(char c, char *bitflag_quote)
 {
+	if (c == '\\' && (*bitflag_quote < 4 || *bitflag_quote >= FLAG_ESCAPE) && !(*bitflag_quote & FLAG_SINGLE_QUOTE))
+        *bitflag_quote ^= FLAG_ESCAPE;
+    else if (*bitflag_quote & FLAG_ESCAPE)
+	{
+        *bitflag_quote &= ~FLAG_ESCAPE;
+		return ;
+	}
     if (c == '\'' && *bitflag_quote < 4 && !(*bitflag_quote & FLAG_DOUBLE_QUOTE))
         *bitflag_quote ^= FLAG_SINGLE_QUOTE;
     if (c == '\"' && *bitflag_quote < 4 && !(*bitflag_quote & FLAG_SINGLE_QUOTE))
@@ -79,12 +86,15 @@ void    check_quote(char c, char *bitflag_quote)
 
 char        fff(char flag)
 {
+	if (flag & FLAG_ESCAPE)
+		return ('\\');
     if (flag == FLAG_SINGLE_QUOTE)
         return ('\'');
     if (flag == FLAG_DOUBLE_QUOTE)
         return ('\"');
     if (flag & FLAG_MINUS_ONE)
         return (-1);
+	// printf("fff \n");
 	return (0);
 }
 
@@ -99,16 +109,18 @@ void	remove_quotes(char *cmd)
     j = -1;
     flag = 0;
     flag2 = 0;
+	// printf("%s\n", cmd);
     while (cmd[++j])
     {
         check_quote(cmd[j], &flag);
-        if (flag < flag2)
+		// printf("%hhd\n", flag);
+        if (flag < flag2 && flag2 < FLAG_ESCAPE)
         {
             if (cmd[j] != fff(flag2))
                 cmd[i++] = cmd[j];
         }
-        else if (cmd[j] != fff(flag))
-            cmd[i++] = cmd[j];
+        else if (cmd[j] != fff(flag) || (flag & FLAG_DOUBLE_QUOTE && '\\' == fff(flag) && cmd[j + 1] != '\'' && cmd[j + 1] != '\"' && cmd[j + 1] != '\\' && cmd[j + 1] != '$'))
+        	cmd[i++] = cmd[j];
         flag2 = flag;
     }
     cmd[i] = '\0';
@@ -157,7 +169,7 @@ char *deploy(char *input, t_arg_main *arg_main)
 			i++;
 			flag = 0;
 		}
-		else if (input[i] == '$' && is_dollarble(input[i + 1]))
+		else if (input[i] == '$' && (!i || input[i - 1] != '\\') && is_dollarble(input[i + 1]))
 		{
 			i++;
 			len = 0;

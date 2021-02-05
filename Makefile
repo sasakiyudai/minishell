@@ -1,7 +1,9 @@
 NAME = minishell
+CL = clang 
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra -I libft/ -I includes/
 SANI = -fsanitize=address
+LEAK = -fsanitize=leak
 SRCS = pipe/pipe.c pipe/is_x.c pipe/utils_a.c pipe/main.c builtins/cd.c\
 		builtins/echo.c builtins/export.c builtins/pwd.c builtins/unset.c \
 		builtins/env.c read_command.c get_exec_path.c utils.c argument.c\
@@ -31,5 +33,10 @@ re: fclean all
 sani:  $(OBJS)
 	make -C libft/
 	$(CC) $(CFLAGS) $(SANI) -o $(NAME) $(OBJS) -L libft -lft
+
+leak: $(OBJS)
+	make -C libft/
+	$(CL) $(CFLAGS) $(LEAK) -o $(NAME) $(OBJS) -L libft -lft
+
 
 .PHONY: clean fclean re

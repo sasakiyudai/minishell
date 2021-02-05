@@ -34,6 +34,7 @@ char **make_command_array_splitpipe(char *cmd)
 		free(cmd);
 		return (NULL);
 	}
+	free(cmd);
 	return (cmd_split);
 }
 
@@ -76,11 +77,14 @@ char ***make_command_array(char *cmd)
 		return (NULL);
 	i = -1;
 	while (tmp[++i])
+	{
 		if (!(ret[i] = split_command(tmp[i], ' ')))
 		{
 			command_array_free(ret);
 			return (NULL);
 		}
+	}
+	split_free_all(tmp);
 	ret[i] = NULL;
 	return (ret);
 }
@@ -165,7 +169,15 @@ void command_main(char *cmd_raw, t_arg_main *arg_main)
 		tmp_cmd_split[0][i] = NULL;
 		tmp_cmd_split++;
 	}
-	pipeline(make_strb_array(cmd_split), cmd_split, arg_main);
+	pipeline((tmp_cmd_split = make_strb_array(cmd_split)), cmd_split, arg_main);
+	i = -1;
+	while (cmd_split[++i])
+		split_free_all(cmd_split[i]);
+	free(cmd_split);
+	i = -1;
+	while (tmp_cmd_split[++i])
+		free(tmp_cmd_split[i]);	
+	free(tmp_cmd_split);
 }
 
 
@@ -188,6 +200,7 @@ void ini(t_arg_main *arg_main, char *env[])
 		arg.data = malloc(ft_strlen(env[i]) - tmp);
 		ft_strcpy((char *)(arg.data), env[i] + tmp + 1);
 		arg_add(arg_main, &arg);
+		arg_free(&arg);
 	}
 }
 
@@ -248,6 +261,8 @@ int main(int argc, char *argv[], char *env[])
 		write(1, "$ ", 2);
 		g_signal = "1";
 		cmd_all = read_all(0);
+		if (!ft_strcmp(cmd_all, "finish"))
+			break;
 		g_signal = "130";
 		if (syntax_check(cmd_all))
 		{
@@ -264,4 +279,9 @@ int main(int argc, char *argv[], char *env[])
 		split_free_all(tmp_cmd_split);
 		free(cmd_all);
 	}
+	arg_list_ini(&arg_main);
+	arg_free(&arg_main.head.arg);
+	free(cmd_all);
+	// system("leaks minishell");
+	return (0);
 }

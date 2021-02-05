@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 17:48:31 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/04 00:09:49 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/05 23:21:20 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ void one_command(char ***cmd, char ***raw_cmd, t_arg_main *arg_main)
 	char *path;
 	int status;
 
-	if (!(envs = arg_list_get(arg_main)))
-		exit(1); //　これでいいのか
 	if ((tmp = is_builtin((*cmd)[0])))
 	{
 		set_right(raw_cmd, 0, semi, 0);
@@ -31,19 +29,27 @@ void one_command(char ***cmd, char ***raw_cmd, t_arg_main *arg_main)
 	}
 	else 
 	{
-		pid = fork();
-		if (pid == 0)
+		tmp = get_path(arg_main, &path, (*cmd)[0]);
+		if (tmp == 0)
 		{
-			set_right(raw_cmd, 0, semi, 0);
-			set_left(raw_cmd, 0, semi, 0);
-			if (0 == (tmp = get_path(arg_main, &path, (*cmd)[0])))
+			pid = fork();
+			if (pid == 0)
+			{
+				set_right(raw_cmd, 0, semi, 0);
+				set_left(raw_cmd, 0, semi, 0);
+				envs = arg_list_get(arg_main);
 				execve(path, *cmd, envs);
-			exit(error((*cmd)[0]));
+				exit(error((*cmd)[0]));
+			}
+			free(path);
+			waitpid(pid, &status, 0);
+			set_hatena(arg_main, WEXITSTATUS(status));
 		}
-		else if (tmp == -1)
-			print_error(MALLOC_FAIL);
-		waitpid(pid, &status, 0);
-		set_hatena(arg_main, WEXITSTATUS(status));
+		else
+		{
+			set_hatena(arg_main, 127);
+			error((*cmd)[0]);
+		}
 	}
 }
 

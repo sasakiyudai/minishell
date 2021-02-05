@@ -76,7 +76,8 @@ int	_syntax_check_make_sedstr(char *cmd_raw, char **ret)
 	while (*cmd_raw)
 	{
 		check_quote(*cmd_raw, &bitflag_quote);
-		if (!bitflag_quote)
+		//printf("%hhd\n", bitflag_quote);
+		if (bitflag_quote <= FLAG_DOUBLE_QUOTE)
 		{
 			(*ret)[++i] = *cmd_raw;
 			if (*cmd_raw == '\'' || *cmd_raw == '\"')
@@ -84,6 +85,7 @@ int	_syntax_check_make_sedstr(char *cmd_raw, char **ret)
 		}
 		cmd_raw++;
 	}
+	//printf("%hhd\n", bitflag_quote);
     (*ret)[++i] = '\0';
     return (!!bitflag_quote);
 }

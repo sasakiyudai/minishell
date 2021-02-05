@@ -135,6 +135,7 @@ char **make_strb(char **str_a)
 {
 	int i;
 	int *table;
+	char **tmp;
 
 	i = 0;
 	table = malloc(sizeof(int) * ft_tablen(str_a));
@@ -156,5 +157,7 @@ char **make_strb(char **str_a)
 			table[i] = 0;
 		i++;
 	}
-	return (really_make_strb(str_a, table));
+	tmp = really_make_strb(str_a, table);
+	free(table);
+	return (tmp);
 }

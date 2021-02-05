@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 22:32:19 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/05 16:51:35 by rnitta           ###   ########.fr       */
+/*   Updated: 2021/02/05 20:32:57 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #define FLAG_DOUBLE_QUOTE 2
 #define FLAG_SINGLE_QUOTE 1
 #define FLAG_MINUS_ONE 4
+#define FLAG_ESCAPE 8
 #define BAD_ARGNAME 1
 
 # include "../libft/libft.h"
