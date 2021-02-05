@@ -32,7 +32,7 @@ char	*ft_newstr_ncatfree(char *src1, char *src2, int n, int bitflag)
 char    *read_all(int fd)
 {
     char    *ret;
-    char    buf[1000];
+    char    buf[1001];
     int        cnt_read;
     int        ret_read;
     int     f;
@@ -43,13 +43,14 @@ char    *read_all(int fd)
     ret[0] = '\0';
 	while (1)
 	{
-		if ((ret_read = read(fd, buf, 1000)) > 0)
+		while ((ret_read = read(fd, buf, 1000)) == 1000)
 		{
+			buf[ret_read] = '\0';
 			f = 1;
 			if (!(ret = ft_newstr_ncatfree(ret, buf, (cnt_read += ret_read), 1)))
 				return (NULL);
 		}
-		if (!f)
+		if (!f && !ret_read)
 		{
 			write(1, "exit\n", 5);
 			exit(0);
@@ -94,11 +95,6 @@ int		cnt_splitnum_command(char *s, char c)
 			bitflag_quote ^= FLAG_DOUBLE_QUOTE;
 		if (*s != c)
 			flag_sequencial = 0;
-		else if (!bitflag_quote && !flag_sequencial)
-		{
-			ret++;
-			flag_sequencial = 1;
-		}
 		s++;
 	}
 	return (ret);
