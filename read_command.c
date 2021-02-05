@@ -12,7 +12,7 @@ char	*ft_newstr_ncat(char *src1, char *src2, int n)
 	while (src1[++i])
 		ret[i] = src1[i];
 	j = 0;
-	while (j < n - 1)
+	while (src2[j] != '\0')
 		ret[i++] = src2[j++];
 	ret[i] = '\0';
 	return (ret);
@@ -32,7 +32,7 @@ char	*ft_newstr_ncatfree(char *src1, char *src2, int n, int bitflag)
 char    *read_all(int fd)
 {
     char    *ret;
-    char    buf[1000];
+    char    buf[1001];
     int        cnt_read;
     int        ret_read;
     int     f;
@@ -45,19 +45,26 @@ char    *read_all(int fd)
 	{
 		if ((ret_read = read(fd, buf, 1000)) == 1000)
 		{
+			buf[1000] = '\0';
 			f = 1;
 			if (!(ret = ft_newstr_ncatfree(ret, buf, (cnt_read += ret_read), 1)))
 				return (NULL);
 		}
-		if (!f)
+		if (!f && !ret_read)
 		{
 			write(1, "exit\n", 5);
 			exit(0);
 		}
+		buf[ret_read] = '\0';
+		if (!(ret = ft_newstr_ncatfree(ret, buf, (cnt_read += ret_read), 1)))
+			return (NULL);
 		if (buf[ret_read - 1] == '\n')
+		{
+			ret[cnt_read - 1] = '\0';
 			break ;
-		else
-			write(1, "  \b\b", 4);
+		}
+		write(1, "  \b\b", 4);
+		f = 1;
 	}
     if (ret_read >= 0)
         return (ret);

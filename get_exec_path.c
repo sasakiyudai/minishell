@@ -94,7 +94,6 @@ int get_path(t_arg_main *arg_main, char **ret, char *name)
         }
         path++;
     }
-	printf("\n==================\n%p\n======================\n", *tmp_path);
     split_free_all(tmp_path);
     return (1);
 }
