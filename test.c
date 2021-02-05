@@ -185,7 +185,7 @@ char *deploy(char *input, t_arg_main *arg_main)
 			}
 		}
 		else
-		{				
+		{
 			tmp = malloc(sizeof(char) * 1 + 1);
 			tmp[0] = input[i];
 			tmp[1] = '\0';

@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 17:47:28 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/04 18:42:48 by rnitta           ###   ########.fr       */
+/*   Updated: 2021/02/04 22:00:44 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,10 +132,11 @@ int	call_builtin(int tmp, char **str_b, t_arg_main *arg_main)
 	else if (tmp == 6)
 		ft_env(arg_main);
 	else if (tmp == 7)
-	{
+		result = ft_exit(str_b);
+	/*{
 		write(2, "exit\n", 5);
 		exit(0);
-	}
+	}*/
 	return (result);
 }
 

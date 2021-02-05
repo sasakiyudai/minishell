@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 15:25:45 by syudai            #+#    #+#             */
-/*   Updated: 2021/01/31 16:47:07 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/04 23:07:46 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct	s_list
 	struct s_list	*next;
 }				t_list;
 
+int				ft_atoi(const char *str);
 void			*ft_memset(void *b, int c, size_t len);
 void			ft_bzero(void *s, size_t n);
 void			*ft_memcpy(void *dst, const void *src, size_t n);
