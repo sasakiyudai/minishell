@@ -12,7 +12,7 @@ char	*ft_newstr_ncat(char *src1, char *src2, int n)
 	while (src1[++i])
 		ret[i] = src1[i];
 	j = 0;
-	while (src2[j] != '\0')
+	while (j < n - 1)
 		ret[i++] = src2[j++];
 	ret[i] = '\0';
 	return (ret);
@@ -32,7 +32,7 @@ char	*ft_newstr_ncatfree(char *src1, char *src2, int n, int bitflag)
 char    *read_all(int fd)
 {
     char    *ret;
-    char    buf[1001];
+    char    buf[1000];
     int        cnt_read;
     int        ret_read;
     int     f;
@@ -43,27 +43,19 @@ char    *read_all(int fd)
     ret[0] = '\0';
 	while (1)
 	{
-		printf("z\n");
-		while ((ret_read = read(fd, buf, 1000)) == 1000)
+		if ((ret_read = read(fd, buf, 1000)) > 0)
 		{
-			buf[ret_read] = '\0';
 			f = 1;
 			if (!(ret = ft_newstr_ncatfree(ret, buf, (cnt_read += ret_read), 1)))
 				return (NULL);
 		}
-		if (!f && !ret_read)
+		if (!f)
 		{
 			write(1, "exit\n", 5);
 			exit(0);
 		}
-		buf[ret_read] = '\0';
-		if (!(ret = ft_newstr_ncatfree(ret, buf, (cnt_read += ret_read), 1)))
-			return (NULL);
 		if (buf[ret_read - 1] == '\n')
-		{
-//			ret[cnt_read - 1] = '\0';
 			break ;
-		}
 		else
 			write(1, "  \b\b", 4);
 	}
@@ -91,16 +83,23 @@ int		cnt_splitnum_command(char *s, char c)
 	char	bitflag_quote;
 	char	flag_sequencial;
 
-	ret = 1;
+	ret = 0;
 	bitflag_quote = 0;
-	flag_sequencial = 1;
+	flag_sequencial = 0;
+	while (*s == c)
+		s++;
 	while (*s)
 	{
 		if (*s == '\'' && (!bitflag_quote) & FLAG_DOUBLE_QUOTE)
 			bitflag_quote ^= FLAG_SINGLE_QUOTE;
 		if (*s == '\"' && (!bitflag_quote) & FLAG_SINGLE_QUOTE)
 			bitflag_quote ^= FLAG_DOUBLE_QUOTE;
-		if (*s != c && flag_sequencial)
+		if (*s == c && !flag_sequencial)
+		{
+			ret++;
+			flag_sequencial = 1;
+		}
+		else if (!bitflag_quote && !flag_sequencial)
 		{
 			ret++;
 			flag_sequencial = 0;
@@ -147,16 +146,14 @@ void	split_make_str(char **s, t_split *split_arg, char **ret)
 }
 
 
-int		split_command_ini(char **s, char c, t_split *split_arg, char ***ret)
+int		split_command_ini(char *s, char c, t_split *split_arg, char ***ret)
 {
-	split_arg->cnt_splitnum = cnt_splitnum_command(*s, c) + 1;
+	split_arg->cnt_splitnum = cnt_splitnum_command(s, c) + 1;
 	*ret = (char **)malloc(sizeof(char *) * split_arg->cnt_splitnum);
 	if (!*ret)
 		return (-1);
 	_bzero(split_arg, sizeof(t_split));
 	split_arg->flag_sequencial = 1;
-	while (**s == c)
-		(*s)++;
 	return (0);
 }
 
@@ -183,7 +180,7 @@ char	**split_command(char *s, char c)
 	t_split	split_arg;
 	char **ret;
 
-	if (split_command_ini(&s, c, &split_arg, &ret))
+	if (split_command_ini(s, c, &split_arg, &ret))
 		return (NULL);
 	while (s[split_arg.cnt_moji])
 	{
@@ -196,10 +193,10 @@ char	**split_command(char *s, char c)
 			if (!ret[split_arg.cnt_splitnum++])
 				return (split_command_free(ret, split_arg.cnt_splitnum - 1));
 		}
-		//else
+		else if (!split_arg.bitflag_quote)
 		{
-			//split_arg.cnt_moji = 0;
-			//s++;
+			split_arg.cnt_moji = 0;
+			s++;
 		}
 	}
 	split_command_last(s, &split_arg, &ret);
