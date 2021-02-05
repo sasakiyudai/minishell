@@ -98,7 +98,7 @@ int arg_add(t_arg_main *arg_main, t_arg *arg)
 
 void    _arg_list_ini_process(t_arg_list *arg_list)
 {
-    while (arg_list->next)
+    if (arg_list->next)
         _arg_list_ini_process(arg_list->next);
     arg_free(&(arg_list->arg));
     free(arg_list);
