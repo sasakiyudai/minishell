@@ -43,7 +43,7 @@ char    *read_all(int fd)
     ret[0] = '\0';
 	while (1)
 	{
-		if ((ret_read = read(fd, buf, 1000)) > 0)
+		if ((ret_read = read(fd, buf, 1000)) == 1000)
 		{
 			f = 1;
 			if (!(ret = ft_newstr_ncatfree(ret, buf, (cnt_read += ret_read), 1)))
@@ -146,14 +146,16 @@ void	split_make_str(char **s, t_split *split_arg, char **ret)
 }
 
 
-int		split_command_ini(char *s, char c, t_split *split_arg, char ***ret)
+int		split_command_ini(char **s, char c, t_split *split_arg, char ***ret)
 {
-	split_arg->cnt_splitnum = cnt_splitnum_command(s, c) + 1;
+	split_arg->cnt_splitnum = cnt_splitnum_command(*s, c) + 1;
 	*ret = (char **)malloc(sizeof(char *) * split_arg->cnt_splitnum);
 	if (!*ret)
 		return (-1);
 	_bzero(split_arg, sizeof(t_split));
 	split_arg->flag_sequencial = 1;
+	while (**s == c)
+		(*s)++;
 	return (0);
 }
 
@@ -180,7 +182,7 @@ char	**split_command(char *s, char c)
 	t_split	split_arg;
 	char **ret;
 
-	if (split_command_ini(s, c, &split_arg, &ret))
+	if (split_command_ini(&s, c, &split_arg, &ret))
 		return (NULL);
 	while (s[split_arg.cnt_moji])
 	{
