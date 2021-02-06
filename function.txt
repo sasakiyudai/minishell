@@ -2,9 +2,9 @@ utils
 	void	_bzero(void *s, int n)		sからnバイト0で初期化
 		例） _bzero(test, sizeof(t_test))   ->   t_test型のtestを0で初期化
 
-	void	_bcopy(void *destvoid     _bcopy(void *dest, void *src, int size)
+	void	_bcopy(void *destvoid	 _bcopy(void *dest, void *src, int size)
 
-	void    split_free_all(char **ss)	文字列配列のfree
+	void	split_free_all(char **ss)	文字列配列のfree
 
 read_command.c
 
@@ -32,14 +32,14 @@ child_process.c
 	{
 		char *name;
 		int (*func)(char **);
-	}               t_cmd;		//実際にはこれの配列を使う（最後の要素のnameはNULL）
+	}			   t_cmd;		//実際にはこれの配列を使う（最後の要素のnameはNULL）
 
 	int isbuiltin(char *name, t_cmd cmd[], int (**ret)(char **))	nameというビルトイン関数がある場合retに関数ポインタを代入	戻り値：ビルトインのとき1、違ければ0
 
 	int get_path(t_arg *arg_main, char **ret, char *name)		環境変数PATHにnameというファイルがあればretに名前を含むパスを代入	戻り値：存在したら0 しなければ1　失敗で-1
 
 
-char *separate_redirect(char *command);    | で区切ったレベルのコマンド群（文字列）からレダイレクトの前後をスペースを一つ以上追加してくれる関数
+char *separate_redirect(char *command);	| で区切ったレベルのコマンド群（文字列）からレダイレクトの前後をスペースを一つ以上追加してくれる関数
 
 void pipeline(char ***cmd, char ***raw_cmd);
  cmdはstr_Bの文字列配列(整形後)の配列、 raw_cmdはstr_A（つまりはリダイレクトやfilenameを残したままの文字列配列）の配列
@@ -61,20 +61,20 @@ argument.c		変数を取り扱うための関数
 		char *name;
 		int type;
 		void *data;
-	}               t_arg;		変数そのもの
+	}			   t_arg;		変数そのもの
 
 	typedef struct s_arg_list
 	{
 		t_arg   arg;
 		struct s_arg_list  *next;
-	}               t_arg_list;		線形リストで管理
+	}			   t_arg_list;		線形リストで管理
 
 
 	typedef struct s_arg_main
 	{
 		t_arg_list  head;
 		int arg_num;
-	}               t_arg_main;		基本これだけ保持しとけばOK
+	}			   t_arg_main;		基本これだけ保持しとけばOK
 
 	
 	int		arg_main_ini(t_arg_main *arg_main)				プログラムの初めに一度だけ呼ぶ
@@ -82,7 +82,7 @@ argument.c		変数を取り扱うための関数
 
 	int		arg_add(t_arg_main *arg_main, t_arg *arg)		リストへの変数の追加　成功:0　失敗:-1
 	void	arg_delete(t_arg *arg, t_arg_list *arg_list)	リストから変数の消去　&  変数のfree 存在しない場合は何もしない
-	void    arg_free(t_arg *arg);
-	int     arg_get(t_arg_main *arg_main, t_arg *arg, char *name)	nameという名前の変数が存在する場合*argに格納	戻り値　格納:0  存在しない:1　失敗:-1
+	void	arg_free(t_arg *arg);
+	int	 arg_get(t_arg_main *arg_main, t_arg *arg, char *name)	nameという名前の変数が存在する場合*argに格納	戻り値　格納:0  存在しない:1　失敗:-1
 	char	*arg_to_str(t_arg *arg)							argからname="data"の文字列を作成　戻り値：文字列　失敗またはargがNULLでNULLを返す
 

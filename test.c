@@ -67,63 +67,63 @@ int which_quote(char c, int flag)
 	return (flag);
 }
 
-void    check_quote(char c, char *bitflag_quote)
+void	check_quote(char c, char *bitflag_quote)
 {
 	if (c == '\\' && (*bitflag_quote < 4 || *bitflag_quote >= FLAG_ESCAPE) && !(*bitflag_quote & FLAG_SINGLE_QUOTE))
-        *bitflag_quote ^= FLAG_ESCAPE;
-    else if (*bitflag_quote & FLAG_ESCAPE)
+		*bitflag_quote ^= FLAG_ESCAPE;
+	else if (*bitflag_quote & FLAG_ESCAPE)
 	{
-        *bitflag_quote &= ~FLAG_ESCAPE;
+		*bitflag_quote &= ~FLAG_ESCAPE;
 		return ;
 	}
-    if (c == '\'' && *bitflag_quote < 4 && !(*bitflag_quote & FLAG_DOUBLE_QUOTE))
-        *bitflag_quote ^= FLAG_SINGLE_QUOTE;
-    if (c == '\"' && *bitflag_quote < 4 && !(*bitflag_quote & FLAG_SINGLE_QUOTE))
-        *bitflag_quote ^= FLAG_DOUBLE_QUOTE;
-    if (c == -1)
-        *bitflag_quote ^= FLAG_MINUS_ONE;
+	if (c == '\'' && *bitflag_quote < 4 && !(*bitflag_quote & FLAG_DOUBLE_QUOTE))
+		*bitflag_quote ^= FLAG_SINGLE_QUOTE;
+	if (c == '\"' && *bitflag_quote < 4 && !(*bitflag_quote & FLAG_SINGLE_QUOTE))
+		*bitflag_quote ^= FLAG_DOUBLE_QUOTE;
+	if (c == -1)
+		*bitflag_quote ^= FLAG_MINUS_ONE;
 }
 
-char        fff(char flag)
+char		fff(char flag)
 {
 	if (flag & FLAG_ESCAPE)
 		return ('\\');
-    if (flag == FLAG_SINGLE_QUOTE)
-        return ('\'');
-    if (flag == FLAG_DOUBLE_QUOTE)
-        return ('\"');
-    if (flag & FLAG_MINUS_ONE)
-        return (-1);
+	if (flag == FLAG_SINGLE_QUOTE)
+		return ('\'');
+	if (flag == FLAG_DOUBLE_QUOTE)
+		return ('\"');
+	if (flag & FLAG_MINUS_ONE)
+		return (-1);
 	// printf("fff \n");
 	return (0);
 }
 
 void	remove_quotes(char *cmd)
 {
-    char flag;
-    int i;
-    int j;
-    char flag2;
+	char flag;
+	int i;
+	int j;
+	char flag2;
 
-    i = 0;
-    j = -1;
-    flag = 0;
-    flag2 = 0;
+	i = 0;
+	j = -1;
+	flag = 0;
+	flag2 = 0;
 	// printf("%s\n", cmd);
-    while (cmd[++j])
-    {
-        check_quote(cmd[j], &flag);
+	while (cmd[++j])
+	{
+		check_quote(cmd[j], &flag);
 		// printf("%hhd\n", flag);
-        if (flag < flag2 && flag2 < FLAG_ESCAPE)
-        {
-            if (cmd[j] != fff(flag2))
-                cmd[i++] = cmd[j];
-        }
-        else if (cmd[j] != fff(flag) || (flag & FLAG_DOUBLE_QUOTE && '\\' == fff(flag) && cmd[j + 1] != '\'' && cmd[j + 1] != '\"' && cmd[j + 1] != '\\' && cmd[j + 1] != '$'))
-        	cmd[i++] = cmd[j];
-        flag2 = flag;
-    }
-    cmd[i] = '\0';
+		if (flag < flag2 && flag2 < FLAG_ESCAPE)
+		{
+			if (cmd[j] != fff(flag2))
+				cmd[i++] = cmd[j];
+		}
+		else if (cmd[j] != fff(flag) || (flag & FLAG_DOUBLE_QUOTE && '\\' == fff(flag) && cmd[j + 1] != '\'' && cmd[j + 1] != '\"' && cmd[j + 1] != '\\' && cmd[j + 1] != '$'))
+			cmd[i++] = cmd[j];
+		flag2 = flag;
+	}
+	cmd[i] = '\0';
 }
 
 int single_quote(char now, int flag)

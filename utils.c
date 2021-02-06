@@ -1,20 +1,20 @@
 #include "minishell.h"
 
-void     _bcopy(void *dest, void *src, int size)
+void	 _bcopy(void *dest, void *src, int size)
 {
-    char    *s1;
-    char    *s2;
+	char	*s1;
+	char	*s2;
 
-    s1 = (char *)dest;
-    s2 = (char *)src;
-    while (size--)
-        s1[size] = s2[size];
+	s1 = (char *)dest;
+	s2 = (char *)src;
+	while (size--)
+		s1[size] = s2[size];
 }
 
-int     _bcopy_int(void *dest, void *src, int size)
+int	 _bcopy_int(void *dest, void *src, int size)
 {
-    _bcopy(dest, src, size);
-    return (0);
+	_bcopy(dest, src, size);
+	return (0);
 }
 
 void	_bzero(void	 *s, int n)

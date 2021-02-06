@@ -103,16 +103,16 @@ void print_tabs(char ***tabs)
 
 char ***make_strb_array(char ***cmd_split)
 {
-    char ***ret;
-    int i;
+	char ***ret;
+	int i;
 
-    ret = malloc(sizeof (char **) * (count(cmd_split) + 1));
-    i = -1;
+	ret = malloc(sizeof (char **) * (count(cmd_split) + 1));
+	i = -1;
 	
-    while (cmd_split[++i])
-        ret[i] = make_strb(cmd_split[i]);
-    ret[i] = NULL;
-    return (ret);
+	while (cmd_split[++i])
+		ret[i] = make_strb(cmd_split[i]);
+	ret[i] = NULL;
+	return (ret);
 }
 
 int is_strb_empty(char *s)

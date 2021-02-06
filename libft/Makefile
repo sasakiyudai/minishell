@@ -1,13 +1,13 @@
 # **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2020/11/03 22:19:56 by syudai            #+#    #+#              #
-#    Updated: 2021/02/04 23:06:04 by syudai           ###   ########.fr        #
-#                                                                              #
+#																			  #
+#														 :::	  ::::::::	#
+#	Makefile										   :+:	  :+:	:+:	#
+#													 +:+ +:+		 +:+	  #
+#	By: syudai <syudai@student.42tokyo.jp>		 +#+  +:+	   +#+		 #
+#												 +#+#+#+#+#+   +#+			#
+#	Created: 2020/11/03 22:19:56 by syudai			#+#	#+#			  #
+#	Updated: 2021/02/04 23:06:04 by syudai		   ###   ########.fr		#
+#																			  #
 # **************************************************************************** #
 
 NAME = libft.a
@@ -20,7 +20,7 @@ SRCS = ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_memmove.c\
 	   ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c\
 	   ft_strcmp.c ft_strcpy.c
 B_SRCS = ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c\
-	     ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c ft_lstiter.c\
+		 ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c ft_lstiter.c\
 		 ft_lstiter.c ft_lstmap.c
 OBJS = $(SRCS:%.c=%.o)
 B_OBJS = $(B_SRCS:%.c=%.o)

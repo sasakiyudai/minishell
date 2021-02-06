@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   pipe.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/28 17:47:28 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/05 23:23:49 by syudai           ###   ########.fr       */
-/*                                                                            */
+/*																			*/
+/*														:::	  ::::::::   */
+/*   pipe.c											 :+:	  :+:	:+:   */
+/*													+:+ +:+		 +:+	 */
+/*   By: syudai <syudai@student.42tokyo.jp>		 +#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2021/01/28 17:47:28 by syudai			#+#	#+#			 */
+/*   Updated: 2021/02/05 23:23:49 by syudai		   ###   ########.fr	   */
+/*																			*/
 /* ************************************************************************** */
 
 #include "minishell.h"
@@ -34,22 +34,22 @@ void	wait_chiledren_and_free_fd(int cmd_len, int *fd, pid_t *pids, t_arg_main *a
 	i = 0;
 
 	pid_t ret;
-    int cnt = cmd_len;
-    int j;
+	int cnt = cmd_len;
+	int j;
 //:q
 //char c = 4;
-    while (cnt--)
-    {
-        ret = waitpid(-1, &status, 0);
-        j = -1;
-        while (++j < cmd_len)
-        {
-            if (ret == pids[j])
-            {
-                set_hatena(g_arg_main, WEXITSTATUS(status));
-            }
-        }
-    }
+	while (cnt--)
+	{
+		ret = waitpid(-1, &status, 0);
+		j = -1;
+		while (++j < cmd_len)
+		{
+			if (ret == pids[j])
+			{
+				set_hatena(g_arg_main, WEXITSTATUS(status));
+			}
+		}
+	}
 	
 	free(pids);
 	free(fd);
