@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int		ft_len(char *args[])
+int			ft_len(char *args[])
 {
 	int i;
 
@@ -94,7 +94,7 @@ void	export_argadd(char *args[], t_arg_main *arg_main)
 	}
 }
 
-int ft_export(char *args[], t_arg_main *arg_main)
+int		ft_export(char *args[], t_arg_main *arg_main)
 {
 	char	**env;
 

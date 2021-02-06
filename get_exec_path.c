@@ -1,31 +1,10 @@
 #include "minishell.h"
 #include <dirent.h>
 
-typedef struct s_cmd
-{
-	char *name;
-	int (*func)(char **);
-}			   t_cmd;
-
-
-int isbuiltin(char *name, t_cmd cmd[], int (**ret)(char **))
-{
-	while (cmd[0].name)
-	{
-		if (!ft_strcmp(name, cmd[0].name))
-		{
-			*ret = cmd[0].func;
-			return (1);
-		}
-		cmd++;
-	}
-	return (0);
-}
-
 int ispath_ok(char *path, char *name)
 {
-	DIR *dir;
-	struct dirent *dent;
+	DIR				*dir;
+	struct dirent	*dent;
 
 	if (name == (char *)1)
 		return (0);
@@ -41,9 +20,9 @@ int ispath_ok(char *path, char *name)
 	return (0);
 }
 
-int get_path_makestr(char **ret, char *path, char *name)
+int		get_path_makestr(char **ret, char *path, char *name)
 {
-	int path_len;
+	int	path_len;
 
 	path_len = ft_strlen(path);
 	if (!(*ret = (char *)malloc(path_len + 1 + ft_strlen(name) + 1)))
@@ -54,13 +33,13 @@ int get_path_makestr(char **ret, char *path, char *name)
 	return (0);
 }
 
-int get_path_make_strarry(t_arg_main *arg_main, char ***path)
+int		get_path_make_strarry(t_arg_main *arg_main, char ***path)
 {
-	t_arg arg;
-	int tmp;
+	t_arg	arg;
+	int		tmp;
 
 	if ((tmp = arg_get(arg_main, &arg, "PATH")))
-		return (tmp); 
+		return (tmp);
 	if (!(*path = split_command((char *)(arg.data), ':')))
 	{
 		arg_free(&arg);
@@ -70,11 +49,11 @@ int get_path_make_strarry(t_arg_main *arg_main, char ***path)
 	return (0);
 }
 
-int get_path(t_arg_main *arg_main, char **ret, char *name)
+int		get_path(t_arg_main *arg_main, char **ret, char *name)
 {
-	char **path;
-	char **tmp_path;
-	int tmp;
+	char	**path;
+	char	**tmp_path;
+	int		tmp;
 
 	if (ispath_ok("./", ft_strchr(name, '/') + 1))
 	{
