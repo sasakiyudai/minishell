@@ -1,75 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   make_strb.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/07 01:33:20 by syudai            #+#    #+#             */
+/*   Updated: 2021/02/07 01:44:41 by syudai           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-
-int ft_tablen(char **tab)
+char	*set_res(char *res, char *command)
 {
-	int i;
-
-	i = 0;
-	while (tab[i])
-		i++;
-	return (i);
-}
-
-int num_of_redirect(char **tab)
-{
-	int i;
-	int res;
-
-	i = 0;
-	res = 0;
-	while (tab[i])
-	{
-		if (ft_strcmp(tab[i], ">") == 0 || ft_strcmp(tab[i], ">>") == 0 || ft_strcmp(tab[i], "<") == 0)
-			res++;
-		i++;
-	}
-	return (res);
-}
-
-
-char *separate_redirect(char *command);
-
-
-int is_space(char c)
-{
-	if (c == ' ' || c == '\f' || c == '\n' || c == '\r' || c == '\t' || c == '\v')
-		return (1);
-	return (0);
-}
-
-int is_redirect(char c)
-{
-	if (c == '<' || c == '>')
-		return (1);
-	return (0);
-}
-
-int is_ok(char *command, int i)
-{
-	int len = ft_strlen(command);
-
-	if (command[i] == '<')
-		return (1);
-	if (i && command[i - 1] == '<')
-		return (1);
-	if (i < len - 1 && command[i] == '>' && command[i + 1] == '>')
-		return (1);
-	if (1 < i && command[i] != '>' && command[i - 1] == '>' && command[i - 2] == '>')
-		return (1);
-	if (0 < i && i < len - 1 && command[i] == '>' && command[i - 1] != '>' && command[i + 1] != '>')
-		return (1);
-	if (0 < i && command[i] != '>' && command[i - 1] == '>' && command[i - 2])
-		return (1);
-	return (0);
-}
-
-char *set_res(char *res, char *command)
-{
-	int i;
-	int j;
-	char flag;
-	char flag2;
+	int		i;
+	int		j;
+	char	flag;
+	char	flag2;
 
 	flag = 0;
 	flag2 = 0;
@@ -87,11 +35,11 @@ char *set_res(char *res, char *command)
 	return (res);
 }
 
-char *separate_redirect(char *command)
+char	*separate_redirect(char *command)
 {
-	int i;
-	int redirect;
-	char *res;
+	int		i;
+	int		redirect;
+	char	*res;
 
 	i = 0;
 	redirect = 0;
@@ -105,14 +53,36 @@ char *separate_redirect(char *command)
 	return (set_res(res, command));
 }
 
-char **really_make_strb(char **str_a, int *table)
+int		is_ok(char *command, int i)
 {
-	int i;
-	int j;
 	int len;
-	int cnt_redirect;
-	char **str_b;
-	
+
+	len = ft_strlen(command);
+	if (command[i] == '<')
+		return (1);
+	if (i && command[i - 1] == '<')
+		return (1);
+	if (i < len - 1 && command[i] == '>' && command[i + 1] == '>')
+		return (1);
+	if (1 < i && command[i] != '>' && command[i - 1] == '>'
+	&& command[i - 2] == '>')
+		return (1);
+	if (0 < i && i < len - 1 && command[i] == '>' && command[i - 1] != '>'
+	&& command[i + 1] != '>')
+		return (1);
+	if (0 < i && command[i] != '>' && command[i - 1] == '>' && command[i - 2])
+		return (1);
+	return (0);
+}
+
+char	**really_make_strb(char **str_a, int *table)
+{
+	int		i;
+	int		j;
+	int		len;
+	int		cnt_redirect;
+	char	**str_b;
+
 	i = 0;
 	j = 0;
 	len = ft_tablen(str_a);
@@ -131,23 +101,18 @@ char **really_make_strb(char **str_a, int *table)
 	return (str_b);
 }
 
-char **make_strb(char **str_a)
+char	**make_strb(char **str_a)
 {
-	int i;
-	int *table;
-	char **tmp;
+	int		i;
+	int		*table;
+	char	**tmp;
 
 	i = 0;
 	table = malloc(sizeof(int) * ft_tablen(str_a));
 	while (str_a[i])
 	{
-		if (ft_strcmp(str_a[i], ">>") == 0 || ft_strcmp(str_a[i], ">") == 0)
-		{
-			table[i] = 1;
-			table[i + 1] = 1;
-			i++;
-		}
-		else if (ft_strcmp(str_a[i], "<") == 0)
+		if (ft_strcmp(str_a[i], ">>") == 0 || ft_strcmp(str_a[i], ">") == 0
+		|| ft_strcmp(str_a[i], "<") == 0)
 		{
 			table[i] = 1;
 			table[i + 1] = 1;

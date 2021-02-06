@@ -58,6 +58,11 @@ typedef    struct    s_split
 extern char* g_signal;
 extern t_arg_main* g_arg_main;
 
+int                is_ok(char *command, int i);
+int                is_space(char c);
+int                is_redirect(char c);
+int                num_of_redirect(char **tab);
+int                ft_tablen(char **tab);
 char			*arg_to_str_quotes(t_arg *arg);
 void			remove_quotes(char *cmd);
 void			set_hatena(t_arg_main *arg_main, int i);

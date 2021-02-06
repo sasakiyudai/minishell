@@ -219,29 +219,32 @@ void	main_process(t_arg_main *arg_main)
 	char		**cmd_split;
 	char		**tmp_cmd_split;
 
-	write(1, "$ ", 2);
-	g_signal = "1";
-	cmd_all = read_all(0);
-	if (!ft_strcmp(cmd_all, "finish"))
+	while (1)
 	{
+		write(1, "$ ", 2);
+		g_signal = "1";
+		cmd_all = read_all(0);
+		if (!ft_strcmp(cmd_all, "finish"))
+		{
+			free(cmd_all);
+			break ;
+		}
+		g_signal = "130";
+		if (syntax_check(cmd_all))
+		{
+			free(cmd_all);
+			continue;
+		}
+		cmd_split = split_command(cmd_all, ';');
+		tmp_cmd_split = cmd_split;
+		while (*cmd_split)
+		{
+			command_main(*cmd_split, arg_main);
+			cmd_split++;
+		}
+		split_free_all(tmp_cmd_split);
 		free(cmd_all);
-		break ;
 	}
-	g_signal = "130";
-	if (syntax_check(cmd_all))
-	{
-		free(cmd_all);
-		continue;
-	}
-	cmd_split = split_command(cmd_all, ';');
-	tmp_cmd_split = cmd_split;
-	while (*cmd_split)
-	{
-		command_main(*cmd_split, arg_main);
-		cmd_split++;
-	}
-	split_free_all(tmp_cmd_split);
-	free(cmd_all);
 }
 
 int		main(int argc, char *argv[], char *env[])
@@ -253,8 +256,7 @@ int		main(int argc, char *argv[], char *env[])
 	ini(&arg_main, env);
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, sig_handler);
-	while (1)
-		main_process(&arg_main);
+	main_process(&arg_main);
 	arg_list_ini(&arg_main);
 	arg_free(&arg_main.head.arg);
 	free(cmd_all);
