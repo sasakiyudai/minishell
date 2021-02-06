@@ -76,7 +76,9 @@ int		cnt_splitnum_command(char *s, char c)
 	char	bitflag_quote;
 	char	flag_sequencial;
 
-	set_zero(&ret, &bitflag_quote, &flag_sequencial, &flag_sequencial)
+	ret = 0;
+	bitflag_quote = 0;
+	flag_sequencial = 0;
 	while (*s == c)
 		s++;
 	while (*s)
