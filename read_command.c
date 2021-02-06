@@ -44,7 +44,7 @@ char	*read_all(int fd)
 	while ((ret_read = read(fd, buf, 1000)))
 	{
 		if (!f)
-			exit (0 * write(1, "exit\n", 5));
+			exit(0 * write(1, "exit\n", 5));
 		buf[ret_read] = '\0';
 		ret = ft_newstr_ncatfree(ret, buf, (cnt_read += ret_read), 1);
 		if (buf[ret_read - 1] == '\n' && !(ret[cnt_read - 1] = '\0'))

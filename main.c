@@ -17,7 +17,6 @@ void	ft_strncpy(char *dest, char *src, size_t n)
 		dest[n] = src[n];
 }
 
-
 void	print_error(int i)
 {
 	i++;
@@ -40,24 +39,19 @@ char **make_command_array_splitpipe(char *cmd)
 
 char ***make_command_array_malloc(char **tmp)
 {
-	int cnt;
-	char ***ret;
+	int		cnt;
+	char	***ret;
 
 	cnt = 0;
 	while (tmp[cnt])
 		cnt++;
-	if (!(ret = (char ***)malloc(sizeof (char **) * (cnt + 1))))
-	{
-		print_error(MALLOC_FAIL);
-		split_free_all(tmp);
-		return (NULL);
-	}
+	ret = (char ***)malloc(sizeof (char **) * (cnt + 1));
 	return (ret);
 }
 
 void	command_array_free(char ***cmd)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (cmd[++i])
@@ -65,33 +59,25 @@ void	command_array_free(char ***cmd)
 	free(cmd);
 }
 
-char ***make_command_array(char *cmd)
+char	***make_command_array(char *cmd)
 {
-	char **tmp;
-	char ***ret;
-	int i;
+	char	**tmp;
+	char	***ret;
+	int		i;
 
-	if (!(tmp = make_command_array_splitpipe(cmd)))
-		return (NULL);
-	if (!(ret = make_command_array_malloc(tmp)))
-		return (NULL);
+	tmp = make_command_array_splitpipe(cmd);
+	ret = make_command_array_malloc(tmp);
 	i = -1;
 	while (tmp[++i])
-	{
-		if (!(ret[i] = split_command(tmp[i], ' ')))
-		{
-			command_array_free(ret);
-			return (NULL);
-		}
-	}
+		ret[i] = split_command(tmp[i], ' ');
 	split_free_all(tmp);
 	ret[i] = NULL;
 	return (ret);
 }
 
-void print_tabs(char ***tabs)
+void	print_tabs(char ***tabs)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (tabs[i])
@@ -101,10 +87,10 @@ void print_tabs(char ***tabs)
 	}
 }
 
-char ***make_strb_array(char ***cmd_split)
+char	***make_strb_array(char ***cmd_split)
 {
-	char ***ret;
-	int i;
+	char	***ret;
+	int		i;
 
 	ret = malloc(sizeof (char **) * (count(cmd_split) + 1));
 	i = -1;
@@ -115,9 +101,9 @@ char ***make_strb_array(char ***cmd_split)
 	return (ret);
 }
 
-int is_strb_empty(char *s)
+int		is_strb_empty(char *s)
 {
-	int ret;
+	int	ret;
 
 	if (!*s)
 		return (0);
@@ -134,9 +120,7 @@ int is_strb_empty(char *s)
 void	remove_empty_strb(char **cmd_split, int *i)
 {
 	if (is_strb_empty(cmd_split[*i]))
-	{
 		free(cmd_split[*i]);
-	}
 	else
 	{
 		remove_quotes(cmd_split[*i]);
@@ -146,11 +130,11 @@ void	remove_empty_strb(char **cmd_split, int *i)
 
 void command_main(char *cmd_raw, t_arg_main *arg_main)
 {
-	char ***cmd_split;
-	char ***tmp_cmd_split;
-	int i;
-	int j;
-	char *tmp;
+	char	***cmd_split;
+	char	***tmp_cmd_split;
+	int		i;
+	int		j;
+	char	*tmp;
 
 	cmd_split = make_command_array(cmd_raw);
 	tmp_cmd_split = cmd_split;
@@ -182,11 +166,11 @@ void command_main(char *cmd_raw, t_arg_main *arg_main)
 
 
 
-void ini(t_arg_main *arg_main, char *env[])
+void	ini(t_arg_main *arg_main, char *env[])
 {
-	int i;
-	size_t tmp;
-	t_arg arg;
+	int		i;
+	size_t	tmp;
+	t_arg	arg;
 
 	arg_main_ini(arg_main);
 	g_arg_main = arg_main;
@@ -204,23 +188,9 @@ void ini(t_arg_main *arg_main, char *env[])
 	}
 }
 
-/*
-int main(int argc, char *argv[], char *env[])
+void	sig_handler(int sig)
 {
-	t_arg_main arg_main;
-	ini(&arg_main, env);
-	char **s = arg_list_get(&arg_main);
-	int i = -1;
-	while (s[++i])
-	{
-		printf("%s\n", s[i]);
-	}
-}
-*/
-
-void sig_handler(int sig)
-{
-	t_arg arg;
+	t_arg	arg;
 	
 	arg.name = "?";
 	arg.type = ARG_TYPE_STR;
@@ -244,16 +214,16 @@ void sig_handler(int sig)
 		write(1, "\b\b  \b\b", 6);
 }
 
-int main(int argc, char *argv[], char *env[])
+int		main(int argc, char *argv[], char *env[])
 {
-	char *cmd_all;
-	char **cmd_split;
-	char **tmp_cmd_split;
-	t_arg_main arg_main;
+	char		*cmd_all;
+	char		**cmd_split;
+	char		**tmp_cmd_split;
+	t_arg_main	arg_main;
+
 	(void)argc;
 	(void)argv;
-	ini(&arg_main, env);
-	
+	ini(&arg_main, env);	
 	while (1)
 	{
 		signal(SIGINT, sig_handler);
