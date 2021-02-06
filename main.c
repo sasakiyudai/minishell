@@ -3,12 +3,8 @@
 #define EXIT 2
 #define INI_FAIL MALLOC_FAIL + EXIT
 
-typedef int t_all;
-
-char* g_signal;
-t_arg_main* g_arg_main;
-
-char	**split_command(char *s, char c);
+char*		g_signal;
+t_arg_main*	g_arg_main;
 
 void	ft_strncpy(char *dest, char *src, size_t n)
 {
@@ -22,7 +18,7 @@ void	print_error(int i)
 	i++;
 }
 
-char **make_command_array_splitpipe(char *cmd)
+char	**make_command_array_splitpipe(char *cmd)
 {
 	char **cmd_split;
 
@@ -37,7 +33,7 @@ char **make_command_array_splitpipe(char *cmd)
 	return (cmd_split);
 }
 
-char ***make_command_array_malloc(char **tmp)
+char	***make_command_array_malloc(char **tmp)
 {
 	int		cnt;
 	char	***ret;
@@ -45,7 +41,7 @@ char ***make_command_array_malloc(char **tmp)
 	cnt = 0;
 	while (tmp[cnt])
 		cnt++;
-	ret = (char ***)malloc(sizeof (char **) * (cnt + 1));
+	ret = (char ***)malloc(sizeof(char **) * (cnt + 1));
 	return (ret);
 }
 
@@ -92,9 +88,8 @@ char	***make_strb_array(char ***cmd_split)
 	char	***ret;
 	int		i;
 
-	ret = malloc(sizeof (char **) * (count(cmd_split) + 1));
+	ret = malloc(sizeof(char **) * (count(cmd_split) + 1));
 	i = -1;
-	
 	while (cmd_split[++i])
 		ret[i] = make_strb(cmd_split[i]);
 	ret[i] = NULL;
@@ -128,7 +123,7 @@ void	remove_empty_strb(char **cmd_split, int *i)
 	}
 }
 
-void command_main(char *cmd_raw, t_arg_main *arg_main)
+void	command_main(char *cmd_raw, t_arg_main *arg_main)
 {
 	char	***cmd_split;
 	char	***tmp_cmd_split;
@@ -144,8 +139,7 @@ void command_main(char *cmd_raw, t_arg_main *arg_main)
 		i = 0;
 		while (tmp_cmd_split[0][++j])
 		{
-			tmp = tmp_cmd_split[0][j];
-			
+			tmp = tmp_cmd_split[0][j];			
 			tmp_cmd_split[0][i] = deploy(tmp, arg_main);
 			free(tmp);
 			remove_empty_strb(tmp_cmd_split[0], &i);
@@ -160,11 +154,9 @@ void command_main(char *cmd_raw, t_arg_main *arg_main)
 	free(cmd_split);
 	i = -1;
 	while (tmp_cmd_split[++i])
-		free(tmp_cmd_split[i]);	
+		free(tmp_cmd_split[i]);
 	free(tmp_cmd_split);
 }
-
-
 
 void	ini(t_arg_main *arg_main, char *env[])
 {
@@ -191,7 +183,7 @@ void	ini(t_arg_main *arg_main, char *env[])
 void	sig_handler(int sig)
 {
 	t_arg	arg;
-	
+
 	arg.name = "?";
 	arg.type = ARG_TYPE_STR;
 	if (sig == SIGINT)
@@ -223,7 +215,7 @@ int		main(int argc, char *argv[], char *env[])
 
 	(void)argc;
 	(void)argv;
-	ini(&arg_main, env);	
+	ini(&arg_main, env);
 	while (1)
 	{
 		signal(SIGINT, sig_handler);
@@ -232,7 +224,7 @@ int		main(int argc, char *argv[], char *env[])
 		g_signal = "1";
 		cmd_all = read_all(0);
 		if (!ft_strcmp(cmd_all, "finish"))
-			break;
+			break ;
 		g_signal = "130";
 		if (syntax_check(cmd_all))
 		{
