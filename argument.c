@@ -72,7 +72,7 @@ int		arg_new(t_arg_main *arg_main, t_arg *src)
 	if (arg_main->arg_num == INT_MAX)
 		return (-10);
 	tmp_arg_list = arg_main->head.next;
-	arg_main->head.next = (t_arg_list *)malloc(sizeof(t_arg_list));
+	arg_main->head.next = (t_arg_list *)malloc(sizeoft_arg_list));
 	arg_copy(&(arg_main->head.next->arg), src);
 	arg_main->arg_num++;
 	arg_main->head.next->next = tmp_arg_list;
@@ -81,7 +81,7 @@ int		arg_new(t_arg_main *arg_main, t_arg *src)
 
 int		arg_add(t_arg_main *arg_main, t_arg *arg)
 {
-	t_arg_list   *tmp_arg_list;
+	t_arg_list	*tmp_arg_list;
 
 	if ((tmp_arg_list = arg_isexist(arg_main, arg->name)))
 	{
@@ -91,10 +91,10 @@ int		arg_add(t_arg_main *arg_main, t_arg *arg)
 	return (arg_new(arg_main, arg));
 }
 
-void	_arg_list_ini_process(t_arg_list *arg_list)
+void	arg_list_ini_process(t_arg_list *arg_list)
 {
 	if (arg_list->next)
-		_arg_list_ini_process(arg_list->next);
+		arg_list_ini_process(arg_list->next);
 	arg_free(&(arg_list->arg));
 	free(arg_list);
 }
@@ -102,7 +102,7 @@ void	_arg_list_ini_process(t_arg_list *arg_list)
 int		arg_list_ini(t_arg_main *arg_main)
 {
 	if (arg_main->head.next)
-		_arg_list_ini_process(arg_main->head.next);
+		arg_list_ini_process(arg_main->head.next);
 	arg_free(&(arg_main->head.arg));
 	return (arg_main_ini(arg_main));
 }
@@ -170,7 +170,6 @@ char	*arg_to_str(t_arg *arg)
 	return (ret);
 }
 
-
 char	**arg_list_get_quote(t_arg_main *arg_main)
 {
 	char		**ret;
@@ -179,7 +178,7 @@ char	**arg_list_get_quote(t_arg_main *arg_main)
 	int			arg_num;
 
 	arg_num = arg_main->arg_num - 1;
-	ret = (char **)malloc(sizeof (char *) * (arg_num + 1));
+	ret = (char **)malloc(sizeof(char *) * (arg_num + 1));
 	current = arg_main->head.next;
 	i = -1;
 	while (++i < arg_num)
@@ -206,7 +205,7 @@ char	**arg_list_get(t_arg_main *arg_main)
 	int			arg_num;
 
 	arg_num = arg_list_cnt(&(arg_main->head)) - 1;
-	ret = (char **)malloc(sizeof (char *) * (arg_num + 1));
+	ret = (char **)malloc(sizeof(char *) * (arg_num + 1));
 	current = arg_main->head.next;
 	i = 0;
 	while (i < arg_num)
@@ -229,7 +228,8 @@ void	split_free_all(char **ss)
 	free(ss);
 }
 
-int		_arg_delete_process(t_arg_main *arg_main, t_arg_list *arg_list, char *name, t_arg_list **ret)
+int		arg_delete_process(t_arg_main *arg_main, t_arg_list
+	*arg_list, char *name, t_arg_list **ret)
 {
 	t_arg_list *ret_arg_list;
 
@@ -242,21 +242,21 @@ int		_arg_delete_process(t_arg_main *arg_main, t_arg_list *arg_list, char *name,
 		return (1);
 	}
 	else if (arg_list->next)
-		if (_arg_delete_process(arg_main, arg_list->next, name, &ret_arg_list))
+		if (arg_delete_process(arg_main, arg_list->next, name, &ret_arg_list))
 			arg_list->next = ret_arg_list;
 	return (0);
 }
 
 void	arg_delete(t_arg_main *arg_main, char *name)
 {
-	t_arg_list  *tmp;
+	t_arg_list	*tmp;
 
 	if (arg_main->head.next)
-		if (_arg_delete_process(arg_main, &(arg_main->head), name, &tmp))
+		if (arg_delete_process(arg_main, &(arg_main->head), name, &tmp))
 			arg_main->head.next = tmp;
 }
 
-t_arg_list   *_arg_isexist_process(t_arg_list *arg_list, char *name)
+t_arg_list	*_arg_isexist_process(t_arg_list *arg_list, char *name)
 {
 	if (!arg_list->next)
 		return (NULL);
