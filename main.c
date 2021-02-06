@@ -3,8 +3,8 @@
 #define EXIT 2
 #define INI_FAIL MALLOC_FAIL + EXIT
 
-char*		g_signal;
-t_arg_main*	g_arg_main;
+char		*g_signal;
+t_arg_main	*g_arg_main;
 
 void	ft_strncpy(char *dest, char *src, size_t n)
 {
@@ -139,7 +139,7 @@ void	command_main(char *cmd_raw, t_arg_main *arg_main)
 		i = 0;
 		while (tmp_cmd_split[0][++j])
 		{
-			tmp = tmp_cmd_split[0][j];			
+			tmp = tmp_cmd_split[0][j];	
 			tmp_cmd_split[0][i] = deploy(tmp, arg_main);
 			free(tmp);
 			remove_empty_strb(tmp_cmd_split[0], &i);
