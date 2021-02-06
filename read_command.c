@@ -129,7 +129,7 @@ int		split_command_ini(char **s, char c, t_split *split_arg, char ***ret)
 	*ret = (char **)malloc(sizeof(char *) * split_arg->cnt_splitnum);
 	if (!*ret)
 		return (-1);
-	_ft_bzero(split_arg, sizeof(t_split));
+	ft_bzero(split_arg, sizeof(t_split));
 	split_arg->flag_sequencial = 1;
 	while (**s == c)
 		(*s)++;

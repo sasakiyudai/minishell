@@ -259,7 +259,6 @@ int		main(int argc, char *argv[], char *env[])
 	main_process(&arg_main);
 	arg_list_ini(&arg_main);
 	arg_free(&arg_main.head.arg);
-	free(cmd_all);
 	// system("leaks minishell");
 	return (0);
 }
