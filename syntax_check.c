@@ -144,7 +144,7 @@ int		syntax_check_main(char *cmd)
 {
 	t_syntax_flag	syntax_flag;
 
-	bzero(&syntax_flag, sizeof(t_syntax_flag));
+	ft_bzero(&syntax_flag, sizeof(t_syntax_flag));
 	while (*cmd)
 	{
 		if (syntax_check_process(cmd, &syntax_flag))

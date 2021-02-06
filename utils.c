@@ -17,7 +17,7 @@ int		bcopy_int(void *dest, void *src, int size)
 	return (0);
 }
 
-void	bzero(void *s, int n)
+void	ft_bzero(void *s, int n)
 {
 	char	*str;
 	int		i;
