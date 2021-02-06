@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*																			*/
-/*														:::	  ::::::::   */
-/*   pipe.c											 :+:	  :+:	:+:   */
-/*													+:+ +:+		 +:+	 */
-/*   By: syudai <syudai@student.42tokyo.jp>		 +#+  +:+	   +#+		*/
-/*												+#+#+#+#+#+   +#+		   */
-/*   Created: 2021/01/28 17:47:28 by syudai			#+#	#+#			 */
-/*   Updated: 2021/02/05 23:23:49 by syudai		   ###   ########.fr	   */
-/*																			*/
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipe.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/28 17:47:28 by syudai            #+#    #+#             */
+/*   Updated: 2021/02/06 21:39:46 by syudai           ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
@@ -22,22 +22,19 @@ void	set_fd(char ***cmd, char ***raw_cmd, int *fd, int j)
 	set_left(raw_cmd, j, fd, 1);
 }
 
-void	wait_chiledren_and_free_fd(int cmd_len, int *fd, pid_t *pids, t_arg_main *arg_main)
+void	wait_chiledren_and_free_fd(int cmd_len, int *fd, pid_t *pids)
 {
-	int i;
-	int status;
+	int		i;
+	int		status;
+	pid_t	ret;
+	int		cnt;
+	int		j;
 
-	(void)arg_main;
+	cnt = cmd_len;
 	i = 0;
 	while (i < 2 * (cmd_len - 1))
 		close(fd[i++]);
 	i = 0;
-
-	pid_t ret;
-	int cnt = cmd_len;
-	int j;
-//:q
-//char c = 4;
 	while (cnt--)
 	{
 		ret = waitpid(-1, &status, 0);
@@ -45,95 +42,11 @@ void	wait_chiledren_and_free_fd(int cmd_len, int *fd, pid_t *pids, t_arg_main *a
 		while (++j < cmd_len)
 		{
 			if (ret == pids[j])
-			{
 				set_hatena(g_arg_main, WEXITSTATUS(status));
-			}
 		}
 	}
-	
 	free(pids);
 	free(fd);
-}
-
-int		error(char *path)
-{
-	DIR	*folder;
-	int	fd;
-	int	exit_code;
-	
-	fd = open(path, O_WRONLY);
-	folder = opendir(path);
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(path, 2);
-	if (ft_strchr(path, '/') == NULL)
-		ft_putendl_fd(": command not found", 2);
-	else if (fd == -1 && folder == NULL)
-		ft_putendl_fd(": No such file or directory", 2);
-	else if (fd == -1 && folder != NULL)
-		ft_putendl_fd(": is a directory", 2);
-	else if (fd != -1 && folder == NULL)
-		ft_putendl_fd(": Permission denied", 2);
-	if (ft_strchr(path, '/') == NULL || (fd == -1 && folder == NULL))
-		exit_code = 127;
-	else
-		exit_code = 126;
-	if (folder)
-		closedir(folder);
-	safe_close(fd);
-	return (exit_code);
-}
-
-int		is_builtin(char *command)
-{
-	if (ft_strcmp(command, "echo") == 0)
-		return (1);
-	else if (ft_strcmp(command, "cd") == 0)
-		return (2);
-	else if (ft_strcmp(command, "pwd") == 0)
-		return (3);
-	else if (ft_strcmp(command, "export") == 0)
-		return (4);
-	else if (ft_strcmp(command, "unset") == 0)
-		return (5);
-	else if (ft_strcmp(command, "env") == 0)
-		return (6);
-	else if (ft_strcmp(command, "exit") == 0)
-		return (7);
-	return (0);
-}
-
-int	call_builtin(int tmp, char **str_b, t_arg_main *arg_main)
-{
-	int result;
-
-	result = 0;
-	if (tmp == 1)
-		ft_echo(str_b);
-	else if (tmp == 2)
-		result = ft_cd(str_b, arg_main);
-	else if (tmp == 3)
-		result = ft_pwd();
-	else if (tmp == 4)
-		ft_export(str_b, arg_main);
-	else if (tmp == 5)
-		ft_unset(str_b, arg_main);
-	else if (tmp == 6)
-		ft_env(arg_main);
-	else if (tmp == 7)
-		result = ft_exit(str_b);
-	/*{
-		write(2, "exit\n", 5);
-		exit(0);
-	}*/
-	return (result);
-}
-
-void print_tab(char *env[])
-{
-	int i = 0;
-
-	while (env[i])
-		fprintf(stdout, "%s\n", env[i++]);
 }
 
 void	exec_child(int cmd_len, int *fd, char ***cmd, t_arg_main *arg_main)
@@ -147,17 +60,15 @@ void	exec_child(int cmd_len, int *fd, char ***cmd, t_arg_main *arg_main)
 	i = 0;
 	while (i < 2 * (cmd_len - 1))
 		close(fd[i++]);
-
 	if ((tmp = is_builtin((*cmd)[0])))
-	{
 		exit(call_builtin(tmp, *cmd, arg_main));
-	}
 	else
 	{
-		if (0 == (tmp = get_path(arg_main, &path, (*cmd)[0])))
+		if (ft_strchr((*cmd)[0], '/') ||
+		0 == (tmp = get_path(arg_main, &path, (*cmd)[0])))
 		{
 			envs = arg_list_get(arg_main);
-			execve(path, *cmd, envs);
+			execve((ft_strchr((*cmd)[0], '/')) ? (*cmd)[0] : path, *cmd, envs);
 		}
 		else if (tmp == -1)
 			print_error(MALLOC_FAIL);
@@ -174,8 +85,8 @@ void	pipeline2(char ***cmd, char ***raw_cmd, t_arg_main *arg_main)
 	pid_t	*pids;
 	int		*fd;
 
-	if (!(fd = malloc(sizeof(int) * 2 * (count(cmd) - 1))) || !(pids = malloc(sizeof(pid_t) * count(cmd))))
-		return (print_error(MALLOC_FAIL));
+	fd = malloc(sizeof(int) * 2 * (count(cmd) - 1));
+	pids = malloc(sizeof(pid_t) * count(cmd));
 	i = 0;
 	j = 0;
 	while (i < count(cmd) - 1)
@@ -192,12 +103,11 @@ void	pipeline2(char ***cmd, char ***raw_cmd, t_arg_main *arg_main)
 		cmd++;
 		j += 2;
 	}
-	wait_chiledren_and_free_fd(i + 1, fd, pids, arg_main);
+	wait_chiledren_and_free_fd(i + 1, fd, pids);
 }
 
 void	pipeline(char ***cmd, char ***raw_cmd, t_arg_main *arg_main)
 {
-	
 	if (count(cmd) == 1)
 		one_command(cmd, raw_cmd, arg_main);
 	else if (count(cmd) >= 1)

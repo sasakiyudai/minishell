@@ -1,15 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/06 17:53:37 by syudai            #+#    #+#             */
+/*   Updated: 2021/02/07 00:38:22 by syudai           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int ft_isnum(char c, int i)
+int		ft_isnum(char c, int i)
 {
 	if ('0' <= c && c <= '9')
 		return (1);
-	if (i == 0 && c == '-')
+	if (i == 0 && (c == '-' || c == '+'))
 		return (1);
 	return (0);
 }
 
-int include_no_num(char *arg)
+int		include_no_num(char *arg)
 {
 	int i;
 
@@ -23,7 +35,7 @@ int include_no_num(char *arg)
 	return (0);
 }
 
-void exit_errors(int option, char *args[])
+void	exit_errors(int option, char *args[])
 {
 	int ret;
 
@@ -43,7 +55,7 @@ void exit_errors(int option, char *args[])
 	exit(ret);
 }
 
-int ft_exit(char *args[])
+int		ft_exit(char *args[])
 {
 	int len;
 	int ret;
@@ -58,8 +70,6 @@ int ft_exit(char *args[])
 	else if (len >= 3)
 		exit_errors(1, args);
 	else
-	{
 		ret = (unsigned char)ft_atoi(args[1]);
-	}
 	exit(ret);
 }

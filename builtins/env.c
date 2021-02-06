@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/06 17:55:23 by syudai            #+#    #+#             */
+/*   Updated: 2021/02/06 17:58:03 by syudai           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int ft_env(t_arg_main *arg_main)
+int		ft_env(t_arg_main *arg_main)
 {
-	int i;
-	int j;
-	char **env;
+	int		i;
+	int		j;
+	char	**env;
 
 	i = 0;
 	env = arg_list_get(arg_main);
@@ -13,7 +25,7 @@ int ft_env(t_arg_main *arg_main)
 		j = 0;
 		while (env[i][j])
 			if (env[i][j++] == -1)
-				break;
+				break ;
 		printf("%s\n", env[i++]);
 	}
 	return (0);

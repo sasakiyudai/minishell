@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cd.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/06 18:00:21 by syudai            #+#    #+#             */
+/*   Updated: 2021/02/06 18:05:22 by syudai           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include <errno.h>
 #include <string.h>
 #define MAX_FILENAME 1024
 
-void cd_error(char **args)
+void	cd_error(char **args)
 {
 	ft_putstr_fd("cd: ", 2);
 	if (args[1])
@@ -20,10 +32,10 @@ void cd_error(char **args)
 	}
 }
 
-int update(t_arg_main *arg_main)
+int		update(t_arg_main *arg_main)
 {
 	char	cwd[MAX_FILENAME];
-	t_arg   arg;
+	t_arg	arg;
 
 	if (getcwd(cwd, MAX_FILENAME) == NULL)
 		return (1);
@@ -34,10 +46,10 @@ int update(t_arg_main *arg_main)
 	return (0);
 }
 
-void update_pwd(t_arg_main *arg_main)
+void	update_pwd(t_arg_main *arg_main)
 {
-	char s[MAX_FILENAME];
-	t_arg   arg;
+	char	s[MAX_FILENAME];
+	t_arg	arg;
 
 	if (!getcwd(s, MAX_FILENAME))
 		return ;
@@ -47,10 +59,10 @@ void update_pwd(t_arg_main *arg_main)
 	arg_add(arg_main, &arg);
 }
 
-int ft_cd(char **args, t_arg_main *arg_main)
+int		ft_cd(char **args, t_arg_main *arg_main)
 {
-	int	 cd_ret;
-	
+	int		cd_ret;
+
 	if (ft_len(args) != 2)
 	{
 		cd_error(args);

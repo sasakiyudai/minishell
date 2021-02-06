@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*																			*/
-/*														:::	  ::::::::   */
-/*   is_x.c											 :+:	  :+:	:+:   */
-/*													+:+ +:+		 +:+	 */
-/*   By: syudai <syudai@student.42tokyo.jp>		 +#+  +:+	   +#+		*/
-/*												+#+#+#+#+#+   +#+		   */
-/*   Created: 2021/01/28 17:48:01 by syudai			#+#	#+#			 */
-/*   Updated: 2021/02/02 14:54:31 by rnitta		   ###   ########.fr	   */
-/*																			*/
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   is_x.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/28 17:48:01 by syudai            #+#    #+#             */
+/*   Updated: 2021/02/06 21:08:59 by syudai           ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
@@ -82,9 +82,8 @@ void	set_right(char ***raw_cmd, int j, int *fd, int is_pipe)
 		{
 			ft_putstr_fd("minishell: ", 2);
 			ft_putstr_fd(raw_cmd[j / 2][-r], 2);
-			ft_putstr_fd(": No such file or directory", 2);
-			
-			return ;
+			ft_putendl_fd(": No such file or directory", 2);
+			exit(1);
 		}
 		dup2(out, 1);
 	}
@@ -104,8 +103,8 @@ void	set_left(char ***raw_cmd, int j, int *fd, int is_pipe)
 		{
 			ft_putstr_fd("minishell: ", 2);
 			ft_putstr_fd(raw_cmd[j / 2][r], 2);
-			ft_putstr_fd(": No such file or directory", 2);
-			return ;
+			ft_putendl_fd(": No such file or directory", 2);
+			exit(1);
 		}
 		dup2(in, 0);
 	}
