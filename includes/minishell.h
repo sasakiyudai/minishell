@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 22:32:19 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/05 20:32:57 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/06 21:15:54 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ char    		**split_command(char *s, char c);
 void			_bzero(void	 *s, int n);
 void			split_free_all(char **s);
 void    		arg_free(t_arg *arg);
+char			*surround_minus_one(char *value);
+char			*ft_strjoin_free(char *s1, char *s2);
 int    			arg_copy(t_arg *dest, t_arg *src);
 int     		arg_new(t_arg_main *arg_main, t_arg *src);
 int 			arg_add(t_arg_main *arg_main, t_arg *arg);
@@ -117,6 +119,8 @@ int     		arg_get(t_arg_main *arg_main, t_arg *arg, char *name);
 int    			arg_list_ini(t_arg_main *arg_main);
 void    		_arg_list_ini_process(t_arg_list *arg_list);
 void			print_error(int i);
+int				is_dollarble(char c);
+char			fff(char flag);
 int 			ft_len(char *args[]);
 void     		_bcopy(void *dest, void *src, int size);
 int     		_bcopy_int(void *dest, void *src, int size);
@@ -134,4 +138,9 @@ int				syntax_check(char *cmd_raw);
 char 			*separate_redirect(char *command);
 void 			one_command(char ***cmd, char ***raw_cmd, t_arg_main *arg_main);
 void			remove_quotes(char *cmd);
+int 			which_quote(char c, int flag);
+void 		   check_quote(char c, char *bitflag_quote);
+void			remove_quotes(char *cmd);
+int 			single_quote(char now, int flag);
+
 #endif
