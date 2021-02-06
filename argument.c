@@ -11,7 +11,7 @@ char	*ft_strcat(char *dest, char *src)
 	return (dest);
 }
 
-int ft_strcat_int(char *dest, char *src)
+int		ft_strcat_int(char *dest, char *src)
 {
 	int i;
 
@@ -24,17 +24,12 @@ int ft_strcat_int(char *dest, char *src)
 	return (i);
 }
 
-int	ft_itoa(long long int n, char *dest)
+int		ft_itoa(long long int n, char *dest)
 {
-	int len;
-	int ret;
-	long long int tmp;
+	int				len;
+	int				ret;
+	long long int	tmp;
 
-	if (n == LLONG_MIN)
-	{
-		ft_strcat(dest, STR_LLONG_MIN);
-		return (ft_strlen(STR_LLONG_MIN));
-	}
 	if (!n)
 		dest[0] = '0';
 	if (n < 0)
@@ -63,14 +58,14 @@ void	arg_free(t_arg *arg)
 	arg->data = NULL;
 }
 
-int	arg_copy(t_arg *dest, t_arg *src)
+int		arg_copy(t_arg *dest, t_arg *src)
 {
 	dest->name = ft_strdup(src->name);
 	dest->data = ft_strdup(src->data);
 	return (0);
 }
 
-int	 arg_new(t_arg_main *arg_main, t_arg *src)
+int		arg_new(t_arg_main *arg_main, t_arg *src)
 {
 	t_arg_list *tmp_arg_list;
 
@@ -84,7 +79,7 @@ int	 arg_new(t_arg_main *arg_main, t_arg *src)
 	return (0);
 }
 
-int arg_add(t_arg_main *arg_main, t_arg *arg)
+int		arg_add(t_arg_main *arg_main, t_arg *arg)
 {
 	t_arg_list   *tmp_arg_list;
 
@@ -104,7 +99,7 @@ void	_arg_list_ini_process(t_arg_list *arg_list)
 	free(arg_list);
 }
 
-int	arg_list_ini(t_arg_main *arg_main)
+int		arg_list_ini(t_arg_main *arg_main)
 {
 	if (arg_main->head.next)
 		_arg_list_ini_process(arg_main->head.next);
@@ -112,7 +107,7 @@ int	arg_list_ini(t_arg_main *arg_main)
 	return (arg_main_ini(arg_main));
 }
 
-int	arg_main_ini(t_arg_main *arg_main)
+int		arg_main_ini(t_arg_main *arg_main)
 {
 	arg_main->arg_num = 1;
 	arg_main->head.arg.name = ft_strdup("?");
@@ -121,7 +116,7 @@ int	arg_main_ini(t_arg_main *arg_main)
 	return (0);
 }
 
-int arg_charlen(t_arg *arg, int quote)
+int		arg_charlen(t_arg *arg, int quote)
 {
 	long long int len;
 
@@ -137,7 +132,7 @@ int arg_charlen(t_arg *arg, int quote)
 	return (len);
 }
 
-char *arg_to_str_quotes(t_arg *arg)
+char	*arg_to_str_quotes(t_arg *arg)
 {
 	char *ret;
 	int i;
@@ -155,7 +150,7 @@ char *arg_to_str_quotes(t_arg *arg)
 	return (ret);
 }
 
-char *arg_to_str(t_arg *arg)
+char	*arg_to_str(t_arg *arg)
 {
 	char *ret;
 	int i;
@@ -176,7 +171,7 @@ char *arg_to_str(t_arg *arg)
 }
 
 
-char **arg_list_get_quote(t_arg_main *arg_main)
+char	**arg_list_get_quote(t_arg_main *arg_main)
 {
 	char **ret;
 	t_arg_list  *current;
@@ -196,14 +191,14 @@ char **arg_list_get_quote(t_arg_main *arg_main)
 	return (ret);
 }
 
-int arg_list_cnt(t_arg_list *arg_list)
+int		arg_list_cnt(t_arg_list *arg_list)
 {
 	if (arg_list->next)
 		return ((!!arg_list->arg.data) + arg_list_cnt(arg_list->next));
 	return (!!arg_list->arg.data);
 }
 
-char **arg_list_get(t_arg_main *arg_main)
+char	**arg_list_get(t_arg_main *arg_main)
 {
 	char **ret;
 	t_arg_list  *current;
@@ -234,7 +229,7 @@ void	split_free_all(char **ss)
 	free(ss);
 }
 
-int	_arg_delete_process(t_arg_main *arg_main, t_arg_list *arg_list, char *name, t_arg_list **ret)
+int		_arg_delete_process(t_arg_main *arg_main, t_arg_list *arg_list, char *name, t_arg_list **ret)
 {
 	t_arg_list *ret_arg_list;
 
@@ -277,7 +272,7 @@ t_arg_list   *arg_isexist(t_arg_main *arg_main, char *name)
 	return (_arg_isexist_process(&(arg_main->head), name));
 }
 
-int	 arg_get(t_arg_main *arg_main, t_arg *arg, char *name)
+int		arg_get(t_arg_main *arg_main, t_arg *arg, char *name)
 {
 	t_arg_list *tmp_arg;
 
@@ -318,105 +313,3 @@ void	add_out(t_arg_main *arg_main, t_arg arg)
 		printf("%s\n", ss[i]);
 	split_free_all(ss);
 }
-
-/*
-int main()
-{
-	t_arg_main arg_main;
-	long long int j[] = {12345, 0, -12345, 1, -1, LLONG_MAX, LLONG_MIN};
-	t_arg arg[] = {{"?", ARG_TYPE_STR, "abcde"},
-					{"arg1", ARG_TYPE_STR, "123"},
-					{"arg2", ARG_TYPE_STR, "456"},
-					{"arg3", ARG_TYPE_STR, "789"},
-					{"arg4", ARG_TYPE_LLINT, &j[0]},
-					{"arg5", ARG_TYPE_LLINT, &j[1]},
-					{"arg6", ARG_TYPE_LLINT, &j[2]},
-					{"arg7", ARG_TYPE_LLINT, &j[3]},
-					{"arg8", ARG_TYPE_LLINT, &j[4]},
-					{"arg9", ARG_TYPE_LLINT, &j[5]},
-					{"arg10", ARG_TYPE_LLINT, &j[6]},
-					};
-	int i;
-
-	if (arg_main_ini(&arg_main))
-		return (-1);
-	char **ss = arg_list_get(&arg_main);
-	printf("==============\nprint  ini\n");{
-		i = -1;
-		while (ss[++i])
-			printf("%s\n", ss[i]);
-		split_free_all(ss);
-		printf("==============\n");
-	}
-
-	printf("==============\ndelete  bad arg name\n");{
-		arg_delete(&arg_main, "bad name");
-		ss = arg_list_get(&arg_main);
-		i = -1;
-		while (ss[++i])
-			printf("%s\n", ss[i]);
-		split_free_all(ss);
-		printf("==============\n");
-	}
-
-	printf("==============\nadd arg1\n");{
-		add_out(&arg_main, arg[1]);
-		printf("==============\n");
-	}
-
-	printf("==============\nadd arg2\n");{
-		add_out(&arg_main, arg[2]);
-		printf("==============\n");
-	}
-
-	printf("==============\ndelete arg1\n");{
-		arg_delete(&arg_main, "arg1");
-		ss = arg_list_get(&arg_main);
-		i = -1;
-		while (ss[++i])
-			printf("%s\n", ss[i]);
-		split_free_all(ss);
-		printf("==============\n");
-	}
-
-	printf("==============\ndelete  bad arg name\n");{
-		arg_delete(&arg_main, "bad name");
-		ss = arg_list_get(&arg_main);
-		i = -1;
-		while (ss[++i])
-			printf("%s\n", ss[i]);
-		split_free_all(ss);
-		printf("==============\n");
-	}
-
-	printf("==============\ndelete arg2\n");{
-		arg_delete(&arg_main, "arg2");
-		ss = arg_list_get(&arg_main);
-		i = -1;
-		while (ss[++i])
-			printf("%s\n", ss[i]);
-		split_free_all(ss);
-		printf("==============\n");
-	}
-
-	printf("==============\ndelete ?\n");{
-		arg_delete(&arg_main, "?");
-		ss = arg_list_get(&arg_main);
-		i = -1;
-		while (ss[++i])
-			printf("%s\n", ss[i]);
-		split_free_all(ss);
-		printf("==============\n");
-	}
-
-	int k;
-	k = -1;
-	while (++k < 7)
-	{
-		printf("==============\nadd arg%d\n", k);{
-			add_out(&arg_main, arg[4 + k]);
-			printf("==============\n");
-		}
-	}
-}
-*/
