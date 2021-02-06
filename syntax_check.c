@@ -13,11 +13,6 @@
 #define FLAG_DOUBLE_QUOTE 2
 #define FLAG_SINGLE_QUOTE 1
 
-
-
-
-//new
-//-------
 #define SYNTAX_ERROR_QUOTE 1
 	void	print_error(int i);
 typedef struct s_syntax_flag
@@ -27,44 +22,11 @@ typedef struct s_syntax_flag
 	char l_redirect;
 	char semi;
 }			   t_syntax_flag;
-//--------
 
-/*
-//delete
-//---------
-char	**split_command(char *s, char c);
-
-
-	void	_bzero(void	 *s, int n)
-	{
-		char *str = (char *)s;
-		int i = 0;
-
-		while (i < n)
-		{
-			str[i] = 0;
-			i++;
-		}
-	}
-	void	check_quote(char c, char *bitflag_quote)
-	{
-		if (c == '\'' && !(*bitflag_quote & FLAG_DOUBLE_QUOTE))
-			*bitflag_quote ^= FLAG_SINGLE_QUOTE;
-		if (c == '\"' && !(*bitflag_quote & FLAG_SINGLE_QUOTE))
-			*bitflag_quote ^= FLAG_DOUBLE_QUOTE;
-	}
-
-	void	print_error(int i)
-	{
-		
-	}
-//--------------
-*/
-
-int	_syntax_check_make_sedstr(char *cmd_raw, char **ret)
+int		syntax_check_make_sedstr(char *cmd_raw, char **ret)
 {
-	char bitflag_quote;
-	int i;
+	char	bitflag_quote;
+	int		i;
 
 	if (!(*ret = (char *)malloc(strlen(cmd_raw) + 1)))
 	{
@@ -90,7 +52,7 @@ int	_syntax_check_make_sedstr(char *cmd_raw, char **ret)
 	return (!!bitflag_quote);
 }
 
-int print_synerr(char *cmd)
+int		print_synerr(char *cmd)
 {
 	char s[8];
 
@@ -112,7 +74,7 @@ int print_synerr(char *cmd)
 }
 
 
-int _syntax_check_process3(char *cmd, t_syntax_flag *syntax_flag)
+int		syntax_check_process3(char *cmd, t_syntax_flag *syntax_flag)
 {
 	if (*cmd == '\n' || *cmd == '\0')
 	{
@@ -135,7 +97,7 @@ int _syntax_check_process3(char *cmd, t_syntax_flag *syntax_flag)
 	return (0);
 }
 
-int _syntax_check_process2(char *cmd, t_syntax_flag *syntax_flag)
+int		syntax_check_process2(char *cmd, t_syntax_flag *syntax_flag)
 {
 	if (*cmd == '>')
 	{
@@ -151,12 +113,12 @@ int _syntax_check_process2(char *cmd, t_syntax_flag *syntax_flag)
 	}
 	else
 	{
-		return (_syntax_check_process3(cmd,syntax_flag));
+		return (syntax_check_process3(cmd,syntax_flag));
 	}
 	return (0);
 }
 
-int	_syntax_check_process(char *cmd, t_syntax_flag *syntax_flag)
+int		syntax_check_process(char *cmd, t_syntax_flag *syntax_flag)
 {
 	if (*cmd == ' ')
 	{
@@ -178,23 +140,23 @@ int	_syntax_check_process(char *cmd, t_syntax_flag *syntax_flag)
 	return (0);
 }
 
-int syntax_check_main(char *cmd)
+int		syntax_check_main(char *cmd)
 {
-	t_syntax_flag syntax_flag;
+	t_syntax_flag	syntax_flag;
 
 	_bzero(&syntax_flag, sizeof (t_syntax_flag));
 	while (*cmd)
 	{
-		if (_syntax_check_process(cmd, &syntax_flag))
+		if (syntax_check_process(cmd, &syntax_flag))
 			return (258);
 		cmd++;
 	}
-	if (_syntax_check_process(cmd, &syntax_flag))
+	if (syntax_check_process(cmd, &syntax_flag))
 			return (258);
 	return (0);
 }
 
-int myprint_error(int i)
+int		myprint_error(int i)
 {
 	i++;
 	if (SYNTAX_ERROR_QUOTE)
@@ -202,12 +164,12 @@ int myprint_error(int i)
 	return (258);
 }
 
-int syntax_check(char *cmd_raw)
+int		syntax_check(char *cmd_raw)
 {
-	char *cmd;
-	int tmp;
+	char	*cmd;
+	int		tmp;
 
-	if (_syntax_check_make_sedstr(cmd_raw, &cmd) == 1)
+	if (syntax_check_make_sedstr(cmd_raw, &cmd) == 1)
 	{
 		free(cmd);
 		return (myprint_error(SYNTAX_ERROR_QUOTE));
@@ -216,5 +178,5 @@ int syntax_check(char *cmd_raw)
 		return (-1);
 	tmp = syntax_check_main(cmd);
 	free(cmd);
-	return (tmp);	
+	return (tmp);
 }
