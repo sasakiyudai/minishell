@@ -72,7 +72,7 @@ int		arg_new(t_arg_main *arg_main, t_arg *src)
 	if (arg_main->arg_num == INT_MAX)
 		return (-10);
 	tmp_arg_list = arg_main->head.next;
-	arg_main->head.next = (t_arg_list *)malloc(sizeoft_arg_list));
+	arg_main->head.next = (t_arg_list *)malloc(sizeof(t_arg_list));
 	arg_copy(&(arg_main->head.next->arg), src);
 	arg_main->arg_num++;
 	arg_main->head.next->next = tmp_arg_list;
