@@ -3,8 +3,8 @@
 char	*ft_newstr_ncat(char *src1, char *src2, int n)
 {
 	char	*ret;
-	int	 i;
-	int	 j;
+	int		i;
+	int		j;
 
 	if (!(ret = (char *)malloc(n + 1)))
 		return (NULL);
@@ -21,6 +21,7 @@ char	*ft_newstr_ncat(char *src1, char *src2, int n)
 char	*ft_newstr_ncatfree(char *src1, char *src2, int n, int bitflag)
 {
 	char	*ret;
+
 	ret = ft_newstr_ncat(src1, src2, n);
 	if (bitflag & 1)
 		free(src1);
@@ -29,52 +30,37 @@ char	*ft_newstr_ncatfree(char *src1, char *src2, int n, int bitflag)
 	return (ret);
 }
 
-char    *read_all(int fd)
+char	*read_all(int fd)
 {
-    char    *ret;
-    char    buf[1001];
-    int        cnt_read;
-    int        ret_read;
-    int     f;
+	char	*ret;
+	char	buf[1001];
+	int		cnt_read;
+	int		ret_read;
+	int		f;
 
-    cnt_read = 0;
-    f = 0;
-    ret = (char *)malloc(1);
-    ret[0] = '\0';
-	while (1)
+	cnt_read = 0;
+	f = 0;
+	ret = ft_strdup("");
+	while ((ret_read = read(fd, buf, 1000)))
 	{
-		if ((ret_read = read(fd, buf, 1000)) == 1000)
-		{
-			buf[1000] = '\0';
-			f = 1;
-			if (!(ret = ft_newstr_ncatfree(ret, buf, (cnt_read += ret_read), 1)))
-				return (NULL);
-		}
-		if (!f && !ret_read)
-		{
-			write(1, "exit\n", 5);
-			exit(0);
-		}
+		if (!f)
+			exit(0 * write(1, "exit\n", 5));
 		buf[ret_read] = '\0';
-		if (!(ret = ft_newstr_ncatfree(ret, buf, (cnt_read += ret_read), 1)))
-			return (NULL);
-		if (buf[ret_read - 1] == '\n')
-		{
-			ret[cnt_read - 1] = '\0';
+		ret = ft_newstr_ncatfree(ret, buf, (cnt_read += ret_read), 1);
+		if (buf[ret_read - 1] == '\n' && !(ret[cnt_read - 1] = '\0'))
 			break ;
-		}
-		write(1, "  \b\b", 4);
+		if (!buf[ret_read - 1])
+			write(1, "  \b\b", 4);
 		f = 1;
 	}
-    if (ret_read >= 0)
-        return (ret);
-    free(ret);
-    return (NULL);
+	if (ret_read >= 0)
+		return (ret);
+	exit(1);
 }
 
 char	*ft_strndup(char *src, int n)
 {
-	char *ret;
+	char	*ret;
 
 	if (!(ret = (char *)malloc(n + 1)))
 		return (NULL);
@@ -97,10 +83,7 @@ int		cnt_splitnum_command(char *s, char c)
 		s++;
 	while (*s)
 	{
-		if (*s == '\'' && (!bitflag_quote) & FLAG_DOUBLE_QUOTE)
-			bitflag_quote ^= FLAG_SINGLE_QUOTE;
-		if (*s == '\"' && (!bitflag_quote) & FLAG_SINGLE_QUOTE)
-			bitflag_quote ^= FLAG_DOUBLE_QUOTE;
+		check_quote(*s, &bitflag_quote);
 		if (*s == c && !flag_sequencial)
 		{
 			ret++;
@@ -131,18 +114,6 @@ char	**split_command_free(char **ret, int cnt_splitnum)
 	free(ret);
 	return (NULL);
 }
-/*
-void	split_free_all(char **s)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-		free(s[i++]);
-	free(s);
-}
-*/
-
 
 void	split_make_str(char **s, t_split *split_arg, char **ret)
 {
@@ -151,7 +122,6 @@ void	split_make_str(char **s, t_split *split_arg, char **ret)
 	split_arg->cnt_moji = 0;
 	split_arg->flag_sequencial = 1;
 }
-
 
 int		split_command_ini(char **s, char c, t_split *split_arg, char ***ret)
 {
@@ -187,7 +157,7 @@ void	split_command_last(char *s, t_split *split_arg, char ***ret)
 char	**split_command(char *s, char c)
 {
 	t_split	split_arg;
-	char **ret;
+	char	**ret;
 
 	if (split_command_ini(&s, c, &split_arg, &ret))
 		return (NULL);
@@ -196,7 +166,8 @@ char	**split_command(char *s, char c)
 		check_quote(s[split_arg.cnt_moji], &split_arg.bitflag_quote);
 		if (s[split_arg.cnt_moji++] != c)
 			split_arg.flag_sequencial = 0;
-		else if (!split_arg.bitflag_quote && !split_arg.flag_sequencial && (split_arg.cnt_moji >= 2 && s[split_arg.cnt_moji - 2] != '\\'))
+		else if (!split_arg.bitflag_quote && !split_arg.flag_sequencial &&
+			(split_arg.cnt_moji >= 2 && s[split_arg.cnt_moji - 2] != '\\'))
 		{
 			split_make_str(&s, &split_arg, ret);
 			if (!ret[split_arg.cnt_splitnum++])
@@ -209,23 +180,5 @@ char	**split_command(char *s, char c)
 		}
 	}
 	split_command_last(s, &split_arg, &ret);
-
 	return (ret);
 }
-
-/*
-int main()
-{
-	char *s = read_all(0);
-	char **ps = split_command(s, ';');
-	char **tmp = ps;
-	printf("\n\n%p\n", ps);
-	printf("-------\n");
-	while (*ps)
-	{
-		printf("%s\n", *ps);
-		ps++;
-	}
-	split_free_all(tmp);
-}
-*/

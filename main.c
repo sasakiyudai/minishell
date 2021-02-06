@@ -3,12 +3,8 @@
 #define EXIT 2
 #define INI_FAIL MALLOC_FAIL + EXIT
 
-typedef int t_all;
-
-char* g_signal;
-t_arg_main* g_arg_main;
-
-char	**split_command(char *s, char c);
+char		*g_signal;
+t_arg_main	*g_arg_main;
 
 void	ft_strncpy(char *dest, char *src, size_t n)
 {
@@ -17,13 +13,12 @@ void	ft_strncpy(char *dest, char *src, size_t n)
 		dest[n] = src[n];
 }
 
-
 void	print_error(int i)
 {
 	i++;
 }
 
-char **make_command_array_splitpipe(char *cmd)
+char	**make_command_array_splitpipe(char *cmd)
 {
 	char **cmd_split;
 
@@ -38,26 +33,21 @@ char **make_command_array_splitpipe(char *cmd)
 	return (cmd_split);
 }
 
-char ***make_command_array_malloc(char **tmp)
+char	***make_command_array_malloc(char **tmp)
 {
-	int cnt;
-	char ***ret;
+	int		cnt;
+	char	***ret;
 
 	cnt = 0;
 	while (tmp[cnt])
 		cnt++;
-	if (!(ret = (char ***)malloc(sizeof (char **) * (cnt + 1))))
-	{
-		print_error(MALLOC_FAIL);
-		split_free_all(tmp);
-		return (NULL);
-	}
+	ret = (char ***)malloc(sizeof(char **) * (cnt + 1));
 	return (ret);
 }
 
 void	command_array_free(char ***cmd)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (cmd[++i])
@@ -65,33 +55,25 @@ void	command_array_free(char ***cmd)
 	free(cmd);
 }
 
-char ***make_command_array(char *cmd)
+char	***make_command_array(char *cmd)
 {
-	char **tmp;
-	char ***ret;
-	int i;
+	char	**tmp;
+	char	***ret;
+	int		i;
 
-	if (!(tmp = make_command_array_splitpipe(cmd)))
-		return (NULL);
-	if (!(ret = make_command_array_malloc(tmp)))
-		return (NULL);
+	tmp = make_command_array_splitpipe(cmd);
+	ret = make_command_array_malloc(tmp);
 	i = -1;
 	while (tmp[++i])
-	{
-		if (!(ret[i] = split_command(tmp[i], ' ')))
-		{
-			command_array_free(ret);
-			return (NULL);
-		}
-	}
+		ret[i] = split_command(tmp[i], ' ');
 	split_free_all(tmp);
 	ret[i] = NULL;
 	return (ret);
 }
 
-void print_tabs(char ***tabs)
+void	print_tabs(char ***tabs)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (tabs[i])
@@ -101,23 +83,22 @@ void print_tabs(char ***tabs)
 	}
 }
 
-char ***make_strb_array(char ***cmd_split)
+char	***make_strb_array(char ***cmd_split)
 {
-    char ***ret;
-    int i;
+	char	***ret;
+	int		i;
 
-    ret = malloc(sizeof (char **) * (count(cmd_split) + 1));
-    i = -1;
-	
-    while (cmd_split[++i])
-        ret[i] = make_strb(cmd_split[i]);
-    ret[i] = NULL;
-    return (ret);
+	ret = malloc(sizeof(char **) * (count(cmd_split) + 1));
+	i = -1;
+	while (cmd_split[++i])
+		ret[i] = make_strb(cmd_split[i]);
+	ret[i] = NULL;
+	return (ret);
 }
 
-int is_strb_empty(char *s)
+int		is_strb_empty(char *s)
 {
-	int ret;
+	int	ret;
 
 	if (!*s)
 		return (0);
@@ -134,9 +115,7 @@ int is_strb_empty(char *s)
 void	remove_empty_strb(char **cmd_split, int *i)
 {
 	if (is_strb_empty(cmd_split[*i]))
-	{
 		free(cmd_split[*i]);
-	}
 	else
 	{
 		remove_quotes(cmd_split[*i]);
@@ -144,13 +123,27 @@ void	remove_empty_strb(char **cmd_split, int *i)
 	}
 }
 
-void command_main(char *cmd_raw, t_arg_main *arg_main)
+void	command_main_fre(char ***cmd_split, char ***tmp_cmd_split)
 {
-	char ***cmd_split;
-	char ***tmp_cmd_split;
 	int i;
-	int j;
-	char *tmp;
+
+	i = -1;
+	while (cmd_split[++i])
+		split_free_all(cmd_split[i]);
+	free(cmd_split);
+	i = -1;
+	while (tmp_cmd_split[++i])
+		free(tmp_cmd_split[i]);
+	free(tmp_cmd_split);
+}
+
+void	command_main(char *cmd_raw, t_arg_main *arg_main)
+{
+	char	***cmd_split;
+	char	***tmp_cmd_split;
+	int		i;
+	int		j;
+	char	*tmp;
 
 	cmd_split = make_command_array(cmd_raw);
 	tmp_cmd_split = cmd_split;
@@ -161,7 +154,6 @@ void command_main(char *cmd_raw, t_arg_main *arg_main)
 		while (tmp_cmd_split[0][++j])
 		{
 			tmp = tmp_cmd_split[0][j];
-			
 			tmp_cmd_split[0][i] = deploy(tmp, arg_main);
 			free(tmp);
 			remove_empty_strb(tmp_cmd_split[0], &i);
@@ -170,23 +162,14 @@ void command_main(char *cmd_raw, t_arg_main *arg_main)
 		tmp_cmd_split++;
 	}
 	pipeline((tmp_cmd_split = make_strb_array(cmd_split)), cmd_split, arg_main);
-	i = -1;
-	while (cmd_split[++i])
-		split_free_all(cmd_split[i]);
-	free(cmd_split);
-	i = -1;
-	while (tmp_cmd_split[++i])
-		free(tmp_cmd_split[i]);	
-	free(tmp_cmd_split);
+	command_main_fre(cmd_split, tmp_cmd_split);
 }
 
-
-
-void ini(t_arg_main *arg_main, char *env[])
+void	ini(t_arg_main *arg_main, char *env[])
 {
-	int i;
-	size_t tmp;
-	t_arg arg;
+	int		i;
+	size_t	tmp;
+	t_arg	arg;
 
 	arg_main_ini(arg_main);
 	g_arg_main = arg_main;
@@ -204,24 +187,10 @@ void ini(t_arg_main *arg_main, char *env[])
 	}
 }
 
-/*
-int main(int argc, char *argv[], char *env[])
+void	sig_handler(int sig)
 {
-	t_arg_main arg_main;
-	ini(&arg_main, env);
-	char **s = arg_list_get(&arg_main);
-	int i = -1;
-	while (s[++i])
-	{
-		printf("%s\n", s[i]);
-	}
-}
-*/
+	t_arg	arg;
 
-void sig_handler(int sig)
-{
-	t_arg arg;
-	
 	arg.name = "?";
 	arg.type = ARG_TYPE_STR;
 	if (sig == SIGINT)
@@ -244,41 +213,48 @@ void sig_handler(int sig)
 		write(1, "\b\b  \b\b", 6);
 }
 
-int main(int argc, char *argv[], char *env[])
+void	main_process(t_arg_main *arg_main)
 {
-	char *cmd_all;
-	char **cmd_split;
-	char **tmp_cmd_split;
-	t_arg_main arg_main;
+	char		*cmd_all;
+	char		**cmd_split;
+	char		**tmp_cmd_split;
+
+	write(1, "$ ", 2);
+	g_signal = "1";
+	cmd_all = read_all(0);
+	if (!ft_strcmp(cmd_all, "finish"))
+	{
+		free(cmd_all);
+		break ;
+	}
+	g_signal = "130";
+	if (syntax_check(cmd_all))
+	{
+		free(cmd_all);
+		continue;
+	}
+	cmd_split = split_command(cmd_all, ';');
+	tmp_cmd_split = cmd_split;
+	while (*cmd_split)
+	{
+		command_main(*cmd_split, arg_main);
+		cmd_split++;
+	}
+	split_free_all(tmp_cmd_split);
+	free(cmd_all);
+}
+
+int		main(int argc, char *argv[], char *env[])
+{
+	t_arg_main	arg_main;
+
 	(void)argc;
 	(void)argv;
 	ini(&arg_main, env);
-	
+	signal(SIGINT, sig_handler);
+	signal(SIGQUIT, sig_handler);
 	while (1)
-	{
-		signal(SIGINT, sig_handler);
-		signal(SIGQUIT, sig_handler);
-		write(1, "$ ", 2);
-		g_signal = "1";
-		cmd_all = read_all(0);
-		if (!ft_strcmp(cmd_all, "finish"))
-			break;
-		g_signal = "130";
-		if (syntax_check(cmd_all))
-		{
-			free(cmd_all);
-			continue;
-		}
-		cmd_split = split_command(cmd_all, ';');
-		tmp_cmd_split = cmd_split;
-		while (*cmd_split)
-		{
-			command_main(*cmd_split, &arg_main);
-			cmd_split++;
-		}
-		split_free_all(tmp_cmd_split);
-		free(cmd_all);
-	}
+		main_process(&arg_main);
 	arg_list_ini(&arg_main);
 	arg_free(&arg_main.head.arg);
 	free(cmd_all);
