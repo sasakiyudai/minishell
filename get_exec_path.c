@@ -1,7 +1,7 @@
 #include "minishell.h"
 #include <dirent.h>
 
-int ispath_ok(char *path, char *name)
+int		ispath_ok(char *path, char *name)
 {
 	DIR				*dir;
 	struct dirent	*dent;
