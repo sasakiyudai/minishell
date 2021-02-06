@@ -134,8 +134,8 @@ int		arg_charlen(t_arg *arg, int quote)
 
 char	*arg_to_str_quotes(t_arg *arg)
 {
-	char *ret;
-	int i;
+	char	*ret;
+	int		i;
 
 	if (!arg)
 		return (NULL);
@@ -152,8 +152,8 @@ char	*arg_to_str_quotes(t_arg *arg)
 
 char	*arg_to_str(t_arg *arg)
 {
-	char *ret;
-	int i;
+	char	*ret;
+	int		i;
 
 	if (!arg)
 		return (NULL);
@@ -173,10 +173,10 @@ char	*arg_to_str(t_arg *arg)
 
 char	**arg_list_get_quote(t_arg_main *arg_main)
 {
-	char **ret;
-	t_arg_list  *current;
-	int i;
-	int arg_num;
+	char		**ret;
+	t_arg_list	*current;
+	int			i;
+	int			arg_num;
 
 	arg_num = arg_main->arg_num - 1;
 	ret = (char **)malloc(sizeof (char *) * (arg_num + 1));
@@ -200,10 +200,10 @@ int		arg_list_cnt(t_arg_list *arg_list)
 
 char	**arg_list_get(t_arg_main *arg_main)
 {
-	char **ret;
-	t_arg_list  *current;
-	int i;
-	int arg_num;
+	char		**ret;
+	t_arg_list	*current;
+	int			i;
+	int			arg_num;
 
 	arg_num = arg_list_cnt(&(arg_main->head)) - 1;
 	ret = (char **)malloc(sizeof (char *) * (arg_num + 1));
@@ -284,9 +284,9 @@ int		arg_get(t_arg_main *arg_main, t_arg *arg, char *name)
 
 void	set_hatena(t_arg_main *arg_main, int i)
 {
-	int j;
-	int len;
-	t_arg arg;
+	int		j;
+	int		len;
+	t_arg	arg;
 
 	j = i;
 	len = 1 + (i < 0);
@@ -298,18 +298,4 @@ void	set_hatena(t_arg_main *arg_main, int i)
 	ft_itoa(j, (arg.data));
 	arg_add(arg_main, &arg);
 	free(arg.data);
-}
-
-void	add_out(t_arg_main *arg_main, t_arg arg)
-{
-	char **ss;
-	int i;
-
-	arg_add(arg_main, &arg);
-	ss=arg_list_get(arg_main);
-
-	i = -1;
-	while (ss[++i])
-		printf("%s\n", ss[i]);
-	split_free_all(ss);
 }
