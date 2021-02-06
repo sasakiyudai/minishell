@@ -14,13 +14,13 @@
 #define FLAG_SINGLE_QUOTE 1
 
 #define SYNTAX_ERROR_QUOTE 1
-	void	print_error(int i);
-typedef struct s_syntax_flag
+void	print_error(int i);
+typedef struct	s_syntax_flag
 {
-	char pipe;
-	char r_redirect;
-	char l_redirect;
-	char semi;
+	char	pipe;
+	char	r_redirect;
+	char	l_redirect;
+	char	semi;
 }				t_syntax_flag;
 
 int		syntax_check_make_sedstr(char *cmd_raw, char **ret)
@@ -130,7 +130,8 @@ int		syntax_check_process(char *cmd, t_syntax_flag *syntax_flag)
 	}
 	else if (*cmd == '|')
 	{
-		if (syntax_flag->pipe >= 2 || syntax_flag->r_redirect || syntax_flag->l_redirect)
+		if (syntax_flag->pipe >= 2 || syntax_flag->r_redirect ||
+			syntax_flag->l_redirect)
 			return (print_synerr(cmd));
 		syntax_flag->pipe++;
 	}
