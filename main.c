@@ -123,6 +123,20 @@ void	remove_empty_strb(char **cmd_split, int *i)
 	}
 }
 
+void	command_main_fre(char ***cmd_split, char ***tmp_cmd_split)
+{
+	int i;
+
+	i = -1;
+	while (cmd_split[++i])
+		split_free_all(cmd_split[i]);
+	free(cmd_split);
+	i = -1;
+	while (tmp_cmd_split[++i])
+		free(tmp_cmd_split[i]);
+	free(tmp_cmd_split);
+}
+
 void	command_main(char *cmd_raw, t_arg_main *arg_main)
 {
 	char	***cmd_split;
@@ -139,7 +153,7 @@ void	command_main(char *cmd_raw, t_arg_main *arg_main)
 		i = 0;
 		while (tmp_cmd_split[0][++j])
 		{
-			tmp = tmp_cmd_split[0][j];	
+			tmp = tmp_cmd_split[0][j];
 			tmp_cmd_split[0][i] = deploy(tmp, arg_main);
 			free(tmp);
 			remove_empty_strb(tmp_cmd_split[0], &i);
@@ -148,14 +162,7 @@ void	command_main(char *cmd_raw, t_arg_main *arg_main)
 		tmp_cmd_split++;
 	}
 	pipeline((tmp_cmd_split = make_strb_array(cmd_split)), cmd_split, arg_main);
-	i = -1;
-	while (cmd_split[++i])
-		split_free_all(cmd_split[i]);
-	free(cmd_split);
-	i = -1;
-	while (tmp_cmd_split[++i])
-		free(tmp_cmd_split[i]);
-	free(tmp_cmd_split);
+	command_main_fre(cmd_split, tmp_cmd_split);
 }
 
 void	ini(t_arg_main *arg_main, char *env[])
