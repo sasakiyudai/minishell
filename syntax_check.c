@@ -21,7 +21,7 @@ typedef struct s_syntax_flag
 	char r_redirect;
 	char l_redirect;
 	char semi;
-}			   t_syntax_flag;
+}				t_syntax_flag;
 
 int		syntax_check_make_sedstr(char *cmd_raw, char **ret)
 {
@@ -38,7 +38,6 @@ int		syntax_check_make_sedstr(char *cmd_raw, char **ret)
 	while (*cmd_raw)
 	{
 		check_quote(*cmd_raw, &bitflag_quote);
-		//printf("%hhd\n", bitflag_quote);
 		if (bitflag_quote <= FLAG_DOUBLE_QUOTE)
 		{
 			(*ret)[++i] = *cmd_raw;
@@ -47,7 +46,6 @@ int		syntax_check_make_sedstr(char *cmd_raw, char **ret)
 		}
 		cmd_raw++;
 	}
-	//printf("%hhd\n", bitflag_quote);
 	(*ret)[++i] = '\0';
 	return (!!bitflag_quote);
 }
@@ -73,17 +71,18 @@ int		print_synerr(char *cmd)
 	return (258);
 }
 
-
 int		syntax_check_process3(char *cmd, t_syntax_flag *syntax_flag)
 {
 	if (*cmd == '\n' || *cmd == '\0')
 	{
-		if (syntax_flag->pipe || syntax_flag->r_redirect || syntax_flag->l_redirect)
+		if (syntax_flag->pipe || syntax_flag->r_redirect ||
+			syntax_flag->l_redirect)
 			return (print_synerr(cmd));
 	}
 	else if (*cmd == ';')
 	{
-		if (syntax_flag->pipe || syntax_flag->r_redirect || syntax_flag->l_redirect || syntax_flag->semi)
+		if (syntax_flag->pipe || syntax_flag->r_redirect ||
+			syntax_flag->l_redirect || syntax_flag->semi)
 			return (print_synerr(cmd));
 		syntax_flag->semi = 1;
 	}
@@ -113,7 +112,7 @@ int		syntax_check_process2(char *cmd, t_syntax_flag *syntax_flag)
 	}
 	else
 	{
-		return (syntax_check_process3(cmd,syntax_flag));
+		return (syntax_check_process3(cmd, syntax_flag));
 	}
 	return (0);
 }
@@ -129,14 +128,14 @@ int		syntax_check_process(char *cmd, t_syntax_flag *syntax_flag)
 		if (syntax_flag->l_redirect)
 			syntax_flag->l_redirect = 2;
 	}
-	else if (*cmd == '|')	
+	else if (*cmd == '|')
 	{
 		if (syntax_flag->pipe >= 2 || syntax_flag->r_redirect || syntax_flag->l_redirect)
 			return (print_synerr(cmd));
 		syntax_flag->pipe++;
 	}
 	else
-		return (_syntax_check_process2(cmd,syntax_flag));
+		return (syntax_check_process2(cmd, syntax_flag));
 	return (0);
 }
 
@@ -144,7 +143,7 @@ int		syntax_check_main(char *cmd)
 {
 	t_syntax_flag	syntax_flag;
 
-	_bzero(&syntax_flag, sizeof (t_syntax_flag));
+	bzero(&syntax_flag, sizeof(t_syntax_flag));
 	while (*cmd)
 	{
 		if (syntax_check_process(cmd, &syntax_flag))
@@ -152,7 +151,7 @@ int		syntax_check_main(char *cmd)
 		cmd++;
 	}
 	if (syntax_check_process(cmd, &syntax_flag))
-			return (258);
+		return (258);
 	return (0);
 }
 
