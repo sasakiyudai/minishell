@@ -3,8 +3,8 @@
 char	*ft_newstr_ncat(char *src1, char *src2, int n)
 {
 	char	*ret;
-	int	 i;
-	int	 j;
+	int		i;
+	int		j;
 
 	if (!(ret = (char *)malloc(n + 1)))
 		return (NULL);
@@ -21,6 +21,7 @@ char	*ft_newstr_ncat(char *src1, char *src2, int n)
 char	*ft_newstr_ncatfree(char *src1, char *src2, int n, int bitflag)
 {
 	char	*ret;
+
 	ret = ft_newstr_ncat(src1, src2, n);
 	if (bitflag & 1)
 		free(src1);
@@ -35,7 +36,7 @@ char	*read_all(int fd)
 	char	buf[1001];
 	int		cnt_read;
 	int		ret_read;
-	int	 f;
+	int		f;
 
 	cnt_read = 0;
 	f = 0;
@@ -74,7 +75,7 @@ char	*read_all(int fd)
 
 char	*ft_strndup(char *src, int n)
 {
-	char *ret;
+	char	*ret;
 
 	if (!(ret = (char *)malloc(n + 1)))
 		return (NULL);
@@ -187,7 +188,7 @@ void	split_command_last(char *s, t_split *split_arg, char ***ret)
 char	**split_command(char *s, char c)
 {
 	t_split	split_arg;
-	char **ret;
+	char	**ret;
 
 	if (split_command_ini(&s, c, &split_arg, &ret))
 		return (NULL);
@@ -212,20 +213,3 @@ char	**split_command(char *s, char c)
 
 	return (ret);
 }
-
-/*
-int main()
-{
-	char *s = read_all(0);
-	char **ps = split_command(s, ';');
-	char **tmp = ps;
-	printf("\n\n%p\n", ps);
-	printf("-------\n");
-	while (*ps)
-	{
-		printf("%s\n", *ps);
-		ps++;
-	}
-	split_free_all(tmp);
-}
-*/

@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	 bcopy(void *dest, void *src, int size)
+void	bcopy(void *dest, void *src, int size)
 {
 	char	*s1;
 	char	*s2;
