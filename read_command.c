@@ -85,16 +85,13 @@ int		cnt_splitnum_command(char *s, char c)
 	while (*s)
 	{
 		check_quote(*s, &bitflag_quote);
-		if (*s == c && !flag_sequencial)
+		if ((!bitflag_quote || *s != c) && !flag_sequencial)
 		{
 			ret++;
 			flag_sequencial = 1;
 		}
-		else if (!bitflag_quote && !flag_sequencial)
-		{
-			ret++;
+		else if (!bitflag_quote && *s == c)
 			flag_sequencial = 0;
-		}
 		s++;
 	}
 	return (ret);
