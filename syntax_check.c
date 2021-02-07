@@ -66,7 +66,9 @@ int		print_synerr(char *cmd)
 		s[1] = cmd[1] * (cmd[1] == cmd[0]);
 	else if (cmd[0] == ';')
 		s[1] = cmd[1] * (cmd[1] == cmd[0]);
-	printf("bash: syntax error near unexpected token `%s'\n", s);
+	ft_putstr_fd("bash: syntax error near unexpected token `", 2);
+	ft_putstr_fd(s, 2);
+	ft_putstr_fd("'\n", 2);
 	set_hatena(g_arg_main, 258);
 	return (258);
 }

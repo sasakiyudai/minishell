@@ -207,10 +207,10 @@ void	sig_handler(int sig)
 	{
 		arg.data = "131";
 		arg_add(g_arg_main, &arg);
-		write(1, "Quit: 3\n", 8);
+		write(2, "Quit: 3\n", 8);
 	}
 	else if (sig == SIGQUIT)
-		write(1, "\b\b  \b\b", 6);
+		write(2, "\b\b  \b\b", 6);
 }
 
 void	main_process(t_arg_main *arg_main)
@@ -221,7 +221,7 @@ void	main_process(t_arg_main *arg_main)
 
 	while (1)
 	{
-		write(1, "$ ", 2);
+		write(2, "$ ", 2);
 		g_signal = "1";
 		cmd_all = read_all(0);
 		if (!ft_strcmp(cmd_all, "finish"))

@@ -44,7 +44,7 @@ char	*read_all(int fd)
 	while (1 + (ret_read = read(fd, buf, 3)))
 	{
 		if (!f && !ret_read)
-			exit(0 * write(1, "exit\n", 5));
+			exit(0 * write(2, "exit\n", 5));
 		if ((f = 1) && !ret_read)
 			continue;
 		buf[ret_read] = '\0';
@@ -52,7 +52,7 @@ char	*read_all(int fd)
 		if (buf[ret_read - 1] == '\n' && !(ret[cnt_read - 1] = '\0'))
 			break ;
 		if (buf[ret_read - 1])
-			write(1, "  \b\b", 4);
+			write(2, "  \b\b", 4);
 	}
 	if (ret_read >= 0)
 		return (ret);
