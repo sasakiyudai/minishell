@@ -41,17 +41,18 @@ char	*read_all(int fd)
 	cnt_read = 0;
 	f = 0;
 	ret = ft_strdup("");
-	while ((ret_read = read(fd, buf, 1000)))
+	while (1 + (ret_read = read(fd, buf, 3)))
 	{
-		if (!f)
+		if (!f && !ret_read)
 			exit(0 * write(1, "exit\n", 5));
+		if ((f = 1) && !ret_read)
+			continue;
 		buf[ret_read] = '\0';
 		ret = ft_newstr_ncatfree(ret, buf, (cnt_read += ret_read), 1);
 		if (buf[ret_read - 1] == '\n' && !(ret[cnt_read - 1] = '\0'))
 			break ;
-		if (!buf[ret_read - 1])
+		if (buf[ret_read - 1])
 			write(1, "  \b\b", 4);
-		f = 1;
 	}
 	if (ret_read >= 0)
 		return (ret);
