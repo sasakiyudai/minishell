@@ -1,99 +1,78 @@
 #include "minishell.h"
 #include <dirent.h>
 
-typedef struct s_cmd
+int		ispath_ok(char *path, char *name)
 {
-    char *name;
-    int (*func)(char **);
-}               t_cmd;
+	DIR				*dir;
+	struct dirent	*dent;
 
-
-int isbuiltin(char *name, t_cmd cmd[], int (**ret)(char **))
-{
-    while (cmd[0].name)
-    {
-        if (!ft_strcmp(name, cmd[0].name))
-        {
-            *ret = cmd[0].func;
-            return (1);
-        }
-        cmd++;
-    }
-    return (0);
+	if (name == (char *)1)
+		return (0);
+	if (!(dir = opendir(path)))
+		return (0);
+	while ((dent = readdir(dir)))
+		if (!ft_strcmp(dent->d_name, name))
+		{
+			closedir(dir);
+			return (1);
+		}
+	closedir(dir);
+	return (0);
 }
 
-int ispath_ok(char *path, char *name)
+int		get_path_makestr(char **ret, char *path, char *name)
 {
-    DIR *dir;
-    struct dirent *dent;
+	int	path_len;
 
-    if (name == (char *)1)
-        return (0);
-    if (!(dir = opendir(path)))
-        return (0);
-    while ((dent = readdir(dir)))
-        if (!ft_strcmp(dent->d_name, name))
-        {
-            closedir(dir);
-            return (1);
-        }
-    closedir(dir);
-    return (0);
+	path_len = ft_strlen(path);
+	if (!(*ret = (char *)malloc(path_len + 1 + ft_strlen(name) + 1)))
+		return (-1);
+	ft_strcpy(*ret, path);
+	(*ret)[path_len] = '/';
+	ft_strcpy(*ret + path_len + 1, name);
+	return (0);
 }
 
-int get_path_makestr(char **ret, char *path, char *name)
+int		get_path_make_strarry(t_arg_main *arg_main, char ***path)
 {
-    int path_len;
+	t_arg	arg;
+	int		tmp;
 
-    path_len = ft_strlen(path);
-    if (!(*ret = (char *)malloc(path_len + 1 + ft_strlen(name) + 1)))
-        return (-1);
-    ft_strcpy(*ret, path);
-    (*ret)[path_len] = '/';
-    ft_strcpy(*ret + path_len + 1, name);
-    return (0);
+	if ((tmp = arg_get(arg_main, &arg, "PATH")))
+		return (tmp);
+	if (!(*path = split_command((char *)(arg.data), ':')))
+	{
+		arg_free(&arg);
+		return (-1);
+	}
+	arg_free(&arg);
+	return (0);
 }
 
-int get_path_make_strarry(t_arg_main *arg_main, char ***path)
+int		get_path(t_arg_main *arg_main, char **ret, char *name)
 {
-    t_arg arg;
-    int tmp;
+	char	**path;
+	char	**tmp_path;
+	int		tmp;
 
-    if ((tmp = arg_get(arg_main, &arg, "PATH")))
-        return (tmp); 
-    if (!(*path = split_command((char *)(arg.data), ':')))
-    {
-        arg_free(&arg);
-        return (-1);
-    }
-    arg_free(&arg);
-    return (0);
-}
-
-int get_path(t_arg_main *arg_main, char **ret, char *name)
-{
-    char **path;
-    char **tmp_path;
-    int tmp;
-
-    if (ispath_ok("./", ft_strchr(name, '/') + 1))
-    {
-        *ret = ft_strdup(name);
-        return (0);
-    }
-    if ((tmp = get_path_make_strarry(arg_main, &path)))
-        return (tmp);
-    tmp_path = path;
-    while (*path)
-    {
-        if (ispath_ok(*path, name))
-        {
-            tmp = get_path_makestr(ret, *path, name);
-            split_free_all(tmp_path);
-            return (tmp);
-        }
-        path++;
-    }
-    split_free_all(tmp_path);
-    return (1);
+	if (ispath_ok("./", ft_strchr(name, '/') + 1))
+	{
+		*ret = ft_strdup(name);
+		return (0);
+	}
+	if ((tmp = get_path_make_strarry(arg_main, &path)))
+		return (tmp);
+	tmp_path = path;
+	while (*path)
+	{
+		if (ispath_ok(*path, name))
+		{
+			tmp = get_path_makestr(ret, *path, name);
+			split_free_all(tmp_path);
+			return (tmp);
+		}
+		path++;
+	}
+	split_free_all(tmp_path);
+	return (1);
 }

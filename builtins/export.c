@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int ft_len(char *args[])
+int			ft_len(char *args[])
 {
 	int i;
 
@@ -10,11 +10,11 @@ int ft_len(char *args[])
 	return (i);
 }
 
-void sort(char *envp[])
+void	sort(char *envp[])
 {
-	int i;
-	int j;
-	char *tmp;
+	int		i;
+	int		j;
+	char	*tmp;
 
 	i = 0;
 	while (i < ft_len(envp) - 1)
@@ -34,9 +34,9 @@ void sort(char *envp[])
 	}
 }
 
-void print_with_declare(char *envp[])
+void	print_with_declare(char *envp[])
 {
-	int i;
+	int	i;
 
 	sort(envp);
 	i = 0;
@@ -50,7 +50,7 @@ void	export_err(int err, char *cmd)
 		printf("bash: export: `%s\': not a valid identifier\n", cmd);
 }
 
-int export_name_check(char *cmd)
+int		export_name_check(char *cmd)
 {
 	if (!ft_isalpha(*cmd) && *cmd != '_')
 		return (1);
@@ -67,12 +67,11 @@ int export_name_check(char *cmd)
 
 void	export_argadd(char *args[], t_arg_main *arg_main)
 {
-	t_arg arg;
-	char *tmp;
+	t_arg	arg;
+	char	*tmp;
 
 	arg.type = ARG_TYPE_STR;
-	args++;
-	while (*args)
+	while (*(++args))
 	{
 		if (export_name_check(*args))
 		{
@@ -92,19 +91,19 @@ void	export_argadd(char *args[], t_arg_main *arg_main)
 		}
 		arg_add(arg_main, &arg);
 		arg_free(&arg);
-		args++;
 	}
 }
 
-int ft_export(char *args[], t_arg_main *arg_main)
+int		ft_export(char *args[], t_arg_main *arg_main)
 {
-	char **env;
+	char	**env;
+
 	if (!args[1])
-    {
+	{
 		env = arg_list_get_quote(arg_main);
-        print_with_declare(env);
-        return (0);
-    }
+		print_with_declare(env);
+		return (0);
+	}
 	export_argadd(args, arg_main);
 	return (0);
 }

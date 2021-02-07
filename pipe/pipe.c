@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 17:47:28 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/06 21:39:46 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/07 14:01:00 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,8 @@ void	pipeline2(char ***cmd, char ***raw_cmd, t_arg_main *arg_main)
 
 void	pipeline(char ***cmd, char ***raw_cmd, t_arg_main *arg_main)
 {
-	if (count(cmd) == 1)
+	if (count(cmd) == 1 && raw_cmd[0][0] != NULL)
 		one_command(cmd, raw_cmd, arg_main);
-	else if (count(cmd) >= 1)
+	else if (count(cmd) > 1)
 		pipeline2(cmd, raw_cmd, arg_main);
 }
