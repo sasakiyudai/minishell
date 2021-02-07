@@ -221,7 +221,7 @@ void	main_process(t_arg_main *arg_main)
 
 	while (1)
 	{
-		write(1, "$ ", 2);
+		write(2, "$ ", 2);
 		g_signal = "1";
 		cmd_all = read_all(0);
 		if (!ft_strcmp(cmd_all, "finish"))
