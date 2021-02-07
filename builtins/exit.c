@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 17:53:37 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/07 00:38:22 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/07 13:33:52 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ int		include_no_num(char *arg)
 			return (1);
 		i++;
 	}
+	if (ft_strlen(arg) >= 20)
+		return (1);
 	return (0);
 }
 
