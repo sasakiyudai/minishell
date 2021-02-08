@@ -41,7 +41,7 @@ int		update(t_arg_main *arg_main)
 	if ((arg_list = arg_isexist(arg_main, "OLDPWD")))
 	{
 		if ((arg_list_pwd = arg_isexist(arg_main, "PWD")))
-			arg_list->data = ft_strdup(arg_list_pwd->data);
+			arg_list->arg.data = ft_strdup(arg_list_pwd->arg.data);
 		else
 		{
 			ft_putstr_fd("bash: cd: PWD not set", 2);
@@ -60,13 +60,12 @@ int		update_pwd(t_arg_main *arg_main)
 
 	if ((arg_list = arg_isexist(arg_main, "PWD")))
 	{
-			if (getcwd(cwd, MAX_FILENAME) == NULL)
-				return (1);
-			if (arg_main->pwd_slash)
-				arg_list->data = ft_strjoin("/", cwd);
-			else
-				arg_list->data = ft_strdup(cwd);
-		}
+		if (getcwd(cwd, MAX_FILENAME) == NULL)
+			return (1);
+		if (arg_main->pwd_slash)
+			arg_list->arg.data = ft_strjoin("/", cwd);
+		else
+			arg_list->arg.data = ft_strdup(cwd);
 		return (0);
 	}
 	return (0);
