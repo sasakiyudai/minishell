@@ -54,6 +54,8 @@ int		export_name_check(char *cmd)
 {
 	if (!ft_isalpha(*cmd) && *cmd != '_')
 		return (1);
+	if (*cmd == '=' || *cmd == '\0')
+		return (1);
 	while (*cmd)
 	{
 		if (*cmd == '=')
