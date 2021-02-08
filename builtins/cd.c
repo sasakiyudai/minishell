@@ -55,7 +55,6 @@ int		update_pwd(t_arg_main *arg_main)
 {
 	char	cwd[MAX_FILENAME + 1];
 	t_arg_list	*arg_list;
-	t_arg_list	*arg_list_pwd;
 
 	if ((arg_list = arg_isexist(arg_main, "PWD")))
 	{
