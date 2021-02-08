@@ -181,8 +181,13 @@ void	ini(t_arg_main *arg_main, char *env[])
 		tmp = (size_t)(ft_strchr(env[i], '=') - env[i]);
 		arg.name = malloc(tmp + 1);
 		ft_strncpy(arg.name, env[i], tmp);
-		arg.data = malloc(ft_strlen(env[i]) - tmp);
-		ft_strcpy((char *)(arg.data), env[i] + tmp + 1);
+		if (ft_strcmp(arg.name, "OLDPWD"))
+		{
+			arg.data = malloc(ft_strlen(env[i]) - tmp);
+			ft_strcpy((char *)(arg.data), env[i] + tmp + 1);
+		}
+		else
+			arg.data = NULL;
 		arg_add(arg_main, &arg);
 		arg_free(&arg);
 	}
