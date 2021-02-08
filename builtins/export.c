@@ -78,7 +78,6 @@ void	export_argadd(char *args[], t_arg_main *arg_main)
 		if (export_name_check(*args))
 		{
 			export_err(BAD_ARGNAME, *args);
-			args++;
 			continue;
 		}
 		else if ((tmp = ft_strchr(*args, '=')))
