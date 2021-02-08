@@ -34,7 +34,6 @@ void	cd_error(char **args)
 
 int		update(t_arg_main *arg_main)
 {
-	char	cwd[MAX_FILENAME + 1];
 	t_arg_list	*arg_list;
 	t_arg_list	*arg_list_pwd;
 
@@ -71,7 +70,7 @@ int		update_pwd(t_arg_main *arg_main)
 	return (0);
 }
 
-void	cd_process(t_arg_main *arg_main, char *dest)
+int		cd_process(t_arg_main *arg_main, char *dest, char **args)
 {
 	int	cd_ret;
 
@@ -114,7 +113,7 @@ int		ft_cd(char **args, t_arg_main *arg_main)
 		update(arg_main);
 		return (0);
 	}
-	cd_ret = cd_process(arg_main, dest);
+	cd_ret = cd_process(arg_main, dest, args);
 	free(dest);
 	return (cd_ret);
 }
