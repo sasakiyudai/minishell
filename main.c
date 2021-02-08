@@ -165,26 +165,50 @@ void	command_main(char *cmd_raw, t_arg_main *arg_main)
 	command_main_fre(cmd_split, tmp_cmd_split);
 }
 
-void	ini(t_arg_main *arg_main, char *env[])
+void	ini3(t_arg_main *arg_main, char *env)
 {
-	int		i;
+	t_arg	arg;
+
+	arg.name = ft_strdup(env);
+	arg.data = NULL;
+	arg_add(arg_main, &arg);
+	arg_free(&arg);
+}
+
+void	ini2(t_arg_main *arg_main, char *env)
+{
 	size_t	tmp;
 	t_arg	arg;
 
+	tmp = (size_t)(ft_strchr(env, '=') - env);
+	arg.name = malloc(tmp + 1);
+	ft_strncpy(arg.name, env, tmp);
+	if (ft_strcmp(arg.name, "OLDPWD"))
+	{
+		arg.data = malloc(ft_strlen(env) - tmp);
+		ft_strcpy((char *)(arg.data), env + tmp + 1);
+	}
+	else
+		arg.data = NULL;
+	arg_add(arg_main, &arg);
+	arg_free(&arg);
+}
+
+void	ini(t_arg_main *arg_main, char *env[])
+{
+	t_arg	arg;
+	int		i;
+
+	i = -1;
 	arg_main_ini(arg_main);
 	g_arg_main = arg_main;
-	i = -1;
+	arg_main->pwd_slash = 0;
 	arg.type = ARG_TYPE_STR;
 	while (env[++i])
-	{
-		tmp = (size_t)(ft_strchr(env[i], '=') - env[i]);
-		arg.name = malloc(tmp + 1);
-		ft_strncpy(arg.name, env[i], tmp);
-		arg.data = malloc(ft_strlen(env[i]) - tmp);
-		ft_strcpy((char *)(arg.data), env[i] + tmp + 1);
-		arg_add(arg_main, &arg);
-		arg_free(&arg);
-	}
+		if (ft_strchr(env[i], '='))
+			ini2(arg_main, env[i]);
+		else
+			ini3(arg_main, env[i]);
 }
 
 void	sig_handler(int sig)
@@ -201,16 +225,16 @@ void	sig_handler(int sig)
 		if (!ft_strcmp(g_signal, "1"))
 			write(1, "\b\b  \n$ ", 7);
 		else
-			write(1, "\n", 1);
+			write(1, "\n", 0);  //1);
 	}
 	else if (sig == SIGQUIT && ft_strcmp(g_signal, "1"))
 	{
 		arg.data = "131";
 		arg_add(g_arg_main, &arg);
-		write(1, "Quit: 3\n", 8);
+		write(2, "Quit: 3\n", 8);
 	}
 	else if (sig == SIGQUIT)
-		write(1, "\b\b  \b\b", 6);
+		write(2, "\b\b  \b\b", 6);
 }
 
 void	main_process(t_arg_main *arg_main)

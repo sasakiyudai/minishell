@@ -54,6 +54,8 @@ int		export_name_check(char *cmd)
 {
 	if (!ft_isalpha(*cmd) && *cmd != '_')
 		return (1);
+	if (*cmd == '=' || *cmd == '\0')
+		return (1);
 	while (*cmd)
 	{
 		if (*cmd == '=')
@@ -76,7 +78,6 @@ void	export_argadd(char *args[], t_arg_main *arg_main)
 		if (export_name_check(*args))
 		{
 			export_err(BAD_ARGNAME, *args);
-			args++;
 			continue;
 		}
 		else if ((tmp = ft_strchr(*args, '=')))
