@@ -167,7 +167,6 @@ void	command_main(char *cmd_raw, t_arg_main *arg_main)
 
 void	ini3(t_arg_main *arg_main, char *env)
 {
-	size_t	tmp;
 	t_arg	arg;
 
 	arg.name = ft_strdup(env);
@@ -199,7 +198,9 @@ void	ini(t_arg_main *arg_main, char *env[])
 {
 	size_t	tmp;
 	t_arg	arg;
+	int		i;
 
+	i = -1;
 	arg_main_ini(arg_main);
 	g_arg_main = arg_main;
 	arg_main->pwd_slash = 0;
