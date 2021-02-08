@@ -6,31 +6,11 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 10:18:26 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/04 23:05:02 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/08 13:18:50 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-int				ft_check(int sign, long rev, int i, const char *str)
-{
-	if (rev > 922337203685477580)
-		return (0);
-	if (rev == 922337203685477580)
-	{
-		if (sign == 1)
-		{
-			if (str[i] > '7')
-				return (0);
-		}
-		else
-		{
-			if (str[i] > '8')
-				return (0);
-		}
-	}
-	return (1);
-}
 
 int				ft_atoi(const char *str)
 {
@@ -50,10 +30,7 @@ int				ft_atoi(const char *str)
 		i++;
 	while ('0' <= str[i] && str[i] <= '9')
 	{
-		if (ft_check(sign, rev, i, str))
-			rev = rev * 10 + (str[i] - '0');
-		else
-			return (sign == 1 ? -1 : 0);
+		rev = rev * 10 + (str[i] - '0');
 		i++;
 	}
 	return ((int)sign * rev);
