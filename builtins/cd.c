@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 18:00:21 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/06 18:05:22 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/08 17:57:09 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,18 @@ int		update(t_arg_main *arg_main)
 {
 	char	cwd[MAX_FILENAME];
 	t_arg	arg;
+	t_arg	tmp_arg;
 
 	if (getcwd(cwd, MAX_FILENAME) == NULL)
 		return (1);
 	arg.data = cwd;
 	arg.name = "OLDPWD";
 	arg.type = ARG_TYPE_STR;
-	arg_add(arg_main, &arg);
+	if (0 == arg_get(arg_main, &tmp_arg, "OLDPWD"))
+	{
+		arg_add(arg_main, &arg);
+		arg_free(&tmp_arg);
+	}
 	return (0);
 }
 
@@ -50,13 +55,18 @@ void	update_pwd(t_arg_main *arg_main)
 {
 	char	s[MAX_FILENAME];
 	t_arg	arg;
+	t_arg	tmp_arg;
 
 	if (!getcwd(s, MAX_FILENAME))
 		return ;
 	arg.data = s;
 	arg.name = "PWD";
 	arg.type = ARG_TYPE_STR;
-	arg_add(arg_main, &arg);
+	if (0 == arg_get(arg_main, &tmp_arg, "OLDPWD"))
+	{
+		arg_add(arg_main, &arg);
+		arg_free(&tmp_arg);
+	}
 }
 
 int		ft_cd(char **args, t_arg_main *arg_main)

@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 17:48:31 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/07 00:28:31 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/08 19:08:58 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,40 @@ void	one_command_bin(char ***cmd, char ***raw_cmd, t_arg_main *arg_main)
 	}
 }
 
+void	one_command_bin_e(char ***raw_cmd, t_arg_main *arg_main)
+{
+	pid_t	pid;
+	int		status;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		just_for_norm(raw_cmd);
+		exit(0);
+	}
+	waitpid(pid, &status, 0);
+	set_hatena(arg_main, WEXITSTATUS(status));
+}
+
+int		rare_exception(char ***raw_cmd)
+{
+	if (2 != ft_tablen((*raw_cmd)))
+		return (0);
+	if (ft_strcmp(">", (*raw_cmd)[0]) != 0
+	&& ft_strcmp("<", (*raw_cmd)[0]) != 0
+	&& ft_strcmp(">>", (*raw_cmd)[0]) != 0)
+		return (0);
+	return (1);
+}
+
 void	one_command(char ***cmd, char ***raw_cmd, t_arg_main *arg_main)
 {
 	int tmp;
 	int semi[2];
 
-	if ((tmp = is_builtin((*cmd)[0])))
+	if (rare_exception(raw_cmd))
+		one_command_bin_e(raw_cmd, arg_main);
+	else if ((tmp = is_builtin((*cmd)[0])))
 	{
 		set_right(raw_cmd, 0, semi, 0);
 		set_left(raw_cmd, 0, semi, 0);

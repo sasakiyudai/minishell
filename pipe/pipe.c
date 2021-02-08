@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 17:47:28 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/07 14:01:00 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/08 19:40:16 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,12 @@ void	wait_chiledren_and_free_fd(int cmd_len, int *fd, pid_t *pids)
 	free(fd);
 }
 
+void	bin_e(char ***raw_cmd)
+{
+	just_for_norm(raw_cmd);
+	exit(0);
+}
+
 void	exec_child(int cmd_len, int *fd, char ***cmd, t_arg_main *arg_main)
 {
 	int		exit_code;
@@ -60,7 +66,9 @@ void	exec_child(int cmd_len, int *fd, char ***cmd, t_arg_main *arg_main)
 	i = 0;
 	while (i < 2 * (cmd_len - 1))
 		close(fd[i++]);
-	if ((tmp = is_builtin((*cmd)[0])))
+	if (rare_exception(arg_main->raw))
+		bin_e(arg_main->raw);
+	else if ((tmp = is_builtin((*cmd)[0])))
 		exit(call_builtin(tmp, *cmd, arg_main));
 	else
 	{
@@ -87,6 +95,7 @@ void	pipeline2(char ***cmd, char ***raw_cmd, t_arg_main *arg_main)
 
 	fd = malloc(sizeof(int) * 2 * (count(cmd) - 1));
 	pids = malloc(sizeof(pid_t) * count(cmd));
+	arg_main->raw = raw_cmd;
 	i = 0;
 	j = 0;
 	while (i < count(cmd) - 1)
@@ -101,6 +110,7 @@ void	pipeline2(char ***cmd, char ***raw_cmd, t_arg_main *arg_main)
 		}
 		pids[j / 2] = pid;
 		cmd++;
+		(arg_main->raw)++;
 		j += 2;
 	}
 	wait_chiledren_and_free_fd(i + 1, fd, pids);
