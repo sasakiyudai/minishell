@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 18:00:21 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/08 16:29:13 by rnitta           ###   ########.fr       */
+/*   Updated: 2021/02/08 14:27:20 by rnitta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,43 +57,26 @@ void	update_pwd(t_arg_main *arg_main)
 	arg.name = "PWD";
 	arg.type = ARG_TYPE_STR;
 	arg_add(arg_main, &arg);
+	printf("update:%s\n", s);
 }
 
 int		ft_cd(char **args, t_arg_main *arg_main)
 {
 	int		cd_ret;
-	char	*dest;
-	t_arg	arg;
 
-	if (ft_len(args) == 1)
+	if (ft_len(args) != 2)
 	{
-		if (arg_get(arg_main, &arg, "HOME") || arg.data == NULL)
-			return (1 + 0 * (write(2, "bash: cd: HOME not set", 22)));
-		dest = ft_strdup(arg.data);
-		arg_free(&arg);
+		cd_error(args);
+		return (1);
 	}
-	else
-		dest = ft_strdup(args[1]);
+	printf("%s\n", args[1]);
 	update(arg_main);
-	if (!dest[0])
-	{
-		free(dest);
-		return (0);
-	}
-	cd_ret = chdir(dest);
+	cd_ret = chdir(args[1]);
 	if (cd_ret < 0)
 		cd_ret *= -1;
 	if (cd_ret != 0)
 		cd_error(args);
 	if (cd_ret == 0)
-	{
 		update_pwd(arg_main);
-		if (ft_strlen(dest) >= 1 && dest[0] == '/' && dest[1] != '/')
-			arg_main->pwd_slash = 0;
-		if (ft_strlen(dest) >= 2	&&
-			dest[0] == '/' && dest[1] == '/')
-			arg_main->pwd_slash = dest[2] != '/';
-	}
-	free(dest);
 	return (cd_ret);
 }

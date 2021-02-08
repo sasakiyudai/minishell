@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 22:32:19 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/07 13:47:33 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/08 15:59:25 by rnitta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ typedef struct s_arg_list
 typedef struct s_arg_main
 {
 	t_arg_list  head;
-	int arg_num;
+	int		pwd_slash;
+	int			arg_num;
 }               t_arg_main;
 
 typedef    struct    s_split

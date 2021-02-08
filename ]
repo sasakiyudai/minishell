@@ -174,7 +174,6 @@ void	ini(t_arg_main *arg_main, char *env[])
 	arg_main_ini(arg_main);
 	g_arg_main = arg_main;
 	i = -1;
-	arg_main->pwd_slash = 0;
 	arg.type = ARG_TYPE_STR;
 	while (env[++i])
 	{
@@ -183,7 +182,9 @@ void	ini(t_arg_main *arg_main, char *env[])
 		ft_strncpy(arg.name, env[i], tmp);
 		arg.data = malloc(ft_strlen(env[i]) - tmp);
 		ft_strcpy((char *)(arg.data), env[i] + tmp + 1);
+		printf("%hhd\n", arg_main->pwd_slash);
 		arg_add(arg_main, &arg);
+		printf("%hhd\n", arg_main->pwd_slash);
 		arg_free(&arg);
 	}
 	arg_main->pwd_slash = 0;
@@ -223,6 +224,7 @@ void	main_process(t_arg_main *arg_main)
 
 	while (1)
 	{
+		printf("%d\n", arg_main->pwd_slash);
 		write(2, "$ ", 2);
 		g_signal = "1";
 		cmd_all = read_all(0);
