@@ -34,29 +34,64 @@ void	cd_error(char **args)
 
 int		update(t_arg_main *arg_main)
 {
-	char	cwd[MAX_FILENAME];
-	t_arg	arg;
+	char	cwd[MAX_FILENAME + 1];
+	t_arg_list	*arg_list;
+	t_arg_list	*arg_list_pwd;
 
-	if (getcwd(cwd, MAX_FILENAME) == NULL)
-		return (1);
-	arg.data = cwd;
-	arg.name = "OLDPWD";
-	arg.type = ARG_TYPE_STR;
-	arg_add(arg_main, &arg);
+	if ((arg_list = arg_isexist(arg_main, "OLDPWD")))
+	{
+		if ((arg_list_pwd = arg_isexist(arg_main, "PWD")))
+			arg_list->data = ft_strdup(arg_list_pwd->data);
+		else
+		{
+			ft_putstr_fd("bash: cd: PWD not set", 2);
+			return (-1);
+		}
+		return (0);
+	}
 	return (0);
 }
 
-void	update_pwd(t_arg_main *arg_main)
+int		update_pwd(t_arg_main *arg_main)
 {
-	char	s[MAX_FILENAME];
-	t_arg	arg;
+	char	cwd[MAX_FILENAME + 1];
+	t_arg_list	*arg_list;
+	t_arg_list	*arg_list_pwd;
 
-	if (!getcwd(s, MAX_FILENAME))
-		return ;
-	arg.data = s;
-	arg.name = "PWD";
-	arg.type = ARG_TYPE_STR;
-	arg_add(arg_main, &arg);
+	if ((arg_list = arg_isexist(arg_main, "PWD")))
+	{
+			if (getcwd(cwd, MAX_FILENAME) == NULL)
+				return (1);
+			if (arg_main->pwd_slash)
+				arg_list->data = ft_strjoin("/", cwd);
+			else
+				arg_list->data = ft_strdup(cwd);
+		}
+		return (0);
+	}
+	return (0);
+}
+
+void	cd_process(t_arg_main *arg_main, char *dest)
+{
+	int	cd_ret;
+
+	cd_ret = chdir(dest);
+	if (cd_ret < 0)
+		cd_ret *= -1;
+	if (cd_ret != 0)
+		cd_error(args);
+	if (cd_ret == 0)
+	{
+		update_pwd(arg_main);
+		if (ft_strlen(dest) >= 1 && dest[0] == '/' && dest[1] != '/')
+			arg_main->pwd_slash = 0;
+		if (ft_strlen(dest) >= 2	&&
+			dest[0] == '/' && dest[1] == '/')
+			arg_main->pwd_slash = dest[2] != '/';
+		return (update_pwd(arg_main));
+	}
+	return (cd_ret);
 }
 
 int		ft_cd(char **args, t_arg_main *arg_main)
@@ -74,26 +109,13 @@ int		ft_cd(char **args, t_arg_main *arg_main)
 	}
 	else
 		dest = ft_strdup(args[1]);
-	update(arg_main);
 	if (!dest[0])
 	{
 		free(dest);
+		update(arg_main);
 		return (0);
 	}
-	cd_ret = chdir(dest);
-	if (cd_ret < 0)
-		cd_ret *= -1;
-	if (cd_ret != 0)
-		cd_error(args);
-	if (cd_ret == 0)
-	{
-		update_pwd(arg_main);
-		if (ft_strlen(dest) >= 1 && dest[0] == '/' && dest[1] != '/')
-			arg_main->pwd_slash = 0;
-		if (ft_strlen(dest) >= 2	&&
-			dest[0] == '/' && dest[1] == '/')
-			arg_main->pwd_slash = dest[2] != '/';
-	}
+	cd_ret = cd_process(arg_main, dest);
 	free(dest);
 	return (cd_ret);
 }
