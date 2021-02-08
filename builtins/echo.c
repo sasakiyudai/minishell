@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 17:58:19 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/07 13:20:41 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/07 21:31:51 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int		valid_option(char *now)
 			return (0);
 		i++;
 	}
+	if (i == 0)
+		return (0);
 	return (1);
 }
 
@@ -45,7 +47,7 @@ int		ft_echo(char *args[])
 		while (args[i])
 		{
 			ft_putstr_fd(args[i], 1);
-			if (args[i][0] != '\0' && args[i + 1])
+			if (args[i + 1])
 				write(1, " ", 1);
 			i++;
 		}
