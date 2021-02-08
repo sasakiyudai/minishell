@@ -196,7 +196,6 @@ void	ini2(t_arg_main *arg_main, char *env)
 
 void	ini(t_arg_main *arg_main, char *env[])
 {
-	size_t	tmp;
 	t_arg	arg;
 	int		i;
 
@@ -206,10 +205,10 @@ void	ini(t_arg_main *arg_main, char *env[])
 	arg_main->pwd_slash = 0;
 	arg.type = ARG_TYPE_STR;
 	while (env[++i])
-		if (ft_strchr(emv[i], '='))
+		if (ft_strchr(env[i], '='))
 			ini2(arg_main, env[i]);
 		else
-			ubu3(arg_main, env[i]);
+			ini3(arg_main, env[i]);
 }
 
 void	sig_handler(int sig)
@@ -226,7 +225,7 @@ void	sig_handler(int sig)
 		if (!ft_strcmp(g_signal, "1"))
 			write(1, "\b\b  \n$ ", 7);
 		else
-			write(1, "\n", 1);
+			write(1, "\n", 0);  //1);
 	}
 	else if (sig == SIGQUIT && ft_strcmp(g_signal, "1"))
 	{
