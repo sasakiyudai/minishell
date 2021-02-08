@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/27 22:32:19 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/08 15:59:25 by rnitta           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -44,6 +33,8 @@ typedef struct s_arg_list
 typedef struct s_arg_main
 {
 	t_arg_list  head;
+	int arg_num;
+	char ***raw;
 	int		pwd_slash;
 	int			arg_num;
 }               t_arg_main;
@@ -59,6 +50,9 @@ typedef    struct    s_split
 extern char* g_signal;
 extern t_arg_main* g_arg_main;
 
+void			just_for_norm(char ***raw_cmd);
+void			one_command_bin_e(char ***raw_cmd, t_arg_main *arg_main);
+int				rare_exception(char ***raw_cmd);
 int             is_ok(char *command, int i);
 int             is_space(char c);
 int             is_redirect(char c);
