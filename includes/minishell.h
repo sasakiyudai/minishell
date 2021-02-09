@@ -36,6 +36,8 @@ typedef struct s_arg_main
 	char ***raw;
 	int		pwd_slash;
 	int			arg_num;
+	int			std_in;
+	int			std_out;
 }               t_arg_main;
 
 typedef    struct    s_split

@@ -264,6 +264,8 @@ void	main_process(t_arg_main *arg_main)
 		while (*cmd_split)
 		{
 			command_main(*cmd_split, arg_main);
+			dup2(arg_main->std_in, 0);
+			dup2(arg_main->std_out, 1);
 			cmd_split++;
 		}
 		split_free_all(tmp_cmd_split);
@@ -278,6 +280,8 @@ int		main(int argc, char *argv[], char *env[])
 	(void)argc;
 	(void)argv;
 	ini(&arg_main, env);
+	arg_main.std_in = dup(0);
+	arg_main.std_out = dup(1);
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, sig_handler);
 	main_process(&arg_main);
