@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 21:13:50 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/06 21:21:47 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/09 15:29:50 by rnitta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ void	remove_quotes(char *cmd)
 	while (cmd[++j])
 	{
 		check_quote(cmd[j], &flag);
-		if (flag < flag2 && flag2 < FLAG_ESCAPE)
+		if (flag < flag2)
 		{
-			if (cmd[j] != fff(flag2))
+			if (flag2 >= FLAG_ESCAPE)
 				cmd[i++] = cmd[j];
 		}
 		else if (cmd[j] != fff(flag) || (flag & FLAG_DOUBLE_QUOTE

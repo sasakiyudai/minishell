@@ -33,7 +33,6 @@ typedef struct s_arg_list
 typedef struct s_arg_main
 {
 	t_arg_list  head;
-	int arg_num;
 	char ***raw;
 	int		pwd_slash;
 	int			arg_num;
