@@ -30,6 +30,15 @@ char	*ft_newstr_ncatfree(char *src1, char *src2, int n, int bitflag)
 	return (ret);
 }
 
+void	exit_ctrld(void)
+{
+	t_arg	arg;
+
+	write(2, "exit\n", 5);
+	arg_get(g_arg_main, &arg, "?");
+	exit(ft_atoi(arg.data));
+}
+
 char	*read_all(int fd)
 {
 	char	*ret;
@@ -44,7 +53,7 @@ char	*read_all(int fd)
 	while (1 + (ret_read = read(fd, buf, 3)))
 	{
 		if (!f && !ret_read)
-			exit(0 * write(2, "exit\n", 5));
+			exit_ctrld();
 		if ((f = 1) && !ret_read)
 			continue;
 		buf[ret_read] = '\0';

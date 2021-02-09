@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 17:55:23 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/06 17:58:03 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/09 17:35:51 by rnitta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,6 @@ int		ft_env(t_arg_main *arg_main)
 				break ;
 		printf("%s\n", env[i++]);
 	}
+	split_free_all(env);
 	return (0);
 }

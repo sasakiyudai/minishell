@@ -103,6 +103,7 @@ int		ft_export(char *args[], t_arg_main *arg_main)
 	{
 		env = arg_list_get_quote(arg_main);
 		print_with_declare(env);
+		split_free_all(env);
 		return (0);
 	}
 	export_argadd(args, arg_main);

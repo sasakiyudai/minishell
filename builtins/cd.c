@@ -25,17 +25,21 @@ int		update(t_arg_main *arg_main)
 {
 	t_arg_list	*arg_list;
 	t_arg_list	*arg_list_pwd;
+	char		s[MAX_FILENAME + 1];
 
 	if ((arg_list = arg_isexist(arg_main, "OLDPWD")))
 	{
+		free(arg_list->arg.data);
 		if ((arg_list_pwd = arg_isexist(arg_main, "PWD")))
 			arg_list->arg.data = ft_strdup(arg_list_pwd->arg.data);
 		else
 		{
-			ft_putstr_fd("bash: cd: PWD not set", 2);
-			return (-1);
+			getcwd(s, MAX_FILENAME);
+		   	if (g_arg_main->pwd_slash)
+				arg_list->arg.data = ft_strjoin("/", s);
+			else
+				arg_list->arg.data = ft_strdup(s);
 		}
-		return (0);
 	}
 	return (0);
 }
@@ -49,6 +53,7 @@ int		update_pwd(t_arg_main *arg_main)
 	{
 		if (getcwd(cwd, MAX_FILENAME) == NULL)
 			return (1);
+		free(arg_list->arg.data);
 		if (arg_main->pwd_slash)
 			arg_list->arg.data = ft_strjoin("/", cwd);
 		else
@@ -69,7 +74,7 @@ int		cd_process(t_arg_main *arg_main, char *dest, char **args)
 		cd_error(args);
 	if (cd_ret == 0)
 	{
-		update_pwd(arg_main);
+		update(arg_main);
 		if (ft_strlen(dest) >= 1 && dest[0] == '/' && dest[1] != '/')
 			arg_main->pwd_slash = 0;
 		if (ft_strlen(dest) >= 2	&&
@@ -89,7 +94,7 @@ int		ft_cd(char **args, t_arg_main *arg_main)
 	if (ft_len(args) == 1)
 	{
 		if (arg_get(arg_main, &arg, "HOME") || arg.data == NULL)
-			return (1 + 0 * (write(2, "bash: cd: HOME not set", 22)));
+			return (1 + 0 * (write(2, "bash: cd: HOME not set\n", 23)));
 		dest = ft_strdup(arg.data);
 		arg_free(&arg);
 	}
@@ -98,6 +103,7 @@ int		ft_cd(char **args, t_arg_main *arg_main)
 	if (!dest[0])
 	{
 		free(dest);
+		arg_main->pwd_slash = 0;
 		update(arg_main);
 		return (0);
 	}

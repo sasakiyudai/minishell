@@ -209,6 +209,9 @@ void	ini(t_arg_main *arg_main, char *env[])
 			ini2(arg_main, env[i]);
 		else
 			ini3(arg_main, env[i]);
+	arg.data = NULL;
+	arg.name = "OLDPWD";
+	arg_add(arg_main, &arg);
 }
 
 void	sig_handler(int sig)
@@ -224,17 +227,15 @@ void	sig_handler(int sig)
 		free((char *)(arg.data));
 		if (!ft_strcmp(g_signal, "1"))
 			write(1, "\b\b  \n$ ", 7);
-		else
-			write(1, "\n", 0);  //1);
 	}
 	else if (sig == SIGQUIT && ft_strcmp(g_signal, "1"))
 	{
 		arg.data = "131";
 		arg_add(g_arg_main, &arg);
-		write(2, "Quit: 3\n", 8);
+		write(2, "Quit: 3", 7);
 	}
 	else if (sig == SIGQUIT)
-		write(2, "\b\b  \b\b", 6);
+		write(2, "\b\b  \b\b\n$ ", 9);
 }
 
 void	main_process(t_arg_main *arg_main)
@@ -287,6 +288,6 @@ int		main(int argc, char *argv[], char *env[])
 	main_process(&arg_main);
 	arg_list_ini(&arg_main);
 	arg_free(&arg_main.head.arg);
-	// system("leaks minishell");
+	system("leaks minishell");
 	return (0);
 }

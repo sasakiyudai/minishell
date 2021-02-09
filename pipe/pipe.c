@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 17:47:28 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/08 19:40:16 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/09 23:37:51 by rnitta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,10 @@ void	set_fd(char ***cmd, char ***raw_cmd, int *fd, int j)
 		dup2(fd[j + 1], 1);
 	if (j != 0)
 		dup2(fd[j - 2], 0);
-	set_right(raw_cmd, j, fd, 1);
-	set_left(raw_cmd, j, fd, 1);
+	if (set_right(raw_cmd, j, fd, 1))
+		exit(1);
+	if (set_left(raw_cmd, j, fd, 1))
+		exit(1);
 }
 
 void	wait_chiledren_and_free_fd(int cmd_len, int *fd, pid_t *pids)
@@ -42,9 +44,15 @@ void	wait_chiledren_and_free_fd(int cmd_len, int *fd, pid_t *pids)
 		while (++j < cmd_len)
 		{
 			if (ret == pids[j])
-				set_hatena(g_arg_main, WEXITSTATUS(status));
+			{
+				if (WIFEXITED(status))
+					set_hatena(g_arg_main, WEXITSTATUS(status));
+				else
+					i = 1;
+			}
 		}
 	}
+	write(2, "\n", i);
 	free(pids);
 	free(fd);
 }
@@ -78,8 +86,13 @@ void	exec_child(int cmd_len, int *fd, char ***cmd, t_arg_main *arg_main)
 			envs = arg_list_get(arg_main);
 			execve((ft_strchr((*cmd)[0], '/')) ? (*cmd)[0] : path, *cmd, envs);
 		}
-		else if (tmp == -1)
-			print_error(MALLOC_FAIL);
+		else if (tmp == 1)
+		{
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd((*cmd)[0], 2);
+			ft_putstr_fd(": command not found\n", 2);
+			exit(127);
+		}
 		exit_code = error((*cmd)[0]);
 		exit(exit_code);
 	}

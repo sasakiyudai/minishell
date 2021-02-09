@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 17:53:37 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/08 13:17:41 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/09 18:46:47 by rnitta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,12 @@ int		include_no_num(char *arg)
 	}
 	if (i == 1 && (arg[0] == '-' || arg[0] == '+'))
 		return (1);
-	if (ft_strlen(arg) >= 20)
+	if (i >= 20)
 		return (1);
 	return (0);
 }
 
-void	exit_errors(int option, char *args[])
+int		exit_errors(int option, char *args[])
 {
 	int ret;
 
@@ -56,7 +56,7 @@ void	exit_errors(int option, char *args[])
 		ret = 1;
 		ft_putendl_fd("too many arguments", 2);
 	}
-	exit(ret);
+	return (ret);
 }
 
 int		ft_exit(char *args[])
@@ -70,9 +70,9 @@ int		ft_exit(char *args[])
 	if (len == 1)
 		;
 	else if (include_no_num(args[1]))
-		exit_errors(0, args);
+		exit(exit_errors(0, args));
 	else if (len >= 3)
-		exit_errors(1, args);
+		return (exit_errors(1, args));
 	else
 		ret = (unsigned char)ft_atoi(args[1]);
 	exit(ret);

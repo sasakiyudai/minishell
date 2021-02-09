@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 17:41:50 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/07 00:29:06 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/09 18:15:28 by rnitta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,8 @@ int		error(char *path)
 	folder = opendir(path);
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(path, 2);
-	if (ft_strchr(path, '/') == NULL)
-		ft_putendl_fd(": command not found", 2);
-	else if (fd == -1 && folder == NULL)
-		ft_putendl_fd(": No such file or directory", 2);
-	else if (fd == -1 && folder != NULL)
-		ft_putendl_fd(": is a directory", 2);
-	else if (fd != -1 && folder == NULL)
-		ft_putendl_fd(": Permission denied", 2);
+	ft_putstr_fd(": ", 2);
+	ft_putendl_fd(strerror(errno), 2);
 	if (ft_strchr(path, '/') == NULL || (fd == -1 && folder == NULL))
 		exit_code = 127;
 	else

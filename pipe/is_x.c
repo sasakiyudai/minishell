@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 17:48:01 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/06 21:08:59 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/09 23:05:26 by rnitta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,33 +63,93 @@ int		is_left(char **cmd)
 	return (0);
 }
 
-void	set_right(char ***raw_cmd, int j, int *fd, int is_pipe)
+int		create_right(char ***raw_cmd, int j, int i)
+{
+	int ffd;
+
+	if (!ft_strcmp(raw_cmd[j / 2][i], ">>"))
+	{
+		if ((ffd = open(raw_cmd[j / 2][i + 1],
+			O_CREAT | O_WRONLY | O_APPEND, 0666)) == -1)
+		{
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(raw_cmd[j / 2][i + 1], 2);
+			ft_putstr_fd(": ", 2);
+			ft_putendl_fd(strerror(errno), 2);
+			return (1);
+		}
+		close(ffd);
+	}
+	return (0);
+}
+
+int		set_right_first(char ***raw_cmd, int j, int *fd, int is_pipe)
+{
+	int	i;
+	int ffd;
+
+	is_pipe = *fd;
+	i = -1;
+	while (raw_cmd[j / 2][++i])
+	{
+		if (create_right(raw_cmd, j, i))
+			return (1);
+		else if (!ft_strcmp(raw_cmd[j / 2][i], ">"))
+		{
+			if ((ffd = open(raw_cmd[j / 2][i + 1],
+				O_CREAT | O_WRONLY | O_TRUNC, 0666)) == -1)
+			{
+				ft_putstr_fd("minishell: ", 2);
+				ft_putstr_fd(raw_cmd[j / 2][i + 1], 2);
+				ft_putstr_fd(": ", 2);
+				ft_putendl_fd(strerror(errno), 2);
+				return (1);
+			}
+		}
+		else if (!ft_strcmp(raw_cmd[j / 2][i], "<"))
+			if ((ffd = open(raw_cmd[j / 2][i + 1],
+				O_RDONLY, S_IRWXU)) == -1)
+			{
+				ft_putstr_fd("minishell: ", 2);
+				ft_putstr_fd(raw_cmd[j / 2][i + 1], 2);
+				ft_putstr_fd(": ", 2);
+				ft_putendl_fd(strerror(errno), 2);
+				return (1);
+			}
+			close(ffd);
+	}
+	return (0);
+}
+
+int		set_right(char ***raw_cmd, int j, int *fd, int is_pipe)
 {
 	int r;
 	int out;
 
-	(void)is_pipe;
-	(void)fd;
+	if (set_right_first(raw_cmd, j, fd, is_pipe))
+		return (1);
 	if ((r = is_right(raw_cmd[j / 2])))
 	{
 		if (r > 0)
 			out = open(raw_cmd[j / 2][r], O_CREAT | O_WRONLY
-			| O_TRUNC, S_IRWXU);
+				| O_TRUNC, S_IRWXU);
 		else
 			out = open(raw_cmd[j / 2][-r], O_CREAT | O_WRONLY
-			| O_APPEND, S_IRWXU);
+				| O_APPEND, S_IRWXU);
 		if (out == -1)
 		{
 			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(raw_cmd[j / 2][-r], 2);
-			ft_putendl_fd(": No such file or directory", 2);
-			exit(1);
+			ft_putstr_fd(raw_cmd[j / 2][r > 0 ? r : -r], 2);
+			ft_putstr_fd(": ", 2);
+			ft_putendl_fd(strerror(errno), 2);
+			return (1);
 		}
 		dup2(out, 1);
 	}
+	return (0);
 }
 
-void	set_left(char ***raw_cmd, int j, int *fd, int is_pipe)
+int		set_left(char ***raw_cmd, int j, int *fd, int is_pipe)
 {
 	int r;
 	int in;
@@ -103,9 +163,11 @@ void	set_left(char ***raw_cmd, int j, int *fd, int is_pipe)
 		{
 			ft_putstr_fd("minishell: ", 2);
 			ft_putstr_fd(raw_cmd[j / 2][r], 2);
-			ft_putendl_fd(": No such file or directory", 2);
-			exit(1);
+			ft_putstr_fd(": ", 2);
+			ft_putendl_fd(strerror(errno), 2);
+			return (1);
 		}
 		dup2(in, 0);
 	}
+	return (0);
 }

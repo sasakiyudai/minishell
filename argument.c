@@ -85,6 +85,8 @@ int		arg_add(t_arg_main *arg_main, t_arg *arg)
 
 	if ((tmp_arg_list = arg_isexist(arg_main, arg->name)))
 	{
+		if (!arg->data)
+			return (0);
 		arg_free(&(tmp_arg_list->arg));
 		return (arg_copy(&(tmp_arg_list->arg), arg));
 	}
@@ -252,7 +254,7 @@ void	arg_delete(t_arg_main *arg_main, char *name)
 	t_arg_list	*tmp;
 
 	if (arg_main->head.next)
-		if (arg_delete_process(arg_main, &(arg_main->head), name, &tmp))
+		if (arg_delete_process(arg_main, arg_main->head.next, name, &tmp))
 			arg_main->head.next = tmp;
 }
 
