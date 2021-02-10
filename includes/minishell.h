@@ -94,6 +94,7 @@ int 			arg_main_ini(t_arg_main *arg_main);
 int				ft_strcpy_int(char *dest, char *src);
 char			*arg_to_str(t_arg *arg);
 char			**arg_list_get(t_arg_main *arg_main);
+int				arg_list_cnt(t_arg_list *arg_list);
 char			**arg_list_get_quote(t_arg_main *arg_main);
 int				arg_delete_process(t_arg_main *arg_main, t_arg_list *arg_list, char *name, t_arg_list **ret);
 void			arg_delete(t_arg_main *arg_main, char *name);
