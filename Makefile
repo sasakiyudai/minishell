@@ -7,10 +7,11 @@ LEAK = -fsanitize=leak
 SRCS = pipe/pipe.c pipe/is_x.c pipe/utils_a.c pipe/main.c builtins/cd.c\
 		builtins/echo.c builtins/export.c builtins/pwd.c builtins/unset.c \
 		builtins/env.c read_all.c get_exec_path.c syntax_check/syntax_check.c\
-		syntax_check/syntax_check_process.c main.c quotes.c make_strb.c  builtins/exit.c pipe/utils_b.c\
+		syntax_check/syntax_check_process.c quotes.c make_strb.c  builtins/exit.c pipe/utils_b.c\
 		utils_c.c quote.c make_strb_two.c utils/utils.c utils/utils2.c utils/utils_c.c\
 		argument/arg_utils.c argument/arg_utils2.c argument/arglist_get.c\
-		argument/arglist_initialize.c argument/arglist_manage.c
+		argument/arglist_initialize.c argument/arglist_manage.c\
+		main/ini.c main/main.c main/main2.c main/make_strb.c main/command_array.c
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
