@@ -238,6 +238,21 @@ void	sig_handler(int sig)
 		write(2, "\b\b  \b\b\n$ ", 9);
 }
 
+char	*main_process_ini()
+{
+	char	*cmd_all;
+
+	write(2, "$ ", 2);
+	g_signal = "1";
+	cmd_all = read_all(0);
+	g_signal = "130";
+	if (syntax_check(cmd_all))
+	{
+		free(cmd_all);
+		return (NULL);
+	}
+}
+
 void	main_process(t_arg_main *arg_main)
 {
 	char		*cmd_all;
@@ -246,20 +261,8 @@ void	main_process(t_arg_main *arg_main)
 
 	while (1)
 	{
-		write(2, "$ ", 2);
-		g_signal = "1";
-		cmd_all = read_all(0);
-		if (!ft_strcmp(cmd_all, "finish"))
-		{
-			free(cmd_all);
-			break ;
-		}
-		g_signal = "130";
-		if (syntax_check(cmd_all))
-		{
-			free(cmd_all);
+		if (!(cmd_all = main_process_ini()))
 			continue;
-		}
 		cmd_split = split_command(cmd_all, ';');
 		tmp_cmd_split = cmd_split;
 		while (*cmd_split)
