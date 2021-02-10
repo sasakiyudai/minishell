@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 18:14:43 by marvin            #+#    #+#             */
-/*   Updated: 2021/02/10 18:16:07 by marvin           ###   ########.fr       */
+/*   Updated: 2021/02/10 18:30:34 by rnitta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int		syntax_check_make_sedstr(char *cmd_raw, char **ret)
 	int		i;
 
 	*ret = (char *)malloc(strlen(cmd_raw) + 1);
-		return (-1);
 	bitflag_quote = 0;
 	i = -1;
 	while (*cmd_raw)
