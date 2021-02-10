@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/07 01:33:20 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/09 16:07:32 by rnitta           ###   ########.fr       */
+/*   Updated: 2021/02/10 11:17:07 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int		is_ok(char *command, int i)
 	if (0 < i && i < len - 1 && command[i] == '>' && command[i - 1] != '>'
 	&& command[i + 1] != '>')
 		return (1);
-	if (0 < i && command[i] != '>' && command[i - 1] == '>')// && command[i - 2])
+	if (0 < i && command[i] != '>' && command[i - 1] == '>')
 		return (1);
 	return (0);
 }

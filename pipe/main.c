@@ -6,21 +6,11 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 17:48:31 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/09 23:45:39 by rnitta           ###   ########.fr       */
+/*   Updated: 2021/02/10 12:17:10 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	just_for_norm(char ***raw_cmd)
-{
-	int		semi[2];
-
-	if (set_right(raw_cmd, 0, semi, 0))
-		exit(1);
-	if (set_left(raw_cmd, 0, semi, 0))
-		exit(1);
-}
 
 void	err_general(char *s, char *err)
 {
@@ -41,13 +31,9 @@ void	one_command_bin(char ***cmd, char ***raw_cmd, t_arg_main *arg_main)
 	if (ft_strchr((*cmd)[0], '/') ||
 	(r = get_path(arg_main, &path, (*cmd)[0])) == 0)
 	{
-		pid = fork();
-		if (pid == 0)
+		if ((pid = fork()) == 0)
 		{
-			just_for_norm(raw_cmd);
-			execve((ft_strchr((*cmd)[0], '/')) ? (*cmd)[0]
-			: path, *cmd, arg_list_get(arg_main));
-			exit(error((*cmd)[0]));
+			just_for_chiled(raw_cmd, cmd, path, arg_main);
 		}
 		if (ft_strchr((*cmd)[0], '/') == NULL)
 			free(path);
@@ -60,10 +46,7 @@ void	one_command_bin(char ***cmd, char ***raw_cmd, t_arg_main *arg_main)
 	else if (r == 1)
 		err_general((*cmd)[0], "command not found");
 	else
-	{
-		set_hatena(arg_main, 127);
-		error((*cmd)[0]);
-	}
+		error_one_to_seven(arg_main, (*cmd)[0]);
 }
 
 void	one_command_bin_e(char ***raw_cmd, t_arg_main *arg_main)

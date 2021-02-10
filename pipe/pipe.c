@@ -6,22 +6,31 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 17:47:28 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/09 23:37:51 by rnitta           ###   ########.fr       */
+/*   Updated: 2021/02/10 11:55:34 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	set_fd(char ***cmd, char ***raw_cmd, int *fd, int j)
+int		wait_support(int cmd_len, int *status, pid_t *ret, pid_t *pids)
 {
-	if (*(cmd + 1) != NULL)
-		dup2(fd[j + 1], 1);
-	if (j != 0)
-		dup2(fd[j - 2], 0);
-	if (set_right(raw_cmd, j, fd, 1))
-		exit(1);
-	if (set_left(raw_cmd, j, fd, 1))
-		exit(1);
+	int i;
+	int j;
+
+	*ret = waitpid(-1, status, 0);
+	i = 0;
+	j = -1;
+	while (++j < cmd_len)
+	{
+		if (*ret == pids[j])
+		{
+			if (WIFEXITED(*status))
+				set_hatena(g_arg_main, WEXITSTATUS(*status));
+			else
+				i = 1;
+		}
+	}
+	return (i);
 }
 
 void	wait_chiledren_and_free_fd(int cmd_len, int *fd, pid_t *pids)
@@ -30,7 +39,6 @@ void	wait_chiledren_and_free_fd(int cmd_len, int *fd, pid_t *pids)
 	int		status;
 	pid_t	ret;
 	int		cnt;
-	int		j;
 
 	cnt = cmd_len;
 	i = 0;
@@ -39,28 +47,11 @@ void	wait_chiledren_and_free_fd(int cmd_len, int *fd, pid_t *pids)
 	i = 0;
 	while (cnt--)
 	{
-		ret = waitpid(-1, &status, 0);
-		j = -1;
-		while (++j < cmd_len)
-		{
-			if (ret == pids[j])
-			{
-				if (WIFEXITED(status))
-					set_hatena(g_arg_main, WEXITSTATUS(status));
-				else
-					i = 1;
-			}
-		}
+		i |= wait_support(cmd_len, &status, &ret, pids);
 	}
 	write(2, "\n", i);
 	free(pids);
 	free(fd);
-}
-
-void	bin_e(char ***raw_cmd)
-{
-	just_for_norm(raw_cmd);
-	exit(0);
 }
 
 void	exec_child(int cmd_len, int *fd, char ***cmd, t_arg_main *arg_main)
@@ -71,9 +62,7 @@ void	exec_child(int cmd_len, int *fd, char ***cmd, t_arg_main *arg_main)
 	char	*path;
 	char	**envs;
 
-	i = 0;
-	while (i < 2 * (cmd_len - 1))
-		close(fd[i++]);
+	init_exec(&i, cmd_len, fd);
 	if (rare_exception(arg_main->raw))
 		bin_e(arg_main->raw);
 	else if ((tmp = is_builtin((*cmd)[0])))
@@ -87,12 +76,7 @@ void	exec_child(int cmd_len, int *fd, char ***cmd, t_arg_main *arg_main)
 			execve((ft_strchr((*cmd)[0], '/')) ? (*cmd)[0] : path, *cmd, envs);
 		}
 		else if (tmp == 1)
-		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd((*cmd)[0], 2);
-			ft_putstr_fd(": command not found\n", 2);
-			exit(127);
-		}
+			p_exit((*cmd)[0]);
 		exit_code = error((*cmd)[0]);
 		exit(exit_code);
 	}
@@ -109,10 +93,7 @@ void	pipeline2(char ***cmd, char ***raw_cmd, t_arg_main *arg_main)
 	fd = malloc(sizeof(int) * 2 * (count(cmd) - 1));
 	pids = malloc(sizeof(pid_t) * count(cmd));
 	arg_main->raw = raw_cmd;
-	i = 0;
-	j = 0;
-	while (i < count(cmd) - 1)
-		pipe(fd + i++ * 2);
+	init_pipe(&i, &j, count(cmd), fd);
 	while (*cmd != NULL)
 	{
 		pid = fork();
