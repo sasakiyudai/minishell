@@ -6,14 +6,12 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 14:00:42 by marvin            #+#    #+#             */
-/*   Updated: 2021/02/10 14:00:46 by marvin           ###   ########.fr       */
+/*   Updated: 2021/02/10 15:09:51 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-# define MALLOC_FAIL 1
-# define ARG_TYPE_STR 0
 # define ARG_TYPE_STR 0
 # define ARG_TYPE_LLINT 1
 # define STR_LLONG_MIN "-9223372036854775808"
