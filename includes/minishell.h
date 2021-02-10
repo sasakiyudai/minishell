@@ -154,7 +154,8 @@ char 			*separate_redirect(char *command);
 void 			one_command(char ***cmd, char ***raw_cmd, t_arg_main *arg_main);
 void			remove_quotes(char *cmd);
 int 			which_quote(char c, int flag);
-void 		   check_quote(char c, char *bitflag_quote);
+void			check_quote(char c, char *bitflag_quote);
+int				ft_itoa(long long int n, char *dest);
 void			remove_quotes(char *cmd);
 int 			single_quote(char now, int flag);
 
