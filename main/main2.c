@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 13:31:53 by marvin            #+#    #+#             */
-/*   Updated: 2021/02/10 13:31:53 by marvin           ###   ########.fr       */
+/*   Updated: 2021/02/10 13:43:36 by rnitta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,3 @@ void	command_main_free(char ***cmd_split, char ***tmp_cmd_split)
 		free(tmp_cmd_split[i]);
 	free(tmp_cmd_split);
 }
-
