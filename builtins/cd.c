@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cd.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/10 11:20:22 by syudai            #+#    #+#             */
+/*   Updated: 2021/02/10 11:21:30 by syudai           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 #include <errno.h>
@@ -35,7 +46,7 @@ int		update(t_arg_main *arg_main)
 		else
 		{
 			getcwd(s, MAX_FILENAME);
-		   	if (g_arg_main->pwd_slash)
+			if (g_arg_main->pwd_slash)
 				arg_list->arg.data = ft_strjoin("/", s);
 			else
 				arg_list->arg.data = ft_strdup(s);
@@ -46,7 +57,7 @@ int		update(t_arg_main *arg_main)
 
 int		update_pwd(t_arg_main *arg_main)
 {
-	char	cwd[MAX_FILENAME + 1];
+	char		cwd[MAX_FILENAME + 1];
 	t_arg_list	*arg_list;
 
 	if ((arg_list = arg_isexist(arg_main, "PWD")))
@@ -77,7 +88,7 @@ int		cd_process(t_arg_main *arg_main, char *dest, char **args)
 		update(arg_main);
 		if (ft_strlen(dest) >= 1 && dest[0] == '/' && dest[1] != '/')
 			arg_main->pwd_slash = 0;
-		if (ft_strlen(dest) >= 2	&&
+		if (ft_strlen(dest) >= 2 &&
 			dest[0] == '/' && dest[1] == '/')
 			arg_main->pwd_slash = dest[2] != '/';
 		return (update_pwd(arg_main));

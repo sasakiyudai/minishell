@@ -53,7 +53,16 @@ typedef    struct    s_split
 extern char* g_signal;
 extern t_arg_main* g_arg_main;
 
+void			error_one_to_seven(t_arg_main *arg_main, char *cmd);
+void			just_for_child(char ***r, char ***cmd, char *path, t_arg_main *ar);
+int				create_right(char ***raw_cmd, int j, int i);
+int				return_print(char *cmd);
+void			init_exec(int *i, int cmd_len, int *fd);
+void			p_exit(char *cmd);
+void			init_pipe(int *i, int *j, int count, int *fd);
+void			set_fd(char ***cmd, char ***raw_cmd, int *fd, int j);
 void			just_for_norm(char ***raw_cmd);
+void			bin_e(char ***raw_cmd);
 void			one_command_bin_e(char ***raw_cmd, t_arg_main *arg_main);
 int				rare_exception(char ***raw_cmd);
 int             is_ok(char *command, int i);
