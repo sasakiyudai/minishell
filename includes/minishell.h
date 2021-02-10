@@ -89,6 +89,7 @@ int				ft_env(t_arg_main *arg_main);
 void    		arg_free(t_arg *arg);
 int				arg_copy(t_arg *dest, t_arg *src);
 int 			arg_new(t_arg_main *arg_main, t_arg *src);
+void			ft_strncpy(char *dest, char *src, size_t n);
 int				arg_add(t_arg_main *arg_main, t_arg *arg);
 int 			arg_main_ini(t_arg_main *arg_main);
 int				ft_strcpy_int(char *dest, char *src);
