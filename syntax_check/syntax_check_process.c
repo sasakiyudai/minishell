@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 18:14:10 by marvin            #+#    #+#             */
-/*   Updated: 2021/02/10 18:16:19 by marvin           ###   ########.fr       */
+/*   Updated: 2021/02/10 19:52:22 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int		syntax_check_main(char *cmd)
 	t_syntax_flag	syntax_flag;
 
 	ft_bzero(&syntax_flag, sizeof(t_syntax_flag));
+	syntax_flag.pipe = 1;
+	syntax_flag.semi = 1;
 	while (*cmd)
 	{
 		if (syntax_check_process(cmd, &syntax_flag))
