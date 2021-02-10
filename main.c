@@ -1,7 +1,4 @@
 #include "includes/minishell.h"
-#define MALLOC_FAIL 1
-#define EXIT 2
-#define INI_FAIL MALLOC_FAIL + EXIT
 
 char		*g_signal;
 t_arg_main	*g_arg_main;

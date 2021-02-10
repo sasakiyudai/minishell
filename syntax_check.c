@@ -1,38 +1,11 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 #include "minishell.h"
-
-# define MALLOC_FAIL 1
-# define ARG_TYPE_STR 0
-# define ARG_TYPE_int 0
-#define ARG_TYPE_STR 0
-#define ARG_TYPE_LLINT 1
-#define STR_LLONG_MIN "-9223372036854775808"
-#define STR_LLONG_MAX "9223372036854775807"
-#define FLAG_DOUBLE_QUOTE 2
-#define FLAG_SINGLE_QUOTE 1
-
-#define SYNTAX_ERROR_QUOTE 1
-void	print_error(int i);
-typedef struct	s_syntax_flag
-{
-	char	pipe;
-	char	r_redirect;
-	char	l_redirect;
-	char	semi;
-}				t_syntax_flag;
 
 int		syntax_check_make_sedstr(char *cmd_raw, char **ret)
 {
 	char	bitflag_quote;
 	int		i;
 
-	if (!(*ret = (char *)malloc(strlen(cmd_raw) + 1)))
-	{
-		print_error(MALLOC_FAIL);
-		return (-1);
-	}
+	*ret = (char *)malloc(strlen(cmd_raw) + 1);
 	bitflag_quote = 0;
 	i = -1;
 	while (*cmd_raw)
