@@ -3,7 +3,6 @@
 # define MINISHELL_H
 # define MALLOC_FAIL 1
 # define ARG_TYPE_STR 0
-# define ARG_TYPE_int 0
 # define ARG_TYPE_STR 0
 # define ARG_TYPE_LLINT 1
 # define STR_LLONG_MIN "-9223372036854775808"
@@ -27,13 +26,13 @@ typedef struct	s_arg
 	void		*data;
 }				t_arg;
 
-typedef struct 	s_arg_list
+typedef struct	s_arg_list
 {
 	t_arg				arg;
 	struct s_arg_list	*next;
 }				t_arg_list;
 
-typedef struct s_arg_main
+typedef struct	s_arg_main
 {
 	t_arg_list	head;
 	char		***raw;
