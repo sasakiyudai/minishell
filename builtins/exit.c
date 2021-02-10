@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 17:53:37 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/10 18:19:24 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/10 18:55:49 by rnitta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,13 @@ int		exit_errors(int option, char *args[])
 
 int		ft_exit(char *args[])
 {
-	int len;
-	int ret;
+	int		len;
+	int		ret;
+	t_arg	arg;
 
-	ret = 0;
+	arg_get(g_arg_main, &arg, "?");
+	ret = ft_atoi(arg.data);
+	arg_free(&arg);
 	len = ft_len(args);
 	write(2, "exit\n", 5);
 	if (len == 1)
@@ -78,5 +81,5 @@ int		ft_exit(char *args[])
 		return (exit_errors(1, args));
 	else
 		ret = (unsigned char)ft_atoi(args[1]);
-	exit(ret);
+	exit(ret % 256);
 }
