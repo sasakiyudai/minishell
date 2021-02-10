@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 14:00:42 by marvin            #+#    #+#             */
-/*   Updated: 2021/02/10 15:28:34 by rnitta           ###   ########.fr       */
+/*   Updated: 2021/02/10 16:13:43 by rnitta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct	s_arg_main
 	char		***raw;
 	int			pwd_slash;
 	int			arg_num;
+	int			flag_sig;
 	int			std_in;
 	int			std_out;
 }				t_arg_main;
