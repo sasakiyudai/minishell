@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int			ft_len(char *args[])
+int		ft_len(char *args[])
 {
 	int i;
 

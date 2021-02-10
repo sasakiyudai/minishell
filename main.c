@@ -238,7 +238,7 @@ void	sig_handler(int sig)
 		write(2, "\b\b  \b\b\n$ ", 9);
 }
 
-char	*main_process_ini()
+char	*main_process_ini(void)
 {
 	char	*cmd_all;
 

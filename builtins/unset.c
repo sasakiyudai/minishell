@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int ft_unset(char *argv[], t_arg_main *arg_main)
+int	ft_unset(char *argv[], t_arg_main *arg_main)
 {
 	while (argv[1])
 	{
