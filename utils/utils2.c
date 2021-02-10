@@ -20,7 +20,6 @@ char	**split_command_free(char **ret, int cnt_splitnum)
 	return (NULL);
 }
 
-
 int		ft_len(char *args[])
 {
 	int i;

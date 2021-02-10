@@ -16,3 +16,4 @@ void	command_main_free(char ***cmd_split, char ***tmp_cmd_split)
 		free(tmp_cmd_split[i]);
 	free(tmp_cmd_split);
 }
+
