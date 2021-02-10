@@ -6,19 +6,19 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 13:33:04 by marvin            #+#    #+#             */
-/*   Updated: 2021/02/10 15:31:04 by marvin           ###   ########.fr       */
+/*   Updated: 2021/02/10 15:46:40 by rnitta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void    *malloc2(size_t size)
+void	*malloc2(size_t size)
 {
-    void *p;
+	void	*p;
 
-    if (!(p = malloc(size)))
-        exit(3);
-    return (p);
+	if (!(p = malloc(size)))
+		exit(3);
+	return (p);
 }
 
 char	*ft_strndup(char *src, int n)

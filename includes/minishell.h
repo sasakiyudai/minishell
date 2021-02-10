@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 14:00:42 by marvin            #+#    #+#             */
-/*   Updated: 2021/02/10 15:09:51 by marvin           ###   ########.fr       */
+/*   Updated: 2021/02/10 15:28:34 by rnitta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ int				count(char ***cmd);
 void			pipeline(char ***cmd, char ***raw_cmd, t_arg_main *arg_main);
 void			safe_close(int fd);
 void			sort(char *envp[]);
+void			*malloc2(size_t size);
 int				ft_cd(char **args, t_arg_main *arg_main);
 int				ft_echo(char *args[]);
 int				ft_pwd(void);
