@@ -16,7 +16,7 @@ t_arg_list	*arg_isexist(t_arg_main *arg_main, char *name)
 	return (arg_isexist_process(&(arg_main->head), name));
 }
 
-int		arg_get(t_arg_main *arg_main, t_arg *arg, char *name)
+int			arg_get(t_arg_main *arg_main, t_arg *arg, char *name)
 {
 	t_arg_list *tmp_arg;
 
