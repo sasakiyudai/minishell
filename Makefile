@@ -12,7 +12,7 @@ SRCS = pipe/pipe.c pipe/is_x.c pipe/utils_a.c pipe/main.c builtins/cd.c\
 		argument/arg_utils.c argument/arg_utils2.c argument/arglist_get.c\
 		argument/arglist_initialize.c argument/arglist_manage.c split_command.c\
 		main/ini.c main/main.c main/main2.c main/make_strb.c main/command_array.c\
-		pipe/utils_c.c pipe/utils_d.c
+		pipe/utils_c.c pipe/utils_d.c builtins/export2.c
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)

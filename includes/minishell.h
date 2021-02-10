@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 14:00:42 by marvin            #+#    #+#             */
-/*   Updated: 2021/02/10 16:13:43 by rnitta           ###   ########.fr       */
+/*   Updated: 2021/02/10 21:29:32 by rnitta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,9 @@ int				is_ok(char *command, int i);
 int				is_space(char c);
 int				is_redirect(char c);
 int				num_of_redirect(char **tab);
+int				export_argadd(char *args[], t_arg_main *arg_main);
+void			print_with_declare(char *envp[]);
+int				export_name_check(char *cmd);
 int				ft_tablen(char **tab);
 char			*arg_to_str_quotes(t_arg *arg);
 void			remove_quotes(char *cmd);
