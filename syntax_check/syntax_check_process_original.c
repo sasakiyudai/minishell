@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   syntax_check - コピー.c                               :+:      :+:    :+:   */
+/*   syntax_check_process.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/10 18:08:28 by marvin            #+#    #+#             */
-/*   Updated: 2021/02/10 18:08:28 by marvin           ###   ########.fr       */
+/*   Created: 2021/02/10 13:32:18 by marvin            #+#    #+#             */
+/*   Updated: 2021/02/10 15:11:45 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,50 +16,24 @@ int		syntax_check_make_sedstr(char *cmd_raw, char **ret)
 {
 	char	bitflag_quote;
 	int		i;
+	int		flag2;
 
-	if (!(*ret = (char *)malloc(strlen(cmd_raw) + 1)))
-	{
-		print_error(MALLOC_FAIL);
-		return (-1);
-	}
+	*ret = (char *)malloc2(strlen(cmd_raw) + 1);
 	bitflag_quote = 0;
+	flag2 = 0;
 	i = -1;
 	while (*cmd_raw)
 	{
 		check_quote(*cmd_raw, &bitflag_quote);
-		if (bitflag_quote <= FLAG_DOUBLE_QUOTE)
-		{
+		if ((!bitflag_quote && bitflag_quote < FLAG_ESCAPE) ||
+			(!flag2 && flag2 < FLAG_ESCAPE))
+			(*ret)[++i] = 'a';
+		else
 			(*ret)[++i] = *cmd_raw;
-			if (*cmd_raw == '\'' || *cmd_raw == '\"')
-				(*ret)[i] = 'a';
-		}
 		cmd_raw++;
 	}
 	(*ret)[++i] = '\0';
 	return (!!bitflag_quote);
-}
-
-int		print_synerr(char *cmd)
-{
-	char s[8];
-
-	s[0] = cmd[0];
-	s[2] = '\0';
-	if (cmd[0] == '\n' || cmd[0] == '\0')
-		strcpy(s, "newline");
-	else if (cmd[0] == '>')
-		s[1] = cmd[1] * (cmd[1] == cmd[0]);
-	else if (cmd[0] == '<')
-		s[1] = '\0';
-	else if (cmd[0] == '|')
-		s[1] = cmd[1] * (cmd[1] == cmd[0]);
-	else if (cmd[0] == ';')
-		s[1] = cmd[1] * (cmd[1] == cmd[0]);
-	ft_putstr_fd("bash: syntax error near unexpected token `", 2);
-	ft_putstr_fd(s, 2);
-	ft_putstr_fd("'\n", 2);
-	set_hatena(g_arg_main, 258);
-	return (258);
 }
 
 int		syntax_check_process3(char *cmd, t_syntax_flag *syntax_flag)
@@ -128,5 +102,21 @@ int		syntax_check_process(char *cmd, t_syntax_flag *syntax_flag)
 	}
 	else
 		return (syntax_check_process2(cmd, syntax_flag));
+	return (0);
+}
+
+int		syntax_check_main(char *cmd)
+{
+	t_syntax_flag	syntax_flag;
+
+	ft_bzero(&syntax_flag, sizeof(t_syntax_flag));
+	while (*cmd)
+	{
+		if (syntax_check_process(cmd, &syntax_flag))
+			return (258);
+		cmd++;
+	}
+	if (syntax_check_process(cmd, &syntax_flag))
+		return (258);
 	return (0);
 }
