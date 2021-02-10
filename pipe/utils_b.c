@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 17:41:50 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/09 18:15:28 by rnitta           ###   ########.fr       */
+/*   Updated: 2021/02/10 20:16:07 by rnitta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int		call_builtin(int tmp, char **str_b, t_arg_main *arg_main)
 	else if (tmp == 3)
 		result = ft_pwd();
 	else if (tmp == 4)
-		ft_export(str_b, arg_main);
+		result = ft_export(str_b, arg_main);
 	else if (tmp == 5)
 		ft_unset(str_b, arg_main);
 	else if (tmp == 6)

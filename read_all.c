@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:58:52 by marvin            #+#    #+#             */
-/*   Updated: 2021/02/10 16:29:01 by rnitta           ###   ########.fr       */
+/*   Updated: 2021/02/10 20:42:21 by rnitta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int		exit_ctrld(int *f, int ret_read, char **ret, int *cnt_read)
 char	*read_all(int fd)
 {
 	char	*ret;
-	char	buf[1001];
+	char	buf[1005];
 	int		cnt_read;
 	int		ret_read;
 	int		f;
@@ -78,7 +78,7 @@ char	*read_all(int fd)
 	cnt_read = 0;
 	f = 0;
 	ret = ft_strdup("");
-	while (1 + (ret_read = read(fd, buf, 3)))
+	while (1 + (ret_read = read(fd, buf, 1000)))
 	{
 		if (exit_ctrld(&f, ret_read, &ret, &cnt_read))
 			;

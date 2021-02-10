@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 13:31:11 by marvin            #+#    #+#             */
-/*   Updated: 2021/02/10 13:31:11 by marvin           ###   ########.fr       */
+/*   Updated: 2021/02/10 20:14:59 by rnitta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,11 @@ void	print_with_declare(char *envp[])
 void	export_err(int err, char *cmd)
 {
 	if (err == BAD_ARGNAME)
-		printf("bash: export: `%s\': not a valid identifier\n", cmd);
+	{
+		ft_putstr_fd("bash: export: `", 2);
+		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd("\': not a valid identifier\n", 2);
+	}
 }
 
 int		export_name_check(char *cmd)
@@ -45,32 +49,42 @@ int		export_name_check(char *cmd)
 	return (0);
 }
 
-void	export_argadd(char *args[], t_arg_main *arg_main)
+void	set_arg(t_arg *arg, char *args[], t_arg_main *arg_main)
 {
-	t_arg	arg;
 	char	*tmp;
 
+	if ((tmp = ft_strchr(*args, '=')))
+	{
+		arg->name = ft_strndup(*args, (int)(tmp - *args));
+		arg->data = ft_strdup(tmp + 1);
+	}
+	else
+	{
+		arg->name = ft_strdup(*args);
+		arg->data = NULL;
+	}
+	arg_add(arg_main, arg);
+	arg_free(arg);
+}
+
+int		export_argadd(char *args[], t_arg_main *arg_main)
+{
+	t_arg	arg;
+	int		ret;
+
+	ret = 0;
 	arg.type = ARG_TYPE_STR;
 	while (*(++args))
 	{
 		if (export_name_check(*args))
 		{
 			export_err(BAD_ARGNAME, *args);
-			continue;
-		}
-		else if ((tmp = ft_strchr(*args, '=')))
-		{
-			arg.name = ft_strndup(*args, (int)(tmp - *args));
-			arg.data = ft_strdup(tmp + 1);
+			ret = 1;
 		}
 		else
-		{
-			arg.name = ft_strdup(*args);
-			arg.data = NULL;
-		}
-		arg_add(arg_main, &arg);
-		arg_free(&arg);
+			set_arg(&arg, args, arg_main);
 	}
+	return (ret);
 }
 
 int		ft_export(char *args[], t_arg_main *arg_main)
@@ -84,6 +98,5 @@ int		ft_export(char *args[], t_arg_main *arg_main)
 		split_free_all(env);
 		return (0);
 	}
-	export_argadd(args, arg_main);
-	return (0);
+	return (export_argadd(args, arg_main));
 }
