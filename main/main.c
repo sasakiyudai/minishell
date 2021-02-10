@@ -68,6 +68,7 @@ char	*main_process_ini(void)
 		free(cmd_all);
 		return (NULL);
 	}
+	return (cmd_all);
 }
 
 void	main_process(t_arg_main *arg_main)
