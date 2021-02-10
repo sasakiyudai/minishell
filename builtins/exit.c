@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 17:53:37 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/09 18:46:47 by rnitta           ###   ########.fr       */
+/*   Updated: 2021/02/10 18:19:24 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int		ft_isnum(char c, int i)
 int		include_no_num(char *arg)
 {
 	int i;
+	int over;
 
 	i = 0;
 	while (arg[i])
@@ -34,8 +35,10 @@ int		include_no_num(char *arg)
 	}
 	if (i == 1 && (arg[0] == '-' || arg[0] == '+'))
 		return (1);
-	if (i >= 20)
-		return (1);
+	over = 0;
+	if (ft_atoll(arg, &over) == -1 || ft_atoll(arg, &over) == 0)
+		if (over == 1)
+			return (1);
 	return (0);
 }
 

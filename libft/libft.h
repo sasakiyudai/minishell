@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 15:25:45 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/10 15:29:40 by rnitta           ###   ########.fr       */
+/*   Updated: 2021/02/10 18:15:08 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct	s_list
 
 void			*malloc2(size_t size);
 int				ft_atoi(const char *str);
+long long		ft_atoll(const char *str, int *over);
 void			*ft_memset(void *b, int c, size_t len);
 void			ft_bzero(void *s, size_t n);
 void			*ft_memcpy(void *dst, const void *src, size_t n);
