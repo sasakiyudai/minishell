@@ -6,13 +6,13 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 18:10:15 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/10 18:46:15 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/10 21:11:20 by rnitta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int				ft_check(int sign, long rev, int i, const char *str)
+int			ft_check(int sign, long rev, int i, const char *str)
 {
 	if (rev > 922337203685477580)
 		return (0);
@@ -38,9 +38,8 @@ long long	ft_atoll(const char *str, int *over)
 	int			sign;
 	long long	rev;
 
-	i = 0;
 	sign = 1;
-	rev = 0;
+	rev = (i -= i);
 	while (str[i] == ' ' || str[i] == '\f' || str[i] == '\n'
 			|| str[i] == '\r' || str[i] == '\t' || str[i] == '\v')
 		i++;
