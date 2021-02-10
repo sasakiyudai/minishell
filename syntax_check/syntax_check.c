@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 13:32:20 by marvin            #+#    #+#             */
-/*   Updated: 2021/02/10 14:56:32 by rnitta           ###   ########.fr       */
+/*   Updated: 2021/02/10 17:55:37 by rnitta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,10 @@ int		syntax_check(char *cmd_raw)
 	char	*cmd;
 	int		tmp;
 
-	if (syntax_check_make_sedstr(cmd_raw, &cmd) == 1)
+	if (syntax_check_make_sedstr(cmd_raw, &cmd))
 	{
 		free(cmd);
+		set_hatena(g_arg_main, 258);
 		return (myprint_error(SYNTAX_ERROR_QUOTE));
 	}
 	if (!cmd)

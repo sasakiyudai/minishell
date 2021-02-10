@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 17:47:28 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/10 15:11:45 by marvin           ###   ########.fr       */
+/*   Updated: 2021/02/10 17:37:50 by rnitta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,24 @@
 
 int		wait_support(int cmd_len, int *status, pid_t *ret, pid_t *pids)
 {
-	int i;
 	int j;
 
 	*ret = waitpid(-1, status, 0);
-	i = 0;
 	j = -1;
 	while (++j < cmd_len)
 	{
 		if (*ret == pids[j])
 		{
-			if (WIFEXITED(*status))
-				set_hatena(g_arg_main, WEXITSTATUS(*status));
-			else
-				i = 1;
+			if (!WIFSIGNALED(*status))
+			{
+				if (j == cmd_len - 1)
+					set_hatena(g_arg_main, WEXITSTATUS(*status));
+			}
+			else if (WTERMSIG(*status) != 13)
+				return (1);
 		}
 	}
-	return (i);
+	return (0);
 }
 
 void	wait_chiledren_and_free_fd(int cmd_len, int *fd, pid_t *pids)

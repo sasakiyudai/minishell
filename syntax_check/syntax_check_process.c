@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 13:32:18 by marvin            #+#    #+#             */
-/*   Updated: 2021/02/10 15:11:45 by marvin           ###   ########.fr       */
+/*   Updated: 2021/02/10 17:57:26 by rnitta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,10 +113,16 @@ int		syntax_check_main(char *cmd)
 	while (*cmd)
 	{
 		if (syntax_check_process(cmd, &syntax_flag))
+		{
+			set_hatena(g_arg_main, 258);
 			return (258);
+		}
 		cmd++;
 	}
 	if (syntax_check_process(cmd, &syntax_flag))
+	{
+		set_hatena(g_arg_main, 258);
 		return (258);
+	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 17:53:37 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/09 18:46:47 by rnitta           ###   ########.fr       */
+/*   Updated: 2021/02/10 17:51:54 by rnitta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,12 @@ int		exit_errors(int option, char *args[])
 
 int		ft_exit(char *args[])
 {
-	int len;
-	int ret;
+	int		len;
+	int		ret;
+	t_arg	arg;
 
-	ret = 0;
+	arg_get(g_arg_main, &arg, "?");
+	ret = ft_atoi(arg.data) % 256;
 	len = ft_len(args);
 	write(2, "exit\n", 5);
 	if (len == 1)
