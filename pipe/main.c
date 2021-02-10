@@ -6,18 +6,19 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 17:48:31 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/10 13:22:02 by rnitta           ###   ########.fr       */
+/*   Updated: 2021/02/10 17:45:22 by rnitta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	err_general(char *s, char *err)
+void	err_general(char *s, char *err, int status)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(s, 2);
 	ft_putstr_fd(": ", 2);
 	ft_putendl_fd(err, 2);
+	set_hatena(g_arg_main, status);
 }
 
 void	one_command_bin(char ***cmd, char ***raw_cmd, t_arg_main *arg_main)
@@ -44,7 +45,7 @@ void	one_command_bin(char ***cmd, char ***raw_cmd, t_arg_main *arg_main)
 			write(2, "\n", 1);
 	}
 	else if (r == 1)
-		err_general((*cmd)[0], "command not found");
+		err_general((*cmd)[0], "command not found", 127);
 	else
 		error_one_to_seven(arg_main, (*cmd)[0]);
 }
