@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 18:24:26 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/07 17:11:14 by rnitta           ###   ########.fr       */
+/*   Updated: 2021/02/10 15:11:45 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*deploy_two(int *i, char *input)
 
 void	joke_tmp(char **tmp, int *i, char *input)
 {
-	*tmp = malloc(sizeof(char) * 1 + 1);
+	*tmp = malloc2(sizeof(char) * 1 + 1);
 	(*tmp)[0] = input[*i];
 	(*tmp)[1] = '\0';
 	(*i)++;
@@ -97,7 +97,7 @@ char	*deploy(char *input, t_arg_main *arg_main)
 
 	i = 0;
 	flag = 0;
-	ret = malloc(1);
+	ret = malloc2(1);
 	ret[0] = '\0';
 	while (input[i])
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 16:43:51 by syudai            #+#    #+#             */
-/*   Updated: 2020/11/03 17:43:34 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/10 15:11:45 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char		**ft_split(char const *s, char c)
 	int		i;
 	int		j;
 
-	if (!(p = malloc(sizeof(char*) * (ft_count(s, c) + 1))))
+	if (!(p = malloc2(sizeof(char*) * (ft_count(s, c) + 1))))
 		return (NULL);
 	i = 0;
 	j = 0;

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 13:30:10 by marvin            #+#    #+#             */
-/*   Updated: 2021/02/10 13:44:06 by rnitta           ###   ########.fr       */
+/*   Updated: 2021/02/10 15:11:45 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	set_hatena(t_arg_main *arg_main, int i)
 	while (i > 9 && len++)
 		i /= 10;
 	arg.name = "?";
-	arg.data = malloc(len + 1);
+	arg.data = malloc2(len + 1);
 	ft_itoa(j, (arg.data));
 	arg_add(arg_main, &arg);
 	free(arg.data);

@@ -25,7 +25,7 @@ int		get_path_makestr(char **ret, char *path, char *name)
 	int	path_len;
 
 	path_len = ft_strlen(path);
-	if (!(*ret = (char *)malloc(path_len + 1 + ft_strlen(name) + 1)))
+	if (!(*ret = (char *)malloc2(path_len + 1 + ft_strlen(name) + 1)))
 		return (-1);
 	ft_strcpy(*ret, path);
 	(*ret)[path_len] = '/';

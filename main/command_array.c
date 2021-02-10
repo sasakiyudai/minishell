@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 13:31:59 by marvin            #+#    #+#             */
-/*   Updated: 2021/02/10 13:32:00 by marvin           ###   ########.fr       */
+/*   Updated: 2021/02/10 15:11:45 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	**make_command_array_splitpipe(char *cmd)
 	return (cmd_split);
 }
 
-char	***make_command_array_malloc(char **tmp)
+char	***make_command_array_malloc2(char **tmp)
 {
 	int		cnt;
 	char	***ret;
@@ -35,7 +35,7 @@ char	***make_command_array_malloc(char **tmp)
 	cnt = 0;
 	while (tmp[cnt])
 		cnt++;
-	ret = (char ***)malloc(sizeof(char **) * (cnt + 1));
+	ret = (char ***)malloc2(sizeof(char **) * (cnt + 1));
 	return (ret);
 }
 
@@ -56,7 +56,7 @@ char	***make_command_array(char *cmd)
 	int		i;
 
 	tmp = make_command_array_splitpipe(cmd);
-	ret = make_command_array_malloc(tmp);
+	ret = make_command_array_malloc2(tmp);
 	i = -1;
 	while (tmp[++i])
 		ret[i] = split_command(tmp[i], ' ');

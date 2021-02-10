@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 13:31:57 by marvin            #+#    #+#             */
-/*   Updated: 2021/02/10 13:31:58 by marvin           ###   ########.fr       */
+/*   Updated: 2021/02/10 15:11:45 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ void	ini2(t_arg_main *arg_main, char *env)
 	t_arg	arg;
 
 	tmp = (size_t)(ft_strchr(env, '=') - env);
-	arg.name = malloc(tmp + 1);
+	arg.name = malloc2(tmp + 1);
 	ft_strncpy(arg.name, env, tmp);
 	if (ft_strcmp(arg.name, "OLDPWD"))
 	{
-		arg.data = malloc(ft_strlen(env) - tmp);
+		arg.data = malloc2(ft_strlen(env) - tmp);
 		ft_strcpy((char *)(arg.data), env + tmp + 1);
 	}
 	else

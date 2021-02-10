@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 13:31:51 by marvin            #+#    #+#             */
-/*   Updated: 2021/02/10 13:31:52 by marvin           ###   ########.fr       */
+/*   Updated: 2021/02/10 15:11:45 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	***make_strb_array(char ***cmd_split)
 	char	***ret;
 	int		i;
 
-	ret = malloc(sizeof(char **) * (count(cmd_split) + 1));
+	ret = malloc2(sizeof(char **) * (count(cmd_split) + 1));
 	i = -1;
 	while (cmd_split[++i])
 		ret[i] = make_strb(cmd_split[i]);

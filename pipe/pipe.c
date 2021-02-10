@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 17:47:28 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/10 11:55:34 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/10 15:11:45 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,8 @@ void	pipeline2(char ***cmd, char ***raw_cmd, t_arg_main *arg_main)
 	pid_t	*pids;
 	int		*fd;
 
-	fd = malloc(sizeof(int) * 2 * (count(cmd) - 1));
-	pids = malloc(sizeof(pid_t) * count(cmd));
+	fd = malloc2(sizeof(int) * 2 * (count(cmd) - 1));
+	pids = malloc2(sizeof(pid_t) * count(cmd));
 	arg_main->raw = raw_cmd;
 	init_pipe(&i, &j, count(cmd), fd);
 	while (*cmd != NULL)

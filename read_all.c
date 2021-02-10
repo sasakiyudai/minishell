@@ -6,7 +6,7 @@ char	*ft_newstr_ncat(char *src1, char *src2, int n)
 	int		i;
 	int		j;
 
-	if (!(ret = (char *)malloc(n + 1)))
+	if (!(ret = (char *)malloc2(n + 1)))
 		return (NULL);
 	i = -1;
 	while (src1[++i])

@@ -37,7 +37,7 @@ void	split_make_str(char **s, t_split *split_arg, char **ret)
 int		split_command_ini(char **s, char c, t_split *split_arg, char ***ret)
 {
 	split_arg->cnt_splitnum = cnt_splitnum_command(*s, c) + 1;
-	*ret = (char **)malloc(sizeof(char *) * split_arg->cnt_splitnum);
+	*ret = (char **)malloc2(sizeof(char *) * split_arg->cnt_splitnum);
 	if (!*ret)
 		return (-1);
 	ft_bzero(split_arg, sizeof(t_split));

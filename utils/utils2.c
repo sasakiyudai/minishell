@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 13:33:04 by marvin            #+#    #+#             */
-/*   Updated: 2021/02/10 13:33:05 by marvin           ###   ########.fr       */
+/*   Updated: 2021/02/10 15:11:45 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*ft_strndup(char *src, int n)
 {
 	char	*ret;
 
-	if (!(ret = (char *)malloc(n + 1)))
+	if (!(ret = (char *)malloc2(n + 1)))
 		return (NULL);
 	ret[n] = '\0';
 	while (n--)

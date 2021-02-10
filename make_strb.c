@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   make_strb.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/07 01:33:20 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/10 11:17:07 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/10 15:11:45 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*separate_redirect(char *command)
 			redirect++;
 		i++;
 	}
-	res = malloc(sizeof(char) * (i + redirect * 2 + 1));
+	res = malloc2(sizeof(char) * (i + redirect * 2 + 1));
 	return (set_res(res, command));
 }
 
@@ -87,7 +87,7 @@ char	**really_make_strb(char **str_a, int *table)
 	j = 0;
 	len = ft_tablen(str_a);
 	cnt_redirect = num_of_redirect(str_a);
-	str_b = malloc(sizeof(char *) * (len - cnt_redirect * 2 + 1));
+	str_b = malloc2(sizeof(char *) * (len - cnt_redirect * 2 + 1));
 	while (str_a[i])
 	{
 		if (table[i] == 1)
@@ -108,7 +108,7 @@ char	**make_strb(char **str_a)
 	char	**tmp;
 
 	i = 0;
-	table = malloc(sizeof(int) * ft_tablen(str_a));
+	table = malloc2(sizeof(int) * ft_tablen(str_a));
 	while (str_a[i])
 	{
 		if (ft_strcmp(str_a[i], ">>") == 0 || ft_strcmp(str_a[i], ">") == 0

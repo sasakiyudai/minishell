@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 17:45:24 by syudai            #+#    #+#             */
-/*   Updated: 2020/11/03 18:05:30 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/10 15:11:45 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char		*ft_itoa(int n)
 	}
 	if (n < 0)
 		i++;
-	if (!(ans = malloc(sizeof(char) * (i + 1))))
+	if (!(ans = malloc2(sizeof(char) * (i + 1))))
 		return (NULL);
 	if (n < 0)
 		*ans = '-';

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_c.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 18:22:40 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/06 18:28:55 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/10 15:11:45 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*ft_strjoin_free(char *s1, char *s2)
 	size_t	i;
 	char	*p;
 
-	p = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	p = malloc2(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!p)
 		return (NULL);
 	i = 0;
@@ -45,7 +45,7 @@ char	*surround_minus_one(char *value)
 
 	i = 0;
 	len = ft_strlen(value);
-	ret = malloc(sizeof(char) * (len + 2) + 1);
+	ret = malloc2(sizeof(char) * (len + 2) + 1);
 	ret[i++] = -1;
 	while (i <= len)
 	{
