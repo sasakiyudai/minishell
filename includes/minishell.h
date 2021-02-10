@@ -94,6 +94,7 @@ char			***make_strb_array(char ***cmd_split);
 void			command_main(char *cmd_raw, t_arg_main *arg_main);
 void			command_main_free(char ***cmd_split, char ***tmp_cmd_split);
 void			ini(t_arg_main *arg_main, char *env[]);
+void			remove_empty_strb(char **cmd_split, int *i);
 void			ft_strncpy(char *dest, char *src, size_t n);
 int				arg_add(t_arg_main *arg_main, t_arg *arg);
 int 			arg_main_ini(t_arg_main *arg_main);
