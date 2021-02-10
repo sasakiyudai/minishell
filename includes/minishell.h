@@ -4,16 +4,16 @@
 # define MALLOC_FAIL 1
 # define ARG_TYPE_STR 0
 # define ARG_TYPE_int 0
-#define ARG_TYPE_STR 0
-#define ARG_TYPE_LLINT 1
-#define STR_LLONG_MIN "-9223372036854775808"
-#define STR_LLONG_MAX "9223372036854775807"
-#define FLAG_DOUBLE_QUOTE 2
-#define FLAG_SINGLE_QUOTE 1
-#define FLAG_MINUS_ONE 4
-#define FLAG_ESCAPE 8
-#define BAD_ARGNAME 1
-#define SYNTAX_ERROR_QUOTE 1
+# define ARG_TYPE_STR 0
+# define ARG_TYPE_LLINT 1
+# define STR_LLONG_MIN "-9223372036854775808"
+# define STR_LLONG_MAX "9223372036854775807"
+# define FLAG_DOUBLE_QUOTE 2
+# define FLAG_SINGLE_QUOTE 1
+# define FLAG_MINUS_ONE 4
+# define FLAG_ESCAPE 8
+# define BAD_ARGNAME 1
+# define SYNTAX_ERROR_QUOTE 1
 
 # include "../libft/libft.h"
 # include <stdint.h>
