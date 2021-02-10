@@ -1,4 +1,4 @@
-#include "includes/minishell.h"
+#include "minishell.h"
 
 char		*g_signal;
 t_arg_main	*g_arg_main;

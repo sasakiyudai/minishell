@@ -1,4 +1,4 @@
-#include "includes/minishell.h"
+#include "minishell.h"
 
 char	**make_command_array_splitpipe(char *cmd)
 {
