@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 13:32:18 by marvin            #+#    #+#             */
-/*   Updated: 2021/02/10 13:32:19 by marvin           ###   ########.fr       */
+/*   Updated: 2021/02/10 14:55:35 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,20 @@ int		syntax_check_make_sedstr(char *cmd_raw, char **ret)
 {
 	char	bitflag_quote;
 	int		i;
+	int		flag2;
 
 	*ret = (char *)malloc(strlen(cmd_raw) + 1);
 	bitflag_quote = 0;
+	flag2 = 0;
 	i = -1;
 	while (*cmd_raw)
 	{
 		check_quote(*cmd_raw, &bitflag_quote);
-		if (bitflag_quote <= FLAG_DOUBLE_QUOTE)
-		{
+		if ((!bitflag_quote && bitflag_quote < FLAG_ESCAPE) ||
+			(!flag2 && flag2 < FLAG_ESCAPE))
+			(*ret)[++i] = 'a';
+		else
 			(*ret)[++i] = *cmd_raw;
-			if (*cmd_raw == '\'' || *cmd_raw == '\"')
-				(*ret)[i] = 'a';
-		}
 		cmd_raw++;
 	}
 	(*ret)[++i] = '\0';
