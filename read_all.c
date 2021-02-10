@@ -55,7 +55,10 @@ char	*read_all(int fd)
 		if (!f && !ret_read)
 			exit_ctrld();
 		if ((f = 1) && !ret_read)
+		{
+			write(2, "  \b\b", 4);
 			continue;
+		}
 		buf[ret_read] = '\0';
 		ret = ft_newstr_ncatfree(ret, buf, (cnt_read += ret_read), 1);
 		if (buf[ret_read - 1] == '\n' && !(ret[cnt_read - 1] = '\0'))

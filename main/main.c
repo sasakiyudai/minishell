@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 13:29:12 by marvin            #+#    #+#             */
-/*   Updated: 2021/02/10 13:31:55 by marvin           ###   ########.fr       */
+/*   Updated: 2021/02/10 14:18:10 by rnitta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	sig_handler(int sig)
 		write(2, "Quit: 3", 7);
 	}
 	else if (sig == SIGQUIT)
-		write(2, "\b\b  \b\b\n$ ", 9);
+		write(2, "\b\b  \b\b\n$ ", 6);
 }
 
 char	*main_process_ini(void)
@@ -121,6 +121,5 @@ int		main(int argc, char *argv[], char *env[])
 	main_process(&arg_main);
 	arg_list_ini(&arg_main);
 	arg_free(&arg_main.head.arg);
-	system("leaks minishell");
 	return (0);
 }
