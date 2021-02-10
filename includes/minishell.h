@@ -143,6 +143,13 @@ char			*deploy(char *input, t_arg_main *arg_main);
 void			print_tab(char *env[]);
 char 			**make_strb(char **str_a);
 int				syntax_check(char *cmd_raw);
+int				print_synerr(char *cmd);
+int				myprint_error(int i);
+int				syntax_check_make_sedstr(char *cmd_raw, char **ret)
+int				syntax_check_process3(char *cmd, t_syntax_flag *syntax_flag);
+int				syntax_check_process2(char *cmd, t_syntax_flag *syntax_flag);
+int				syntax_check_process(char *cmd, t_syntax_flag *syntax_flag);
+int				syntax_check_main(char *cmd);
 char 			*separate_redirect(char *command);
 void 			one_command(char ***cmd, char ***raw_cmd, t_arg_main *arg_main);
 void			remove_quotes(char *cmd);

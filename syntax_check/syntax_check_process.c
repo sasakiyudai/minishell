@@ -1,4 +1,4 @@
-	#include "minishell.h"
+#include "minishell.h"
 
 int		syntax_check_make_sedstr(char *cmd_raw, char **ret)
 {
