@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:58:52 by marvin            #+#    #+#             */
-/*   Updated: 2021/02/10 15:58:53 by marvin           ###   ########.fr       */
+/*   Updated: 2021/02/10 16:12:37 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,28 @@ char	*ft_newstr_ncatfree(char *src1, char *src2, int n, int bitflag)
 	return (ret);
 }
 
-void	exit_ctrld(void)
+void	exit_ctrld(int *f, int ret_read, char **ret, int *cnt_read)
 {
 	t_arg	arg;
+	char	*tmp;
 
-	write(2, "exit\n", 5);
-	arg_get(g_arg_main, &arg, "?");
-	exit(ft_atoi(arg.data));
+	if (!*f && !ret_read)
+	{
+		write(2, "exit\n", 5);
+		arg_get(g_arg_main, &arg, "?");
+		exit(ft_atoi(arg.data));
+	}
+	else if (g_arg_main->flag_sig)
+	{
+		tmp = *ret;
+		*ret = ft_strdup("");
+		free(tmp);
+		*f = 0;
+		*cnt_read = 0;
+		g_arg_main->flag_sit = 0;
+		return (1);
+	}
+	return (0);
 }
 
 char	*read_all(int fd)
@@ -64,8 +79,8 @@ char	*read_all(int fd)
 	ret = ft_strdup("");
 	while (1 + (ret_read = read(fd, buf, 3)))
 	{
-		if (!f && !ret_read)
-			exit_ctrld();
+		if (exit_ctrld(&f, ret_read, &ret, &cnt_read))
+			continue;
 		if ((f = 1) && !ret_read && write(2, "  \b\b", 4))
 			continue;
 		buf[ret_read] = '\0';

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 13:29:12 by marvin            #+#    #+#             */
-/*   Updated: 2021/02/10 14:18:10 by rnitta           ###   ########.fr       */
+/*   Updated: 2021/02/10 16:12:40 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	sig_handler(int sig)
 		free((char *)(arg.data));
 		if (!ft_strcmp(g_signal, "1"))
 			write(1, "\b\b  \n$ ", 7);
+		g_arg_main->flag_sig = 1;
 	}
 	else if (sig == SIGQUIT && ft_strcmp(g_signal, "1"))
 	{
@@ -73,6 +74,7 @@ char	*main_process_ini(void)
 
 	write(2, "$ ", 2);
 	g_signal = "1";
+	g_arg_main->flag_sig = 0;
 	cmd_all = read_all(0);
 	g_signal = "130";
 	if (syntax_check(cmd_all))
