@@ -13,6 +13,7 @@
 #define FLAG_MINUS_ONE 4
 #define FLAG_ESCAPE 8
 #define BAD_ARGNAME 1
+#define SYNTAX_ERROR_QUOTE 1
 
 # include "../libft/libft.h"
 # include <stdint.h>
@@ -50,6 +51,14 @@ typedef    struct    s_split
     char    bitflag_quote;
 }                t_split;
 
+typedef struct	s_syntax_flag
+{
+	char	pipe;
+	char	r_redirect;
+	char	l_redirect;
+	char	semi;
+}				t_syntax_flag;
+
 extern char* g_signal;
 extern t_arg_main* g_arg_main;
 
@@ -81,7 +90,7 @@ int				arg_copy(t_arg *dest, t_arg *src);
 int 			arg_new(t_arg_main *arg_main, t_arg *src);
 int				arg_add(t_arg_main *arg_main, t_arg *arg);
 int 			arg_main_ini(t_arg_main *arg_main);
-int				ft_strcat_int(char *dest, char *src);
+int				ft_strcpy_int(char *dest, char *src);
 int				syntax_check(char *cmd_raw);
 char			*arg_to_str(t_arg *arg);
 char			**arg_list_get(t_arg_main *arg_main);
@@ -112,7 +121,7 @@ int     		arg_new(t_arg_main *arg_main, t_arg *src);
 int 			arg_add(t_arg_main *arg_main, t_arg *arg);
 int    			arg_main_ini(t_arg_main *arg_main);
 int 			arg_charlen(t_arg *arg, int quote);
-int 			ft_strcat_int(char *dest, char *src);
+int 			ft_strcpy_int(char *dest, char *src);
 char 			*arg_to_str(t_arg *arg);
 void   			arg_delete(t_arg_main *arg_main, char *name);
 t_arg_list   	*_arg_isexist_process(t_arg_list *arg_list, char *name);
@@ -120,7 +129,6 @@ t_arg_list   	*arg_isexist(t_arg_main *arg_main, char *name);
 int     		arg_get(t_arg_main *arg_main, t_arg *arg, char *name);
 int    			arg_list_ini(t_arg_main *arg_main);
 void    		arg_list_ini_process(t_arg_list *arg_list);
-void			print_error(int i);
 int				is_dollarble(char c);
 char			fff(char flag);
 int 			ft_len(char *args[]);
