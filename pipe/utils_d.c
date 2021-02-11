@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 12:16:48 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/11 21:23:39 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/11 21:42:28 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	error_one_to_seven(t_arg_main *arg_main, char *cmd)
 {
-	set_hatena(arg_main, 127);
+	//set_hatena(arg_main, 127);
 	error(cmd);
 }
 
@@ -44,4 +44,5 @@ void	just_for_child(char ***r, char ***cmd, char *path, t_arg_main *ar)
 		err_general((*cmd)[0], "command not found", 127);
 	else
 		error_one_to_seven(ar, (*cmd)[0]);
+	exit(127);
 }
