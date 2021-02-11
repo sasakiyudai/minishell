@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 14:00:42 by marvin            #+#    #+#             */
-/*   Updated: 2021/02/10 21:29:32 by rnitta           ###   ########.fr       */
+/*   Updated: 2021/02/11 21:28:18 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ typedef struct	s_syntax_flag
 extern char			*g_signal;
 extern t_arg_main	*g_arg_main;
 
+void			err_general(char *s, char *err, int status);
 void			error_one_to_seven(t_arg_main *arg_main, char *cmd);
 void			just_for_child(char ***r,
 char ***cmd, char *path, t_arg_main *ar);
