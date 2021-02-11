@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 12:16:48 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/11 21:42:28 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/11 21:43:14 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,3 +46,5 @@ void	just_for_child(char ***r, char ***cmd, char *path, t_arg_main *ar)
 		error_one_to_seven(ar, (*cmd)[0]);
 	exit(127);
 }
+
+/bin/ls
