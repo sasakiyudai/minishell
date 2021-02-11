@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 17:48:31 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/10 17:45:22 by rnitta           ###   ########.fr       */
+/*   Updated: 2021/02/11 19:48:49 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,21 @@ void	one_command_bin_e(char ***raw_cmd, t_arg_main *arg_main)
 
 int		rare_exception(char ***raw_cmd)
 {
-	if (2 != ft_tablen((*raw_cmd)))
-		return (0);
-	if (ft_strcmp(">", (*raw_cmd)[0]) != 0
-	&& ft_strcmp("<", (*raw_cmd)[0]) != 0
-	&& ft_strcmp(">>", (*raw_cmd)[0]) != 0)
+	int i;
+
+	i = 0;
+	while ((*raw_cmd)[i])
+	{
+		if (i % 2 == 0)
+		{
+			if (ft_strcmp(">", (*raw_cmd)[0]) != 0
+			&& ft_strcmp("<", (*raw_cmd)[0]) != 0
+			&& ft_strcmp(">>", (*raw_cmd)[0]) != 0)
+				return (0);
+		}
+		i++;
+	}
+	if (i % 2 != 0 || i == 0)
 		return (0);
 	return (1);
 }
