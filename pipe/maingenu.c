@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 17:48:31 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/11 21:23:30 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/11 21:17:07 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,21 +26,28 @@ void	one_command_bin(char ***cmd, char ***raw_cmd, t_arg_main *arg_main)
 	pid_t	pid;
 	int		status;
 	char	*path;
-	//int		r;
+	int		r;
 
-	if ((pid = fork()) == 0)
+	r = 0;
+	if (ft_strchr((*cmd)[0], '/') ||
+	(r = get_path(arg_main, &path, (*cmd)[0])) == 0)
 	{
-		just_for_norm(raw_cmd);
-		just_for_child(raw_cmd, cmd, path, arg_main);
+		if ((pid = fork()) == 0)
+		{
+			just_for_child(raw_cmd, cmd, path, arg_main);
+		}
+		if (ft_strchr((*cmd)[0], '/') == NULL)
+			free(path);
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			set_hatena(arg_main, WEXITSTATUS(status));
+		else
+			write(2, "\n", 1);
 	}
-	if (ft_strchr((*cmd)[0], '/') == NULL)
-		free(path);
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		set_hatena(arg_main, WEXITSTATUS(status));
+	else if (r == 1)
+		err_general((*cmd)[0], "command not found", 127);
 	else
-		write(2, "\n", 1);
-	
+		error_one_to_seven(arg_main, (*cmd)[0]);
 }
 
 void	one_command_bin_e(char ***raw_cmd, t_arg_main *arg_main)
