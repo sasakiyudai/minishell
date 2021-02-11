@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 12:16:48 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/11 21:50:59 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/11 22:15:27 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	error_one_to_seven(t_arg_main *arg_main, char *cmd)
 {
+	(void)arg_main;
 	error(cmd);
 }
 
