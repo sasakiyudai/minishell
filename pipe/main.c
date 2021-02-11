@@ -6,7 +6,7 @@
 /*   By: syudai <syudai@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 17:48:31 by syudai            #+#    #+#             */
-/*   Updated: 2021/02/11 21:44:40 by syudai           ###   ########.fr       */
+/*   Updated: 2021/02/11 21:49:49 by syudai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ void	one_command_bin(char ***cmd, char ***raw_cmd, t_arg_main *arg_main)
 	pid_t	pid;
 	int		status;
 	char	*path;
-	//int		r;
 
+	path = NULL;
 	if ((pid = fork()) == 0)
 	{
 		just_for_norm(raw_cmd);
