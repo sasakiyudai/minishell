@@ -25,7 +25,7 @@ int		valid_option(char *now)
 			return (0);
 		i++;
 	}
-	if (i == 0)
+	if (i <= 1)
 		return (0);
 	return (1);
 }
