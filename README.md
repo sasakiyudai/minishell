@@ -1,2 +1,7 @@
-# minishell_main
-## something like a shell
+# minishell
+
+## Usage
+
+```make```
+
+shellの再実装
