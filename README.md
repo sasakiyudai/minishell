@@ -2,6 +2,9 @@
 
 ## Usage
 
-```make```
+```
+make
+./minishell
+```
 
 shellの再実装
